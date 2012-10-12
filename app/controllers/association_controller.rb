@@ -1,0 +1,3 @@
+class AssociationController < ApplicationController
+
+end

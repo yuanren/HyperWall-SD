@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  placeId: MyString
+  version: 
+  label: MyString
+
+two:
+  placeId: MyString
+  version: 
+  label: MyString

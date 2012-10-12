@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  eventid: MyString
+  version: 1
+  datetime: 2012-10-03 08:51:21
+  hazard: MyString
+  name: MyString
+
+two:
+  eventid: MyString
+  version: 1
+  datetime: 2012-10-03 08:51:21
+  hazard: MyString
+  name: MyString

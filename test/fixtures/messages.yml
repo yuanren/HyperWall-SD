@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  resourceId: MyString
+  conversationResourceId: MyString
+  fromResourceId: MyString
+  payload: MyString
+  toResourceId: MyString
+
+two:
+  resourceId: MyString
+  conversationResourceId: MyString
+  fromResourceId: MyString
+  payload: MyString
+  toResourceId: MyString

@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>ResourceId:</b>
+  <%= @message.resourceId %>
+</p>
+
+<p>
+  <b>ConversationResourceId:</b>
+  <%= @message.conversationResourceId %>
+</p>
+
+<p>
+  <b>FromResourceId:</b>
+  <%= @message.fromResourceId %>
+</p>
+
+<p>
+  <b>Payload:</b>
+  <%= @message.payload %>
+</p>
+
+<p>
+  <b>ToResourceId:</b>
+  <%= @message.toResourceId %>
+</p>
+
+
+<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Back', messages_path %>
