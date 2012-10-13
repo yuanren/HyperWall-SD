@@ -53,25 +53,27 @@ class IdTableNameController < ApplicationController
     #type	 the type of the given GUID	 EVENT
     #object	 the object of the given GUID.	 A JSON tree structure
 
-    @idTableName = IdTableName.find(params[:id])
+    @id = params[:GUID]
+    @idTableName = IdTableName.find(@id)
+
     @tableName = @idTableName.tableName
     #TODO: check if tableName is valid
-    @object = @tableName.constantize.find(params[:id])
+    @object = @tableName.constantize.find(@id)
     if params[:depth] == 1
       @associations = Array.new
       @type = params[:type]
       if @tableName == "Event" and (@type.nil? or @type == "Person")
-        @associations << EventResource.find(:all, :conditions => ['eventId = ?', "#{params[:id]}"])
+        @associations << EventResource.find(:all, :conditions => ['eventId = ?', "#{@id}"])
       elsif @tableName == "Person" and (@type.nil? or @type == "Event")
-        @associations << EventResource.find(:all, :conditions => ['resourceId = ?', "#{params[:id]}"])
+        @associations << EventResource.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       elsif @tableName == "Event" and (@type.nil? or type == "Place")
-        @associations << EventPlace.find(:all, :conditions => ['eventId = ?', "#{params[:id]}"])
+        @associations << EventPlace.find(:all, :conditions => ['eventId = ?', "#{@id}"])
       elsif @tableName == "Place" and (@type.nil? or type == "Event")
-        @associations << EventPlace.find(:all, :conditions => ['placeId = ?', "#{params[:id]}"])
+        @associations << EventPlace.find(:all, :conditions => ['placeId = ?', "#{@id}"])
       elsif @tableName == "Resource" and (@type.nil? or type == "Place")
-        @associations << ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{params[:id]}"])
+        @associations << ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       elsif @tableName == "Place" and (@type.nil? or type == "Resource")
-        @associations << ResourcePlace.find(:all, :conditions => ['placeId = ?', "#{params[:id]}"])
+        @associations << ResourcePlace.find(:all, :conditions => ['placeId = ?', "#{@id}"])
       end
     end
     respond_to do |format|
