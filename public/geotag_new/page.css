@@ -1,0 +1,81 @@
+/* General Styling*/
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+
+@media print {
+  html, body {
+    height: auto;
+  }
+}
+
+#map_canvas {
+  height: 100%;
+  width: 100%;
+}
+
+/* Inmap Dialog Styling*/ 
+.inmap_dialog {
+  width: 480px;
+}
+.inmap_dialog h1 {
+  margin: 0px 0px 6px 0px;
+  font-size: 28px;
+}
+
+.event_content {
+  width: 260px;
+  margin:0;
+  display: inline-block;
+}
+
+.event_content img{
+  width: 256px;
+  border-radius: 2px;
+}
+
+.test_event img {
+margin: 8px 3px;
+
+}
+
+.event_messages{
+  margin-left: 6px;
+  width: 210px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.event_msg{
+  padding: 2px 5px; margin: 8px 3px;
+  border-radius: 2px;
+  background-color: #ddd; 
+  box-shadow: 1px 1px 3px 1px #999;
+}
+
+.inmap_dialog button { width: 100%; }
+
+
+#user_msg_box {
+  position: absolute;
+  left: 96px; top: 12px;
+  min-width: 160px;
+}
+
+.user_msg {
+  width: 100%; margin: 4px 0px; padding: 0px 4px;
+  border-radius: 2px; 
+  box-shadow: 1px 1px 3px 1px #999;
+}
+.msg_sent { text-align: left; background-color: #ddd;}
+.msg_rcvd { text-align: right; background-color: #fff;}
+
+
+/*
+img[src*="iws3.png"] {
+    display: none;
+}
+*/
