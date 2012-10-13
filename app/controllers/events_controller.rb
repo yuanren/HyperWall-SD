@@ -40,7 +40,8 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    @event = Event.new(params[:event])
+    @event = Event.new(:label => params[:label], :dateTime => params[:dateTime])
+    #@event = Event.new(ActiveSupport::JSON.decode(params[:event]))
     respond_to do |format|
       if @event.save
         @idTableName = IdTableName.new
