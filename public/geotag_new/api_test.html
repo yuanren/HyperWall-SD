@@ -10,40 +10,51 @@
     <script>
       $(document).ready(function(){
         $("#btn_create_person").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             "GUID: "+sd_create("people", { label: $("#person_label").val() } )
-          );
+          //);
         });
         $("#btn_create_event").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_create("events", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } )
-          );
+          //);
         });
         $("#btn_create_conversation").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_create("conversations", { label: $("#conversation_label").val() } )
-          );
+          //);
         });
         $("#btn_create_place").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_create("places", {label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} )
-          );
+          //);
         });
         $("#btn_create_message").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } )
-          );
+          //);
         });
+
+        $("#btn_associate").click(function() {
+          $.ajax({
+            type: 'POST', url: "../associate_guids",
+            data: { sourceGUID: $("#association_src").val(), destinationGUID: $("#association_des").val() } ), dataType: 'json'
+            success: function(rcv_data){ 
+              console.log(rcv_data);          
+            }
+          });
+        });
+
         //GET
         $("#btn_get_guid").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_get("guid", { type: $("#get_guid_type").val() } )
-          );
+          //);
         });
         $("#btn_get_properties").click(function() {
-          $("#rcv_obj_div").html(
+          //$("#rcv_obj_div").html(
             sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
-          );
+          //);
         });
 
       });
@@ -79,6 +90,13 @@
         CREATE_PLACE <br>
         label:<input id="place_label" type="text"> latitude:<input id="place_latitude" type="text"> longitude:<input id="place_longitude" type="text"> <button id="btn_create_place">Create</button>
       </li>
+      
+
+      <li>
+        ASSOCIATE_GUIDS <br>
+        sourceGUID:<input id="association_src" type="text"> destinationGUID:<input id="association_des" type="text"> <button id="btn_associate">Associate</button>
+      </li>
+      
       <li>
         GET_GUID <br>
         type:<input id="get_guid_type" type="text"> <button id="btn_get_guid">GET</button>
