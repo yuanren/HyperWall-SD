@@ -6,7 +6,8 @@ function sd_create (type, post_data){
       data: post_data, dataType: 'json',
       success: function(rcv_data){ 
         console.log(rcv_data);
-        return rcv_data.GUID;
+        console.log(rcv_data['GUID']);
+        return rcv_data['GUID'];
       }
   });
 

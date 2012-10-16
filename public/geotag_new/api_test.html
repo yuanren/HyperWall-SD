@@ -16,7 +16,22 @@
         });
         $("#btn_create_event").click(function() {
           $("#rcv_obj_div").html(
-            sd_create("event", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } )
+            sd_create("events", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } )
+          );
+        });
+        $("#btn_create_conversation").click(function() {
+          $("#rcv_obj_div").html(
+            sd_create("conversations", { label: $("#conversation_label").val() } )
+          );
+        });
+        $("#btn_create_place").click(function() {
+          $("#rcv_obj_div").html(
+            sd_create("places", { label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} )
+          );
+        });
+        $("#btn_create_message").click(function() {
+          $("#rcv_obj_div").html(
+            sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } )
           );
         });
         /*$.ajax({
