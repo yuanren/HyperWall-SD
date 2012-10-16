@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Google Maps</title>
+    <title>Hyperwall API Test</title>
     <link href="page.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
@@ -16,7 +16,7 @@
         });
         $("#btn_create_event").click(function() {
           $("#rcv_obj_div").html(
-            sd_create("event", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } );
+            sd_create("event", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } )
           );
         });
         /*$.ajax({
@@ -39,13 +39,13 @@
       });
     </script>
     <style>
-      #rcv_obj_div { margin: auto auto;}
+      #rcv_obj_div { text-align: center;}
     </style>
 
 
   </head>
   <body>
-    <div id="#rcv_obj_div"> ... </div>
+    <div id="rcv_obj_div"> ... </div>
     <ul>
       <li>
         CREATE_PERSON <br>
@@ -54,6 +54,18 @@
       <li>
         CREATE_EVENT <br> 
         label:<input id="event_label" type="text"> dateTime:<input id="event_datetime" type="text"> <button id="btn_create_event"> Create</button>
+      </li>
+      <li>
+        CREATE_CONVERSATION <br>
+        label:<input id="conversation_label" type="text"> <button id="btn_create_conversation">Create</button>
+      </li>
+      <li>
+        CREATE_PLACE <br>
+        label:<input id="place_label" type="text"> latitude:<input id="place_latitude" type="text"> longitude:<input id="place_longitude" type="text"> <button id="btn_create_place">Create</button>
+      </li>
+      <li>
+        CREATE_MESSAGE <br>
+        label:<input id="message_text" type="text"> sender:<input id="message_sender" type="text"> recipient:<input id="message_recipient" type="text"> conversation:<input id="message_conversation" type="text"> <button id="btn_create_message">Create</button>
       </li>
     </ul>
 
