@@ -8,10 +8,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
-        $("#btn_create_person").click(function() {          
+        $("#btn_create_person").click(function() {
+          var post_data = { label: $("#person_label").val() }         
           $.ajax({
             type: 'POST', url: "../people.json",
-            data: { label: $("#person_label").val() }, dataType: 'json',
+            data: post_data, dataType: 'json',
             success: function(rcv_guid){ 
               console.log(rcv_guid);
             }
@@ -47,10 +48,14 @@
 
       });
     </script>
+    <style>
+      #rcv_obj_div { margin: auto auto;}
+    </style>
+
 
   </head>
   <body>
-    <div id="#rcv_obj" style:"display: block; text-align: center;"> ... </div>
+    <div id="#rcv_obj_div"> ... </div>
     <ul>
       <li>
         CREATE_PERSON <br>
