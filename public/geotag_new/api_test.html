@@ -35,27 +35,16 @@
           );
         });
         //GET
+        $("#btn_get_guid").click(function() {
+          $("#rcv_obj_div").html(
+            sd_get("guid", { type: $("#get_guid_type").val() } )
+          );
+        });
         $("#btn_get_properties").click(function() {
           $("#rcv_obj_div").html(
             sd_get("properties", { GUID: $("#get_properties_guid").val() } )
           );
         });
-        /*$.ajax({
-          type: 'GET', url: "http://eoc.sv.cmu.edu:3000/get_properties",
-          beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-          data: { GUID: "ffcde89a-12fe-11e2-a942-7071bc51ad1f" }, dataType: 'json',
-          success: function(rcv_guid){ 
-            console.log("success");
-            console.log(rcv_guid); }
-        });
-  
-        $.ajax({
-          type: 'POST', url: "http://eoc.sv.cmu.edu:3000/events.json",
-          data: { 'label': "hyperwall_event", 'dateTime': "2012-10-10T12:00:00Z" }, dataType: 'json',
-          success: function(rcv_guid){ 
-          console.log("success");
-          console.log(rcv_guid); }
-        });*/
 
       });
     </script>
