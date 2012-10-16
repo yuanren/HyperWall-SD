@@ -11,7 +11,7 @@
       $(document).ready(function(){
         $("#btn_create_person").click(function() {
           $("#rcv_obj_div").html(
-            sd_create("people", { label: $("#person_label").val() } )
+            "GUID: "+sd_create("people", { label: $("#person_label").val() } )
           );
         });
         $("#btn_create_event").click(function() {

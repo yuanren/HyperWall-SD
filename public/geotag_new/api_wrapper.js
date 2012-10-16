@@ -1,16 +1,16 @@
 
 function sd_create (type, post_data){
-  
+  var rcv_guid;
   $.ajax({
       type: 'POST', url: "../"+type+".json",
       data: post_data, dataType: 'json',
       success: function(rcv_data){ 
         console.log(rcv_data);
-        console.log(rcv_data['GUID']);
-        return rcv_data['GUID'];
+        rcv_guid = rcv_data['GUID'];
+
       }
   });
-
+  return rcv_guid;
 }
  
  /*       
