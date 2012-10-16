@@ -42,7 +42,7 @@
         });
         $("#btn_get_properties").click(function() {
           $("#rcv_obj_div").html(
-            sd_get("properties", { GUID: $("#get_properties_guid").val() } )
+            sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
           );
         });
 
@@ -85,7 +85,7 @@
       </li>
       <li>
         GET_PROPERTIES <br>
-        guid:<input id="get_properties_guid" type="text"> <button id="btn_get_properties">GET</button>
+        guid:<input id="get_properties_guid" type="text"> depth:<input id="get_properties_depth" type="text"> <button id="btn_get_properties">GET</button>
       </li>
     </ul>
 
