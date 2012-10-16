@@ -1,47 +1,23 @@
 
 function sd_create (type, post_data){
-  var rcv_guid;
   $.ajax({
       type: 'POST', url: "../"+type+".json",
       data: post_data, dataType: 'json',
       success: function(rcv_data){ 
         console.log(rcv_data);
-        rcv_guid = rcv_data['GUID'];
-
+        return rcv_data['GUID'];
       }
   });
-  return rcv_guid;
+}
+
+function sd_get (type, get_data){
+  //var rcv_guid;
+  $.ajax({
+      type: 'GET', url: "../get_"+type,
+      data: get_data, dataType: 'json',
+      success: function(rcv_data){ 
+        console.log(rcv_data);
+      }
+  });
 }
  
- /*       
-        $(".btns_create").click(function() {
-          var post_data = { label: $("#person_label").val() }         
-          $.ajax({
-            type: 'POST', url: "../people.json",
-            data: post_data, dataType: 'json',
-            success: function(rcv_guid){ 
-              console.log(rcv_guid);
-            }
-          });
-        });
-
-        $("#btn_create_person").click(function() {
-          var post_data = { label: $("#person_label").val() }         
-          $.ajax({
-            type: 'POST', url: "../people.json",
-            data: post_data, dataType: 'json',
-            success: function(rcv_guid){ 
-              console.log(rcv_guid);
-            }
-          });
-        });
-        $("#btn_create_event").click(function() {      
-          $.ajax({
-            type: 'POST', url: "../events.json",
-            data: { label: $("#event_label").val(), dateTime: $("#event_datetime").val() }, dataType: 'json',
-            success: function(rcv_guid){ 
-              console.log(rcv_guid);
-            }
-          });
-        });
-  */

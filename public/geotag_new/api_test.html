@@ -26,12 +26,18 @@
         });
         $("#btn_create_place").click(function() {
           $("#rcv_obj_div").html(
-            sd_create("places", { label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} )
+            sd_create("places", {label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} )
           );
         });
         $("#btn_create_message").click(function() {
           $("#rcv_obj_div").html(
             sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } )
+          );
+        });
+        //GET
+        $("#btn_get_properties").click(function() {
+          $("#rcv_obj_div").html(
+            sd_get("properties", { GUID: $("#get_properties_guid").val() } )
           );
         });
         /*$.ajax({
@@ -80,7 +86,15 @@
       </li>
       <li>
         CREATE_MESSAGE <br>
-        label:<input id="message_text" type="text"> sender:<input id="message_sender" type="text"> recipient:<input id="message_recipient" type="text"> conversation:<input id="message_conversation" type="text"> <button id="btn_create_message">Create</button>
+        text:<input id="message_text" type="text"> sender:<input id="message_sender" type="text"> recipient:<input id="message_recipient" type="text"> conversation:<input id="message_conversation" type="text"> <button id="btn_create_message">Create</button>
+      </li>
+      <li>
+        GET_GUID <br>
+        type:<input id="get_guid_type" type="text"> <button id="btn_get_guid">GET</button>
+      </li>
+      <li>
+        GET_PROPERTIES <br>
+        guid:<input id="get_properties_guid" type="text"> <button id="btn_get_properties">GET</button>
       </li>
     </ul>
 
