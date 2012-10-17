@@ -1,10 +1,5 @@
 // Global Google Map variables
-var mapOptions = { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
 var MAP;
-//var MAP = new google.maps.Map(
-//  document.getElementById('map_canvas'), 
-//  mapOptions/*{ zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }*/
-//);
   
 // Global Hyperwall variables
 var MSG_POLL_INTERVAL = 3, CRUMB_POLL_INTERVAL = 2, EVENT_POLL_INTERVAL = 3;
@@ -21,7 +16,13 @@ function initialize() {
   // Register Hyperwall on SDB
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
-    if(localStorage['HYPERWALL_USER_GUID'] == undefined){ console.log("great"); }
+    if(localStorage['HYPERWALL_USER_GUID'] == undefined){
+      var callback_fn = function(rcv_data){ 
+        console.log(rcv_data.GUID);
+        localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
+      };
+      sd_create("people", { label: "HyperWall_User" }, callback_fn); 
+    }
   }
 
   //var callback_fn = function(rcv_data){ console.log(rcv_data.GUID) };
