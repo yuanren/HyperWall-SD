@@ -11,9 +11,9 @@ function poll_conversations(callback_function){
   var xhr=new XMLHttpRequest();
   xhr.onreadystatechange=function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  if (xhr.readyState==4 && xhr.status==200)
     {
-    callback_function(xmlhttp.responseText);
+    callback_function(xhr.responseText);
     setTimeout(poll_conversations(callback_function), 5000);
     }
   }
