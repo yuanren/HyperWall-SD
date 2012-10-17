@@ -12,7 +12,6 @@ var MAP_MARKERS_HASH = new Object();
 
 
 function initialize() {
-
   // Register Hyperwall on SDB
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
@@ -134,7 +133,3 @@ function initialize() {
 
 }
 
-
-$(document).ready(function(){
-  // Pending
-});
