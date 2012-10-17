@@ -21,7 +21,7 @@ function gm_create_marker(type, location) {
   //switch(type)
   var marker = new google.maps.Marker({
     position: new google.maps.LatLng( location[0], location[1]),
-    map: map,
+    map: MAP,
     icon: "http://maps.google.com/mapfiles/marker.png"
   });
 }

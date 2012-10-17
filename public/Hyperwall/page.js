@@ -29,6 +29,13 @@ function initialize() {
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
   }
 
+  // Start polling worker thread
+  var conversation_polling_worker = new Worker('polling_worker.js');
+  conversation_polling_worker.addEventListener('message', function(e) {
+    console.log('Worker said: ', e.data);
+  }, false);
+
+
   // Construct Google Map
   MAP = new google.maps.Map(
     document.getElementById('map_canvas'), 
@@ -124,6 +131,7 @@ function initialize() {
 
 
 }
+
 
 $(document).ready(function(){
   // Pending
