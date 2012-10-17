@@ -10,9 +10,14 @@
     <script>
       $(document).ready(function(){
         $("#btn_create_person").click(function() {
-          //$("#rcv_obj_div").html(
-            "GUID: "+sd_create("people", { label: $("#person_label").val() } )
-          //);
+
+          sd_create(
+            "people",
+            { label: $("#person_label").val() },
+            function(rcv_data){ 
+              $("#rcv_obj_div").html(rcv_data.GUID)
+            }
+          )
         });
         $("#btn_create_event").click(function() {
           //$("#rcv_obj_div").html(

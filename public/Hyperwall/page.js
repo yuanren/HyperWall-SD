@@ -15,22 +15,21 @@ function initialize() {
 
   // Register Hyperwall on SDB
   if(typeof(Storage)!=="undefined"){
-    localStorage.clear();
     console.log("HTML5 Local Storage Supported");
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
-      //var callback_fn = ;
-      sd_create("people", { label: "HyperWall_User" },
+      sd_create(
+        "people",
+        { label: "HyperWall_User" },
         function(rcv_data){ 
           console.log("receive GUID: "+rcv_data.GUID);
           localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
         }
       ); 
-    }
+    } else { console.log("Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
+    HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
   }
 
-  //var callback_fn = function(rcv_data){ console.log(rcv_data.GUID) };
-  //sd_create("people", { label: "HyperWall_User" }, callback_fn);
-
+  // Construct Google Map
   MAP = new google.maps.Map(
     document.getElementById('map_canvas'), 
     { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
