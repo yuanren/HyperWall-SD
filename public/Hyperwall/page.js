@@ -31,8 +31,8 @@ function initialize() {
 
   // Start polling worker thread
   var conversation_polling_worker = new Worker('polling_worker.js');
-  conversation_polling_worker.addEventListener('message', function(e) {
-    console.log('Worker said: ', e.data);
+  conversation_polling_worker.addEventListener('start_poll', function(e) {
+    console.log(e.data);
   }, false);
   conversation_polling_worker.postMessage('Hello World'); 
 
