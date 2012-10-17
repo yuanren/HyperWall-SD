@@ -1,9 +1,10 @@
 // Global Google Map variables
 var mapOptions = { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
-var MAP = new google.maps.Map(
-  document.getElementById('map_canvas'), 
-  mapOptions/*{ zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }*/
-);
+var MAP;
+//var MAP = new google.maps.Map(
+//  document.getElementById('map_canvas'), 
+//  mapOptions/*{ zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }*/
+//);
   
 // Global Hyperwall variables
 var MSG_POLL_INTERVAL = 3, CRUMB_POLL_INTERVAL = 2, EVENT_POLL_INTERVAL = 3;
@@ -21,6 +22,10 @@ function initialize() {
   var callback_fn = function(rcv_data){ hyperwall_user_guid = rcv_data.GUID };
   sd_create("people", { label: "HyperWall_User" }, callback_fn);
 
+  MAP = new google.maps.Map(
+  document.getElementById('map_canvas'), 
+  mapOptions/*{ zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }*/
+  );
 
 
 
