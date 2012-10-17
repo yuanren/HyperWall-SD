@@ -1,5 +1,6 @@
 $(document).ready(function(){
   console.log($("body").width()-200);
-  $(".list").css("left", ($(body).width()-200)+"px");
+  $("#critical_list").css("left", ($("body").width()-200)+"px");
+  $("#tracked_user_list").css("top", ($("body").height()-200)+"px");
 
 });

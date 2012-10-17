@@ -14,10 +14,15 @@ html, body {
 .list { 
   position: absolute;
   width: 180px; min-height: 100px;
-  background-color: #fff;
+  background-color: #fff; opacity: 0.92;
+  box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
 }
 #critical_list { 
   top: 48px;
+}
+#tracked_user_list {
+  left: 24px;
+
 }
 
 
