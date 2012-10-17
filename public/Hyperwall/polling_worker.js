@@ -8,7 +8,8 @@ function poll_conversations(callback_function){
       callback_function(rcv_data);
     } // end success
   });*/
-  xmlhttp.onreadystatechange=function()
+  var xhr=new XMLHttpRequest();
+  xhr.onreadystatechange=function()
   {
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
@@ -16,8 +17,8 @@ function poll_conversations(callback_function){
     setTimeout(poll_conversations(callback_function), 5000);
     }
   }
-  xmlhttp.open("GET","../get_guid?type=Event",true);
-  xmlhttp.send();
+  xhr.open("GET","../get_guid?type=Event",true);
+  xhr.send();
 }
 
 self.addEventListener('message', function(e) {
