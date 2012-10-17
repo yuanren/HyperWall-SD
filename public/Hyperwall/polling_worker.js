@@ -1,4 +1,4 @@
-function poll_conversations(callback_function){
+function poll_conversations(){
   /*$.ajax({ 
     url: "../get_guid", dataType: "json",
     data: {type: "Event"},
@@ -8,27 +8,29 @@ function poll_conversations(callback_function){
       callback_function(rcv_data);
     } // end success
   });*/
-  var xhr=new XMLHttpRequest();
-  xhr.onreadystatechange=function()
+  try {
+    var xhr=new XMLHttpRequest();
+    xhr.onreadystatechange=function()
   {
   if (xhr.readyState==4 && xhr.status==200)
     {
-    callback_function(xhr.responseText);
-    setTimeout(poll_conversations(callback_function), 5000);
+    self.postMessage(xhr.responseText);
+    setTimeout(poll_conversations(), 5000);
     }
   }
   xhr.open("GET","../get_guid?type=Event",true);
   xhr.send();
+  } catch (e) { postMessage("ERROR:"+e.message); }
 }
 
 self.addEventListener('message', function(e) {
   //console.log("worker started");
   self.postMessage("worker started");
   poll_conversations(
-    function(rcv_data){ 
+    //function(rcv_data){ 
       //console.log(rcv_data);
-      self.postMessage(rcv_data);
-    }
+      //self.postMessage(rcv_data);
+    //}
   );
 
 
