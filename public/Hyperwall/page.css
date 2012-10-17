@@ -12,12 +12,11 @@ html, body {
 
 
 .list { 
+  position: absolute;
   width: 180px; min-height: 100px;
-  background-color: #fff; opacity: 0.8;
+  background-color: #fff;
 }
 #critical_list { 
-  position: absolute;
-  
   top: 48px;
 }
 
