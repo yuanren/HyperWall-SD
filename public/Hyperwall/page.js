@@ -15,13 +15,16 @@ function initialize() {
 
   // Register Hyperwall on SDB
   if(typeof(Storage)!=="undefined"){
+    localStorage['HYPERWALL_USER_GUID'] = undefined;
     console.log("HTML5 Local Storage Supported");
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
-      var callback_fn = function(rcv_data){ 
-        console.log(rcv_data.GUID);
-        localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
-      };
-      sd_create("people", { label: "HyperWall_User" }, callback_fn); 
+      //var callback_fn = ;
+      sd_create("people", { label: "HyperWall_User" },
+        function(rcv_data){ 
+          console.log("receive GUID: "+rcv_data.GUID);
+          localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
+        }
+      ); 
     }
   }
 
