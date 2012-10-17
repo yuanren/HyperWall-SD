@@ -1,20 +1,29 @@
-var hyperwall_user_guid = "";
-var conversation_hash = new Object();
-var event_hash = new Object();
+// Global Google Map variables
+//var mapOptions = { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
+var MAP = new google.maps.Map(
+  document.getElementById('map_canvas'), 
+  { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
+);
+  
+// Global Hyperwall variables
+var MSG_POLL_INTERVAL = 3, CRUMB_POLL_INTERVAL = 2, EVENT_POLL_INTERVAL = 3;
+var HYPERWALL_USER_GUID = "";
+var SPECIAL_USERS = new Array();
+var CONVERSATIONS_HASH = new Object();
+var EVENTS_HASH = new Object();
+
+var MAP_MARKERS_HASH = new Object();
 
 
 function initialize() {
 
+  // Register Hyperwall on SDB
+  sd_create("people", { label: "HyperWall_User" }, function(rcv_data){ hyperwall_user_guid = rcv_data.GUID });
 
 
 
 
-  //var markers = new Array(), info_windows = new Array();
-  //var myLatlng = new google.maps.LatLng(37.410425,-122.059754);
-  var mapOptions = { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
-  var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-  
-
+/*
   var parsed_json = jQuery.parseJSON(JSON.stringify(json_data));
   $(parsed_json.markers).each( function(){
 
@@ -91,7 +100,7 @@ function initialize() {
       //map.setZoom(17);
       info_window.open(map,marker5);
     //});
-
+*/
   });
 
 
@@ -103,34 +112,5 @@ function initialize() {
 }
 
 $(document).ready(function(){
-
-  // Register Hyperwall on SDB
-/*  $.ajax({
-    type: 'POST', url: url,
-    data: { label: "Hyperwall"}, dataType: 'json',
-    success: function(rcv_guid){ hyperwall_user_guid = rcv_guid.GUID; }
-  });*/
-
-  
-  // Register Hyperwall on SDB
-  $.ajax({
-    type: 'GET', url: "http://eoc.sv.cmu.edu:3000/get_properties",
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    data: { GUID: "ffcde89a-12fe-11e2-a942-7071bc51ad1f" }, dataType: 'json',
-    success: function(rcv_guid){ 
-      console.log("success");
-     console.log(rcv_guid); }
-  });
-  
-  $.ajax({
-    type: 'POST', url: "http://eoc.sv.cmu.edu:3000/events.json",
-    beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
-    data: { 'label': "hyperwall_event", 'dateTime': "2012-10-10T12:00:00Z" }, dataType: 'json',
-    success: function(rcv_guid){ 
-      console.log("success");
-     console.log(rcv_guid); }
-  });
-
+  // Pending
 });
-
-  
