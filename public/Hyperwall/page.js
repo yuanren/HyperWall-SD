@@ -2,7 +2,7 @@
 var MAP;
   
 // Global Hyperwall variables
-var MSG_POLL_INTERVAL = 3, CRUMB_POLL_INTERVAL = 2, EVENT_POLL_INTERVAL = 3;
+var MSG_POLL_INTERVAL = 3000, CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 5000;
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 var CONVERSATIONS_HASH = new Object();
@@ -30,19 +30,29 @@ function initialize() {
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
   }
 
-  // Start polling worker thread
-  var conversation_polling_worker = new Worker('polling_worker.js');
-  conversation_polling_worker.addEventListener('message', function(e) {
-    console.log(e.data);
-  }, false);
-  conversation_polling_worker.postMessage('Hello World'); 
-
-
   // Construct Google Map
   MAP = new google.maps.Map(
     document.getElementById('map_canvas'), 
     { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
   );
+
+  // Start conversation polling worker thread
+  var conversation_polling_worker = new Worker('polling_workers/poll_conversations.js');
+  conversation_polling_worker.addEventListener(
+    'message',
+    function(e){
+      // Parse response data from worker
+      var rcv_json = $.parseJSON(e.data);
+      console.log(rcv_json);
+    },
+    false
+  );
+  conversation_polling_worker.postMessage(CONVERSATION_POLL_INTERVAL); 
+
+
+
+
+
 
 
 
@@ -89,16 +99,6 @@ function initialize() {
     });
     var marker2 = new google.maps.Marker({
       position: new google.maps.LatLng( 37.410313, -122.05896),
-      map: map,
-      icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png"
-    });
-    var marker3 = new google.maps.Marker({
-      position: new google.maps.LatLng( 37.410313, -122.05887),
-      map: map,
-      icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png"
-    });
-    var marker4 = new google.maps.Marker({
-      position: new google.maps.LatLng( 37.410333, -122.05898),
       map: map,
       icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png"
     });
