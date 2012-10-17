@@ -1,16 +1,16 @@
 class IdTableNameController < ApplicationController
   def associate_guids
-    @sourceIdTableName = IdTableName.find(params[:sourceGUIDS])
+    @sourceIdTableName = IdTableName.find(params[:sourceGUID])
     @sourceTableName = @sourceIdTableName.tableName
 
-    @destIdTableName = IdTableName.find(params[:destinationGUIDS])
+    @destIdTableName = IdTableName.find(params[:destinationGUID])
     @destTableName = @destIdTableName.tableName
 
     @result = "fail"
     if ((@sourceTableName == "Event" and @destTableName == "Person") or
         (@sourceTableName == "Person" and @destTableName == "Event"))
-      @source = Event.find(params[:sourceGUIDS])
-      @dest = Person.find(params[:destinationGUIDS])
+      @source = Event.find(params[:sourceGUID])
+      @dest = Person.find(params[:destinationGUID])
       @eventResource = EventResource.new
       @eventResource.eventId = @source.eventId
       @eventResource.resourceId = @dest.resourceId
@@ -19,8 +19,8 @@ class IdTableNameController < ApplicationController
       end
     elsif ((@sourceTableName == "Event" and @destTableName == "Place") or
         (@sourceTableName == "Place" and @destTableName == "Event"))
-      @source = Event.find(params[:sourceGUIDS])
-      @dest = Place.find(params[:destinationGUIDS])
+      @source = Event.find(params[:sourceGUID])
+      @dest = Place.find(params[:destinationGUID])
       @eventPlace = EventPlace.new
       @eventPlace.eventId = @source.eventId
       @eventPlace.placeId = @dest.placeId
@@ -29,8 +29,8 @@ class IdTableNameController < ApplicationController
       end
     elsif ((@sourceTableName == "Resource" and @destTableName == "Place") or
         (@sourceTableName == "Place" and @destTableName == "Resource"))
-      @source = Resource.find(params[:sourceGUIDS])
-      @dest = Place.find(params[:destinationGUIDS])
+      @source = Resource.find(params[:sourceGUID])
+      @dest = Place.find(params[:destinationGUID])
       @resourcePlace = ResourcePlace.new
       @resourcePlace.resourceId = @source.eventId
       @resourcePlace.placeId = @dest.placeId
