@@ -10,8 +10,8 @@ function poll_conversations(callback_function){
   });	
 }
 
-self.addEventListener('start_poll', function(e) {
-
+self.addEventListener('message', function(e) {
+  console.log("worker started");
   poll_conversations(
     function(rcv_data){ 
       //console.log(rcv_data);

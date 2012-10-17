@@ -17,21 +17,22 @@ function initialize() {
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
+      console.log("Register New Hyperwall GUID");
       sd_create(
         "people",
         { label: "HyperWall_User" },
         function(rcv_data){ 
-          console.log("receive GUID: "+rcv_data.GUID);
+          console.log("Receive GUID: "+rcv_data.GUID);
           localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
         }
       ); 
-    } else { console.log("Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
+    } else { console.log("Found Local Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
   }
 
   // Start polling worker thread
   var conversation_polling_worker = new Worker('polling_worker.js');
-  conversation_polling_worker.addEventListener('start_poll', function(e) {
+  conversation_polling_worker.addEventListener('message', function(e) {
     console.log(e.data);
   }, false);
   conversation_polling_worker.postMessage('Hello World'); 
