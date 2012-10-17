@@ -19,7 +19,7 @@ var MAP_MARKERS_HASH = new Object();
 function initialize() {
 
   // Register Hyperwall on SDB
-  var callback_fn = function(rcv_data){ hyperwall_user_guid = rcv_data.GUID };
+  var callback_fn = function(rcv_data){ console.log(rcv_data) };
   sd_create("people", { label: "HyperWall_User" }, callback_fn);
 
   MAP = new google.maps.Map(

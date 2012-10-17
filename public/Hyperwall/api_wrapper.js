@@ -3,10 +3,10 @@ function sd_create (type, post_data, callback_function){
   $.ajax({
       type: 'POST', url: "../"+type+".json",
       data: post_data, dataType: 'json'
-      success: callback_function /*function(rcv_data){ 
-        console.log(rcv_data);
+      success: function(rcv_data){ 
+        callback_function(rcv_data);
         //return rcv_data['GUID'];
-      }*/
+      }
   });
 }
 
