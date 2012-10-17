@@ -42,7 +42,7 @@ function initialize() {
     'message',
     function(e){
       // Parse response data from worker
-      var rcv_json = $.parseJSON(e.data);
+      var rcv_json = jQuery.parseJSON(e.data);
       console.log(rcv_json);
     },
     false
