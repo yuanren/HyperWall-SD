@@ -19,12 +19,17 @@ var MAP_MARKERS_HASH = new Object();
 function initialize() {
 
   // Register Hyperwall on SDB
-  var callback_fn = function(rcv_data){ console.log(rcv_data) };
-  sd_create("people", { label: "HyperWall_User" }, callback_fn);
+  if(typeof(Storage)!=="undefined"){
+    console.log("HTML5 Local Storage Supported");
+    if(localStorage['HYPERWALL_USER_GUID'] == undefined){ console.log("great"); }
+  }
+
+  //var callback_fn = function(rcv_data){ console.log(rcv_data.GUID) };
+  //sd_create("people", { label: "HyperWall_User" }, callback_fn);
 
   MAP = new google.maps.Map(
-  document.getElementById('map_canvas'), 
-  mapOptions/*{ zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }*/
+    document.getElementById('map_canvas'), 
+    { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
   );
 
 
