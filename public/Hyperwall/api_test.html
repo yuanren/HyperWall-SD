@@ -10,34 +10,20 @@
     <script>
       $(document).ready(function(){
         $("#btn_create_person").click(function() {
-
-          sd_create(
-            "people",
-            { label: $("#person_label").val() },
-            function(rcv_data){ 
-              $("#rcv_obj_div").html(rcv_data.GUID)
-            }
-          )
+          sd_create( "people",{label: $("#person_label").val()} );
         });
-        $("#btn_create_event").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_create("events", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } )
-          //);
+        $("#btn_create_event").click(function() {          
+          sd_create("events", { label: $("#event_label").val(), dateTime: $("#event_datetime").val() } );
+          
         });
         $("#btn_create_conversation").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_create("conversations", { label: $("#conversation_label").val() } )
-          //);
+          sd_create("conversations", { label: $("#conversation_label").val() } );
         });
-        $("#btn_create_place").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_create("places", {label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} )
-          //);
+        $("#btn_create_place").click(function() {          
+          sd_create("places", {label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} );
         });
         $("#btn_create_message").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } )
-          //);
+            sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } );
         });
         /*
         $("#btn_associate").click(function() {
@@ -52,14 +38,10 @@
         */
         //GET
         $("#btn_get_guid").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_get("guid", { type: $("#get_guid_type").val() } )
-          //);
+          sd_get("guid", { type: $("#get_guid_type").val() } )
         });
         $("#btn_get_properties").click(function() {
-          //$("#rcv_obj_div").html(
-            sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
-          //);
+          sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
         });
 
       });
@@ -81,7 +63,7 @@
         CREATE_EVENT <br> 
         label:<input id="event_label" type="text"> dateTime:<input id="event_datetime" type="text"> <button id="btn_create_event"> Create</button>
       </li>
-      <!--
+
       <li>
         CREATE_CONVERSATION <br>
         label:<input id="conversation_label" type="text"> <button id="btn_create_conversation">Create</button>
@@ -90,7 +72,6 @@
         CREATE_MESSAGE <br>
         text:<input id="message_text" type="text"> sender:<input id="message_sender" type="text"> recipient:<input id="message_recipient" type="text"> conversation:<input id="message_conversation" type="text"> <button id="btn_create_message">Create</button>
       </li>
-      -->
       <li>
         CREATE_PLACE <br>
         label:<input id="place_label" type="text"> latitude:<input id="place_latitude" type="text"> longitude:<input id="place_longitude" type="text"> <button id="btn_create_place">Create</button>
