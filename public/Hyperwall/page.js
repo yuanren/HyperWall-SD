@@ -15,7 +15,7 @@ function initialize() {
 
   // Register Hyperwall on SDB
   if(typeof(Storage)!=="undefined"){
-    localStorage['HYPERWALL_USER_GUID'] = undefined;
+    localStorage.clear();
     console.log("HTML5 Local Storage Supported");
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
       //var callback_fn = ;
