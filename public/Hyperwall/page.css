@@ -11,10 +11,14 @@ html, body {
 #map_canvas { height: 100%; width: 100%; }
 
 
+.list { 
+  width: 180px; min-height: 100px;
+  background-color: #fff; opacity: 0.8;
+}
 #critical_list { 
   position: absolute;
-  width: 180px;
-  top: 12px;
+  
+  top: 48px;
 }
 
 
