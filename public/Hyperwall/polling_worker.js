@@ -1,7 +1,7 @@
 function poll_conversations(callback_function){
   $.ajax({ 
     url: "../get_guid", dataType: "json",
-    data: {type: "conversation"},
+    data: {type: "Event"},
     complete:  setTimeout(poll_conversations, 5000),
     success: function(rcv_data){
       console.log("conversations_received");
@@ -11,7 +11,8 @@ function poll_conversations(callback_function){
 }
 
 self.addEventListener('message', function(e) {
-  console.log("worker started");
+  //console.log("worker started");
+  self.postMessage("worker started");
   poll_conversations(
     function(rcv_data){ 
       //console.log(rcv_data);
