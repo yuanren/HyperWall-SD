@@ -1,13 +1,10 @@
 /* General Styling*/
 html, body {
-  height: 100%;
-  margin: 0; padding: 0;
+  height: 100%; margin: 0; padding: 0;
   overflow: hidden;
   font-family: 'Open Sans', sans-serif;
 }
-
 @media print { html, body { height: auto; } }
-
 #map_canvas { height: 100%; width: 100%; }
 
 
@@ -22,7 +19,6 @@ html, body {
 }
 #tracked_user_list {
   left: 24px;
-
 }
 
 

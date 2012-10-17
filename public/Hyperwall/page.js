@@ -42,7 +42,11 @@ function initialize() {
     function(e){
       // Parse response data from worker
       var rcv_json = $.parseJSON(e.data);
-      console.log(rcv_json);
+      //console.log(rcv_json);
+      for(int i=0; i<rcv_json.GUIDs.length; ++i){
+        console.log(rcv_json.GUIDs[i]);
+      }
+    
     },
     false
   );

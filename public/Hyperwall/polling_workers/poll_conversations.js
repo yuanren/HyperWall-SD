@@ -6,8 +6,8 @@ function poll_conversations(timeout){
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
         setTimeout(poll_conversations(), timeout);  
-	  }
-	};
+	    }
+	  };
     xhr.open("GET","../../get_guid?type=Event",true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message); }
