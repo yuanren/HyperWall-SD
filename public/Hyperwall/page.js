@@ -100,9 +100,9 @@ function initialize() {
       //map.setZoom(17);
       info_window.open(map,marker5);
     //});
-*/
-  });
 
+  });
+*/
 
 
   
