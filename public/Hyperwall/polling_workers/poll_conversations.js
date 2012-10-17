@@ -14,6 +14,6 @@ function poll_conversations(timeout){
 }
 
 self.addEventListener('message', function(e) {
-  self.postMessage("worker started");
+  //self.postMessage("worker started");
   poll_conversations(e.data);
 }, false);
