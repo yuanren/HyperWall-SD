@@ -1,3 +1,3 @@
 self.addEventListener('message', function(e) {
-  self.postMessage(e.data);
+  self.postMessage("received: "+e.data);
 }, false);

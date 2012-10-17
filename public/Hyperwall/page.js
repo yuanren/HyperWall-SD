@@ -34,6 +34,7 @@ function initialize() {
   conversation_polling_worker.addEventListener('message', function(e) {
     console.log('Worker said: ', e.data);
   }, false);
+  worker.postMessage('Hello World'); 
 
 
   // Construct Google Map
