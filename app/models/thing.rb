@@ -1,4 +1,4 @@
-class Thing < ActiveResource::Base
+class Thing < ActiveRecord::Base
   self.table_name = 'Thing'
   self.primary_key = 'resourceId'
   attr_accessible :resourceId, :label
