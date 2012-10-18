@@ -14,6 +14,7 @@ html, body {
   background-color: #fff; opacity: 0.92;
   box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
 }
+.list header { margin-left: 6px; font-weight: 700;}
 #critical_list { 
   top: 48px;
 }
