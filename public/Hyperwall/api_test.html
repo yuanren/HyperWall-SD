@@ -25,17 +25,17 @@
         $("#btn_create_message").click(function() {
             sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } );
         });
-        /*
+        
         $("#btn_associate").click(function() {
           $.ajax({
-            type: 'GET', url: "../associate_guids",
-            data: { sourceGUIDS: $("#association_src").val(), destinationGUIDS: $("#association_des").val() }, dataType: 'json',
+            type: 'POST', url: "../associate_guids",
+            data: { objects: $("#association_objs").val()}, dataType: 'json',
             success: function(rcv_data){ 
               console.log(rcv_data);          
             }
           });
         });
-        */
+        
         //GET
         $("#btn_get_guid").click(function() {
           sd_get("guid", { type: $("#get_guid_type").val() } )
@@ -80,7 +80,7 @@
 
       <li>
         ASSOCIATE_GUIDS <br>
-        sourceGUID:<input id="association_src" type="text"> destinationGUID:<input id="association_des" type="text"> <button id="btn_associate">Associate</button>
+        objects:<input id="association_objs" type="text"> <button id="btn_associate">Associate</button>
       </li>
       
       <li>
