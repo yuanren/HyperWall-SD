@@ -10,7 +10,7 @@ function poll_conversations(){
         setTimeout(poll_conversations(), Timeout);
 	    }
 	  };
-    xhr.open("GET","../../get_guid?type=Conversation",true);
+    xhr.open("GET","../../get_guid?type=Event",true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message); setTimeout(poll_conversations(), Timeout); }
 }
