@@ -5,7 +5,7 @@ function poll_conversations(timeout){
       if (xhr.readyState == 4) {
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout(poll_conversations(), timeout);  
+        setTimeout(poll_conversations(timeout), timeout);  
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
