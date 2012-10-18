@@ -29,7 +29,7 @@
         $("#btn_associate").click(function() {
           $.ajax({
             type: 'POST', url: "../associate_guids",
-            data: { objects: $("#association_objs").val()}, dataType: 'json',
+            data: { objects: [$("#association_obj1").val(), $("#association_obj2").val()]}, dataType: 'json',
             success: function(rcv_data){ 
               console.log(rcv_data);          
             }
@@ -80,7 +80,7 @@
 
       <li>
         ASSOCIATE_GUIDS <br>
-        objects:<input id="association_objs" type="text"> <button id="btn_associate">Associate</button>
+        object1:<input id="association_obj1" type="text"> object2:<input id="association_obj2" type="text"> <button id="btn_associate">Associate</button>
       </li>
       
       <li>
