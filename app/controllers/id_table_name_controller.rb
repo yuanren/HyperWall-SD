@@ -182,7 +182,7 @@ class IdTableNameController < ApplicationController
           @text = @object.payload
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Conversation"
-          @object = Message.find(@id)
+          @object = Conversation.find(@id)
           @text = @object.label
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       end
