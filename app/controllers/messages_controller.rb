@@ -53,6 +53,7 @@ class MessagesController < ApplicationController
     @message.fromResourceId = params[:sender]
     @message.toResourceId = params[:recipient]
     @message.payload = params[:text]
+    @message.dateTime = Time.now
     respond_to do |format|
       if @message.save
         @idTableName = IdTableName.new
@@ -60,6 +61,9 @@ class MessagesController < ApplicationController
         @idTableName.tableName = "Message"
         @idTableName.version = 1
         @idTableName.save
+
+        @message.conversation.lastUpdated = @message.dateTime
+        @message.conversation.save
 
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         #format.json { render json: @message, status: :created, location: @message }

@@ -48,6 +48,7 @@ class ThingsController < ApplicationController
 
     @thing = Thing.new
     @thing.resourceId = @resource.resourceId
+    @thing.label = params[:label]
     respond_to do |format|
       if @thing.save
         @idTableName = IdTableName.new

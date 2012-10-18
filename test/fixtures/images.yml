@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  resourceId: MyString
+  label: MyString
+  binary: 
+
+two:
+  resourceId: MyString
+  label: MyString
+  binary: 

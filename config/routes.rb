@@ -1,4 +1,8 @@
 DMI::Application.routes.draw do
+  resources :immutable_associations
+
+  resources :images
+
   resources :places
 
   resources :messages
