@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>AssociationId:</b>
+  <%= @immutable_association.associationId %>
+</p>
+
+<p>
+  <b>ObjectId:</b>
+  <%= @immutable_association.objectId %>
+</p>
+
+
+<%= link_to 'Edit', edit_immutable_association_path(@immutable_association) %> |
+<%= link_to 'Back', immutable_associations_path %>

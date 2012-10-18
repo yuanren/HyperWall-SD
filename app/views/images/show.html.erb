@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Resourceid:</b>
+  <%= @image.resourceId %>
+</p>
+
+<p>
+  <b>Label:</b>
+  <%= @image.label %>
+</p>
+
+<p>
+  <b>Binary:</b>
+  <%= @image.binary %>
+</p>
+
+
+<%= link_to 'Edit', edit_image_path(@image) %> |
+<%= link_to 'Back', images_path %>

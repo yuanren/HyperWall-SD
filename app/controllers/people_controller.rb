@@ -48,6 +48,7 @@ class PeopleController < ApplicationController
 
     @person = Person.new
     @person.resourceId = @resource.resourceId
+    @person.label = params[:label]
     respond_to do |format|
       if @person.save
         @idTableName = IdTableName.new

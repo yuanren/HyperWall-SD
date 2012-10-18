@@ -1,0 +1,25 @@
+<%= form_for(@immutable_association) do |f| %>
+  <% if @immutable_association.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@immutable_association.errors.count, "error") %> prohibited this immutable_association from being saved:</h2>
+
+      <ul>
+      <% @immutable_association.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :associationId %><br />
+    <%= f.text_field :associationId %>
+  </div>
+  <div class="field">
+    <%= f.label :objectId %><br />
+    <%= f.text_field :objectId %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,5 +1,22 @@
 class IdTableNameController < ApplicationController
   def associate_guids
+    @association_id = UUIDTools::UUID.timestamp_create.to_s
+    @result = "Success"
+    params[:objects].each do |objectId|
+      @immutable_association = ImmutableAssociation.new
+      @immutable_association.associationId = @association_id
+      @immutable_association.objectId = objectId
+      if !@immutable_association.save
+        @result = "Fail"
+        break
+      end
+    end
+    respond_to do |format|
+      format.json { render json: {:result => @result} }
+    end
+  end
+
+  def associate_guids_old
     @sourceIdTableName = IdTableName.find(params[:sourceGUID])
     @sourceTableName = @sourceIdTableName.tableName
 
@@ -8,7 +25,16 @@ class IdTableNameController < ApplicationController
 
     @result = "fail"
     if ((@sourceTableName == "Event" and @destTableName == "Person") or
-        (@sourceTableName == "Person" and @destTableName == "Event"))
+        (@sourceTableName == "Person" and @destTableName == "Event") or
+        (@sourceTableName == "Event" and @destTableName == "Conversation") or
+        (@sourceTableName == "Conversation" and @destTableName == "Event") or
+        (@sourceTableName == "Event" and @destTableName == "Message") or
+        (@sourceTableName == "Message" and @destTableName == "Event") or
+        (@sourceTableName == "Event" and @destTableName == "Thing") or
+        (@sourceTableName == "Thing" and @destTableName == "Event") or
+        (@sourceTableName == "Event" and @destTableName == "Image") or
+        (@sourceTableName == "Image" and @destTableName == "Event")
+      )
       @source = Event.find(params[:sourceGUID])
       @dest = Person.find(params[:destinationGUID])
       @eventResource = EventResource.new
@@ -27,8 +53,18 @@ class IdTableNameController < ApplicationController
       if @eventPlace.save
         @result = "success"
       end
-    elsif ((@sourceTableName == "Resource" and @destTableName == "Place") or
-        (@sourceTableName == "Place" and @destTableName == "Resource"))
+    elsif (
+        (@sourceTableName == "Place" and @destTableName == "Person") or
+        (@sourceTableName == "Person" and @destTableName == "Place") or
+        (@sourceTableName == "Place" and @destTableName == "Conversation") or
+        (@sourceTableName == "Conversation" and @destTableName == "Place") or
+        (@sourceTableName == "Place" and @destTableName == "Message") or
+        (@sourceTableName == "Message" and @destTableName == "Place") or
+        (@sourceTableName == "Place" and @destTableName == "Thing") or
+        (@sourceTableName == "Thing" and @destTableName == "Place") or
+        (@sourceTableName == "Place" and @destTableName == "Image") or
+        (@sourceTableName == "Image" and @destTableName == "Place")
+        )
       @source = Resource.find(params[:sourceGUID])
       @dest = Place.find(params[:destinationGUID])
       @resourcePlace = ResourcePlace.new
@@ -55,29 +91,35 @@ class IdTableNameController < ApplicationController
 
     @id = params[:GUID]
     @idTableName = IdTableName.find(@id)
-
     @tableName = @idTableName.tableName
     #TODO: check if tableName is valid
     @object = @tableName.constantize.find(@id)
+    @associatedObjectIds = Array.new
     if params[:depth] == 1
-      @associations = Array.new
       @type = params[:type]
-      if @tableName == "Event" and (@type.nil? or @type == "Person")
-        @associations << EventResource.find(:all, :conditions => ['eventId = ?', "#{@id}"])
-      elsif @tableName == "Person" and (@type.nil? or @type == "Event")
-        @associations << EventResource.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
-      elsif @tableName == "Event" and (@type.nil? or type == "Place")
-        @associations << EventPlace.find(:all, :conditions => ['eventId = ?', "#{@id}"])
-      elsif @tableName == "Place" and (@type.nil? or type == "Event")
-        @associations << EventPlace.find(:all, :conditions => ['placeId = ?', "#{@id}"])
-      elsif @tableName == "Resource" and (@type.nil? or type == "Place")
-        @associations << ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
-      elsif @tableName == "Place" and (@type.nil? or type == "Resource")
-        @associations << ResourcePlace.find(:all, :conditions => ['placeId = ?', "#{@id}"])
+      # 1. get association ids
+      @hash = Hash.new
+      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', "#{@id}"])
+      @associations.each do |association|
+        @hash[association.associationId] = ""
+      end
+      @association_ids = @hash.keys
+      # 2. for each association get object ids
+      @association_ids.each do |association_id|
+        @associations = ImmutableAssociation.find(:all, :conditions => ['associationId = ?', "#{association_id}"])
+        @associations.each do |association|
+          if @type.nil?
+            @associatedObjectIds << association.objectId
+          else
+            if @type != idTableName.find(association.objectId).tableName
+              @associatedObjectIds << association.objectId
+            end
+          end
+        end
       end
     end
     respond_to do |format|
-      format.json { render :json => {:type => @tableName, :object => @object, :associated_guids => @associations}}
+      format.json { render :json => {:type => @tableName, :object => @object, :associated_guids => @associatedObjectIds}}
     end
   end
 

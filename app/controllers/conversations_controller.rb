@@ -41,7 +41,7 @@ class ConversationsController < ApplicationController
   # POST /conversations.json
   def create
     @resource = Resource.new
-    @resource.label = params[:conversation][:label]
+    @resource.label = params[:label]
     @resource.type = "Conversation"
     @resource.version = 1
     @resource.save
@@ -53,6 +53,8 @@ class ConversationsController < ApplicationController
 
     @conversation = Conversation.new
     @conversation.resourceId = @resource.resourceId
+    @conversation.label = params[:label]
+    @conversation.lastUpdated = Time.now
     respond_to do |format|
       if @conversation.save
         @idTableName = IdTableName.new

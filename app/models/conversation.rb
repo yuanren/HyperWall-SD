@@ -2,7 +2,7 @@ class Conversation < ActiveRecord::Base
   self.table_name = 'Conversation'
   self.primary_key = 'resourceId'
 
-  attr_accessible :resourceId
+  attr_accessible :resourceId, :label, :lastUpdated
   validates_presence_of :resourceId
   validates_uniqueness_of :resourceId
 

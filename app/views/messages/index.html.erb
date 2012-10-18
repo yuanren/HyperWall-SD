@@ -2,11 +2,12 @@
 
 <table>
   <tr>
-    <th>Resourceid</th>
-    <th>Conversationresourceid</th>
-    <th>Fromresourceid</th>
+    <th>ResourceId</th>
+    <th>ConversationResourceId</th>
+    <th>FromResourceId</th>
     <th>Payload</th>
-    <th>Toresourceid</th>
+    <th>ToResourceId</th>
+    <th>DateTime</th>
     <th></th>
     <th></th>
     <th></th>
@@ -19,6 +20,7 @@
     <td><%= message.fromResourceId %></td>
     <td><%= message.payload %></td>
     <td><%= message.toResourceId %></td>
+    <td><%= message.dateTime %></td>
     <td><%= link_to 'Show', message %></td>
     <td><%= link_to 'Edit', edit_message_path(message) %></td>
     <td><%= link_to 'Destroy', message, method: :delete, data: { confirm: 'Are you sure?' } %></td>
