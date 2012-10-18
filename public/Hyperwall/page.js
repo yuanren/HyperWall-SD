@@ -36,7 +36,7 @@ function initialize() {
   );
 
   // Start conversation polling worker thread
-  var conversation_polling_worker = new Worker('polling_workers/poll_conversations.js');
+  var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
   conversation_polling_worker.addEventListener(
     'message',
     function(e){
@@ -53,11 +53,11 @@ function initialize() {
     },
     false
   );
-  conversation_polling_worker.postMessage(CONVERSATION_POLL_INTERVAL); 
+  conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL}); 
 
 
 
-
+  gm_create_marker("test", [37.410425,-122.059754]);
 
 
 
