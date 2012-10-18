@@ -186,7 +186,7 @@ class IdTableNameController < ApplicationController
           @text = @object.label
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       end
-      if @text =~ /#{params[:valueRange]}/
+      if @text.nil? or params[:valueRange].nil? or @text =~ /#{params[:valueRange]}/
         if (@minLat != -1 or @minLon != -1) and !@place.nil?
           @spatialThing = SpatialThing.find(@place.placeId)
           if (@minLat == -1 or (@minLat..@maxLat).cover?(@spatialThing.latitude)) and
