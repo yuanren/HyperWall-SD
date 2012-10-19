@@ -5,10 +5,9 @@ function poll_conversation_guids(){
     var xhr=new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
-        if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); 
-        setTimeout(poll_conversation_guids(), 5000);}
+        if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        
+        setTimeout( function(){poll_conversation_guids()}, Poll_Timeout);
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
@@ -18,7 +17,7 @@ function poll_conversation_guids(){
 
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
-  //Poll_Timeout = e.data.interval;
+  Poll_Timeout = e.data.interval;
   switch(e.data.type){
     case "Conversation_GUIDs":
       poll_conversation_guids();
