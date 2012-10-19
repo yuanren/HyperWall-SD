@@ -120,6 +120,7 @@ function initialize() {
       test_info_str += '</div>';
     }
   );
+  console.log(test_info_str);
 
   CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
   google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
