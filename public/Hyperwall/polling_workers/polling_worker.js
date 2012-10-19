@@ -25,7 +25,7 @@ function poll_conversation(guid){
         setTimeout( function(){ poll_conversation(guid) }, Poll_Timeout);
       }
     };
-    xhr.open("GET","../../get_properties?depth=0&guid="+guid,true);
+    xhr.open("GET","../../get_properties?guid="+guid+"&depth=0",true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
