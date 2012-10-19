@@ -66,6 +66,9 @@ html, body {
 }
 .dialog_text_title { font-size: 12px; }
 
+.more_info_btn { color: #9dbe65;; }
+
+
 /* Inmap Dialog Styling*/ 
 /*
 .inmap_dialog {
