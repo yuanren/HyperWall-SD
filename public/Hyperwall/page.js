@@ -27,7 +27,7 @@ function polling_conversation_guid(guid){
       // Receive Conversation properties from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      CONVERSATIONS_HASH[guid] = rcv_json.object.lastupdated;
+      CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
       console.log(CONVERSATIONS_HASH[guid]);
         //for(var i=0; i<rcv_json.GUIDs.length; ++i){
               //  if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
