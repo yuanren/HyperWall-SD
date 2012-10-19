@@ -128,9 +128,14 @@ function initialize() {
         MAP.setZoom(17);
         CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
       });
+
+
     }
   );
   
+  $('body').on("click", ".more_info_btn", function(){
+    alert("test");
+  });  
 
     
 
