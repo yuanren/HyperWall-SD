@@ -169,7 +169,13 @@ class IdTableNameController < ApplicationController
       @maxTime = 0
     else
       @minTime = params[:timeRange][0]
+      if (@minTime == "0")
+        @minTime = 0
+      end
       @maxTime = params[:timeRange][1]
+      if (@maxTime == "0")
+        @maxTime = 0
+      end
     end
 
     @idTableNames = IdTableName.all
