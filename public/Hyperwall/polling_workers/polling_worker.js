@@ -20,7 +20,7 @@ self.addEventListener('message', function(e) {
   Timeout = e.data.interval;
   switch(e.data.type){
     case "Conversation_GUIDs":
-      poll_conversations_guids();
+      poll_conversation_guids();
       break;
     case "Conversation":
       poll_conversation(e.data.guid);
