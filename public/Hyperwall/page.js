@@ -67,7 +67,7 @@ function initialize() {
             },
             false
           );
-          conversation_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_POLL_INTERVAL, GUID: rcv_json.GUIDs[i]}); 
+          conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: rcv_json.GUIDs[i]}); 
         }        
       }
       
