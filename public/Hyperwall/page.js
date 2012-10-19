@@ -53,7 +53,7 @@ function initialize() {
     },
     false
   );
-  conversation_polling_worker.postMessage( {type: "Conversatio", interval: CONVERSATION_POLL_INTERVAL}); 
+  conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL}); 
 
 
 
