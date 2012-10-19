@@ -17,6 +17,6 @@ function poll_conversations(){
 
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
-  Timeout = e.data.interval;
+  //Timeout = e.data.interval;
   if(e.data.type == "Conversation"){ poll_conversations(); }
 }, false);

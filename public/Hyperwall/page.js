@@ -57,7 +57,7 @@ function initialize() {
 
 
 
-  gm_create_marker("test", [37.410425,-122.059754]);
+  //gm_create_marker("test", [37.410425,-122.059754]);
 
 
 
