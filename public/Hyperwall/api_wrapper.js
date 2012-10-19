@@ -16,7 +16,6 @@ function sd_get (type, get_data, callback_function){
 }
  
 // Shorthanded Google Map API calls
-
 function gm_create_marker(type, location) {
   //switch(type)
   console.log(location[0]);

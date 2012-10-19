@@ -17,6 +17,14 @@ var MAP_MARKERS_HASH = new Object();
 
 
 
+function add_to_critical_list(msg){
+ 
+  $("#critical_list header").after(
+    '<div class="critical_msg">'+msg+'</div>'
+  );
+
+}
+
 
 function polling_conversation_guid(guid){  
   // Create polling workers for one Conversation
@@ -28,8 +36,11 @@ function polling_conversation_guid(guid){
       // Receive Conversation properties from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
-      console.log(CONVERSATIONS_HASH[guid]);
+      if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated){
+        console.log("new or updated conversation: "+guid);
+        CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
+        add_to_critical_list(rcv_json.object.label)
+      }
     },
     false
   );
