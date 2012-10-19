@@ -13,6 +13,8 @@ var CONVERSATION_POLLING_WORKERS = new Array();
 
 var MAP_MARKERS_HASH = new Object();
 
+function 
+
 
 function initialize() {
   // Register Hyperwall on SDB
