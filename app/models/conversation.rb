@@ -6,5 +6,5 @@ class Conversation < ActiveRecord::Base
   validates_presence_of :resourceId
   validates_uniqueness_of :resourceId
 
-  has_many :message
+  has_many :message, :foreign_key => 'conversationResourceId'
 end

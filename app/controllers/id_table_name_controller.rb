@@ -90,24 +90,31 @@ class IdTableNameController < ApplicationController
     #object	 the object of the given GUID.	 A JSON tree structure
 
     @id = params[:GUID]
+    @type = params[:type]
     @idTableName = IdTableName.find(@id)
     @tableName = @idTableName.tableName
     #TODO: check if tableName is valid
     @object = @tableName.constantize.find(@id)
     @associatedObjects = Array.new
-    if !params[:depth].nil? and Integer(params[:depth]) >= 1
-      @type = params[:type]
-      # 0. if object is a message, include its conversation in result
+    if params[:depth].nil?
+      @depth = 0
+    else
+      @depth = Integer(params[:depth])
+    end
+    if @depth >= 1
+      # if object is a message, include its conversation in result and vice versa
+      if @tableName == "Conversation" and @type.nil? or @type == "Message"
+        @associatedObjects << @object.message
+        @depth -= 1
+      end
       if @tableName == "Message" and @type.nil? or @type == "Conversation"
         @associatedObjects << @object.conversation
-      end
-      # 1. get associations
-      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', @id])
-      if @type.nil? or @type == "Association"
-        @associatedObjects << @associations
+        @depth -= 1
       end
     end
-    if !params[:depth].nil? and Integer(params[:depth]) == 2
+    if @depth >= 1
+      # 1. get associations
+      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', @id])
       # 2. for each association get objects
       @associations.each do |association|
         @hash = Hash.new

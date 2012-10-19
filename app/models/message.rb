@@ -3,6 +3,7 @@ class Message < ActiveRecord::Base
   self.primary_key = 'resourceId'
 
   attr_accessible :conversationResourceId, :fromResourceId, :payload, :toResourceId, :dateTime
+  # TODO - :severity, :triage
   validates_presence_of :resourceId
   validates_uniqueness_of :resourceId
 
