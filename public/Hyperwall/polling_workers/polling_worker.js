@@ -7,10 +7,25 @@ function poll_conversation_guids(){
       if (xhr.readyState == 4) {
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout( function(){poll_conversation_guids()}, Poll_Timeout);
+        setTimeout( function(){ poll_conversation_guids() }, Poll_Timeout);
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
+    xhr.send();
+  } catch(e){ postMessage("ERROR:"+e.message);}
+}
+
+function poll_conversation(guid){
+  try {
+    var xhr=new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
+        else { throw  xhr.status+xhr.responseText; }
+        setTimeout( function(){ poll_conversation(guid) }, Poll_Timeout);
+      }
+    };
+    xhr.open("GET","../../get_properties?guid="+guid,true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
@@ -23,7 +38,7 @@ self.addEventListener('message', function(e) {
       poll_conversation_guids();
       break;
     case "Conversation":
-      poll_conversation(e.data.guid);
+      poll_conversation(e.data.GUID);
       break;
   }
   //if(e.data.type == "Conversation_GUIDs"){ poll_conversations(); }

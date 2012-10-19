@@ -9,7 +9,7 @@ var SPECIAL_USERS = new Array();
 var CONVERSATIONS_HASH = new Object();
 var EVENTS_HASH = new Object();
 
-var CONERSATION_POLLING_WORKERS = new Array();
+var CONVERSATION_POLLING_WORKERS = new Array();
 
 var MAP_MARKERS_HASH = new Object();
 
@@ -50,7 +50,24 @@ function initialize() {
         if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
           console.log("Received new conversation: "+rcv_json.GUIDs[i])
           CONVERSATIONS_HASH[rcv_json.GUIDs[i]] = true;
-          //var 
+          
+          // Create polling workers for one Conversation
+          var  conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
+          conversation_polling_worker.addEventListener(
+            'message',
+            function(e){
+              // Receive Conversation properties from Server
+              var rcv_json = $.parseJSON(e.data);
+              console.log(rcv_json);
+              //for(var i=0; i<rcv_json.GUIDs.length; ++i){
+              //  if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
+              //    console.log("Received new conversation: "+rcv_json.GUIDs[i])
+              //  }        
+              //}
+            },
+            false
+          );
+          conversation_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_POLL_INTERVAL, GUID: rcv_json.GUIDs[i]}); 
         }        
       }
       
