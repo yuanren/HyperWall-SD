@@ -95,7 +95,7 @@ class IdTableNameController < ApplicationController
     #TODO: check if tableName is valid
     @object = @tableName.constantize.find(@id)
     @associatedObjects = Array.new
-    if !params[:depth].nil? and params[:depth] >= 1
+    if !params[:depth].nil? and Integer(params[:depth]) >= 1
       @type = params[:type]
       # 0. if object is a message, include its conversation in result
       if @tableName == "Message" and @type.nil? or @type == "Conversation"
@@ -107,7 +107,7 @@ class IdTableNameController < ApplicationController
         @associatedObjects << @associations
       end
     end
-    if !params[:depth].nil? and params[:depth] == 2
+    if !params[:depth].nil? and Integer(params[:depth]) == 2
       # 2. for each association get objects
       @associations.each do |association|
         @hash = Hash.new
