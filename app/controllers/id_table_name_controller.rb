@@ -94,32 +94,38 @@ class IdTableNameController < ApplicationController
     @tableName = @idTableName.tableName
     #TODO: check if tableName is valid
     @object = @tableName.constantize.find(@id)
-    @associatedObjectIds = Array.new
-    if params[:depth] == 1
+    @associatedObjects = Array.new
+    if !params[:depth].nil? and params[:depth] >= 1
       @type = params[:type]
-      # 1. get association ids
-      @hash = Hash.new
-      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', "#{@id}"])
-      @associations.each do |association|
-        @hash[association.associationId] = ""
+      # 0. if object is a message, include its conversation in result
+      if @tableName == "Message" and @type.nil? or @type == "Conversation"
+        @associatedObjects << @object.conversation
       end
-      @association_ids = @hash.keys
-      # 2. for each association get object ids
-      @association_ids.each do |association_id|
-        @associations = ImmutableAssociation.find(:all, :conditions => ['associationId = ?', "#{association_id}"])
-        @associations.each do |association|
-          if @type.nil?
-            @associatedObjectIds << association.objectId
-          else
-            if @type != idTableName.find(association.objectId).tableName
-              @associatedObjectIds << association.objectId
-            end
+      # 1. get associations
+      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', @id])
+      if @type.nil? or @type == "Association"
+        @associatedObjects << @associations
+      end
+    end
+    if !params[:depth].nil? and params[:depth] == 2
+      # 2. for each association get objects
+      @associations.each do |association|
+        @hash = Hash.new
+        @hash["association"] = association
+        @associatedObjectsPerAssociation = Array.new
+        @objectIds = ImmutableAssociation.find_by_sql("select objectId from ImmutableAssociation where associationId = '#{association.associationId}'")
+        @objectIds.each do |objectId|
+          @associatedTableName = idTableName.find(objectId).tableName
+          if @type.nil? or @type == @associatedTableName
+            @associatedObjectsPerAssociation << @associatedTableName.constantize.find(objectId)
           end
         end
+        @hash["objects"] = @associatedObjectsPerAssociation
+        @associatedObjects << @hash
       end
     end
     respond_to do |format|
-      format.json { render :json => {:type => @tableName, :object => @object, :associated_guids => @associatedObjectIds}}
+      format.json { render :json => {:type => @tableName, :object => @object, :associated_objects => @associatedObjects}}
     end
   end
 
@@ -133,7 +139,7 @@ class IdTableNameController < ApplicationController
     #Expected Response of /GET_GUID
     #Reponse Parameters	Description	Example
     #type    type of the given GUID
-    #GUIDs	 an array of global resource IDs matching selection criteria.	 A JSON tree structure
+    #GUIDs	 an array of global resource IDs matching selection criteria.
 
     @type = params[:type]
     if params[:latRange].nil?
@@ -174,11 +180,19 @@ class IdTableNameController < ApplicationController
           @object = Resource.find(@id)
           @text = @object.label
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Image"
+          @object = Message.find(@id)
+          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @text = @object.label
+          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Place"
           @place = Place.find(@id)
           @text = @place.label
         when "Message"
           @object = Message.find(@id)
+          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
           @text = @object.payload
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Conversation"
@@ -199,7 +213,7 @@ class IdTableNameController < ApplicationController
       end
     end
     respond_to do |format|
-      format.json { render :json => {:GUIDs => @resultGuids}, :callback => params[:callback] }
+      format.json { render :json => {:GUIDs => @resultGuids}}
     end
   end
 end
