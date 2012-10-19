@@ -83,7 +83,7 @@ class IdTableNameController < ApplicationController
     #Request Parameters	Description	Example
     #GUID	 a GUID of an object	 “ABCD1234”
     #type (optional)  only get objects of specified type
-    #depth (optional)	 number of association “hops” to follow (default 0, maximum is 1)	 A JSON tree structure
+    #depth (optional)	 number of association “hops” to follow (default 0, maximum is 2)	 A JSON tree structure
     #Expected Response of /GET_PROPERTIES
     #Reponse Parameters	Description	Example
     #type	 the type of the given GUID	 EVENT
@@ -120,11 +120,12 @@ class IdTableNameController < ApplicationController
         @hash = Hash.new
         @hash["association"] = association
         @associatedObjectsPerAssociation = Array.new
-        @objectIds = ImmutableAssociation.find_by_sql("select objectId from ImmutableAssociation where associationId = '#{association.associationId}'")
-        @objectIds.each do |objectId|
-          @associatedTableName = IdTableName.find(objectId).tableName
+        @objectAssociations = ImmutableAssociation.find(:all, :conditions => ['associationId = ?', "#{association.associationId}"])
+        @objectAssociations.each do |objectAssociation|
+          @objectId = objectAssociation.objectId
+          @associatedTableName = IdTableName.find(:all, :conditions => ['id = ?', "#{@objectId}"])[0].tableName
           if @type.nil? or @type == @associatedTableName
-            @associatedObjectsPerAssociation << [@associatedTableName, @associatedTableName.constantize.find(objectId)]
+            @associatedObjectsPerAssociation << [@associatedTableName, @associatedTableName.constantize.find(@objectId)]
           end
         end
         @hash["objects"] = @associatedObjectsPerAssociation
