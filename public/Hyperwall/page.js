@@ -118,7 +118,7 @@ function initialize() {
       });
 
       test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
-      '<button class=".more_info_btn">More Info</button> </div></div>';
+      '<button class="more_info_btn">More Info</button> </div></div>';
       
   
       
