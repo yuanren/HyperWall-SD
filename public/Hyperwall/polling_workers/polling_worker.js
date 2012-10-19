@@ -1,4 +1,4 @@
-var Timeout = 3000; //Default timeout at 3000ms
+//var Timeout = 3000; //Default timeout at 3000ms
 
 function poll_conversations(){
   try {
@@ -12,7 +12,7 @@ function poll_conversations(){
 	  };
     xhr.open("GET","../../get_guid?type=Event",true);
     xhr.send();
-  } catch(e){ postMessage("ERROR:"+e.message); setTimeout(poll_conversations(), 5000); }
+  } catch(e){ postMessage("ERROR:"+e.message); }
 }
 
 self.addEventListener('message', function(e) {
