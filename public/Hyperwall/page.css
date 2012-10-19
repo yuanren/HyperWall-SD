@@ -62,7 +62,7 @@ html, body {
   vertical-align: top;
 }
 .dialog_text {
-  text-size: 14px;  
+  font-size: 14px; font-weight: 700;  
 }
 .dialog_text_title { font-size: 12px; }
 
