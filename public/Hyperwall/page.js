@@ -38,7 +38,7 @@ function polling_conversation_guid(guid){
       if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated){
         console.log("new or updated conversation: "+guid);
         CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
-        add_to_critical_list("<b>Conversation</b>: "+rcv_json.object.label);
+        add_to_critical_list("<b>Conversation</b>:<br> "+rcv_json.object.label);
       }
     },
     false
@@ -134,7 +134,11 @@ function initialize() {
   );
   
   $('body').on("click", ".more_info_btn", function(){
-    alert("test");
+    alert($(".response_text")[0].val());
+    //sd_create(
+    //  "messages",
+    //  { text: $(".response_text")[0].val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", Conversation: test_guid }
+    //);
   });  
 
     
