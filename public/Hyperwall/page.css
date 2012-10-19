@@ -10,18 +10,18 @@ html, body {
 
 .list { 
   position: absolute;
-  width: 180px; min-height: 100px;
+  width: 200px; min-height: 100px;
   background-color: #fff; opacity: 0.92;
   box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
 }
-.list header { margin-left: 6px; font-weight: 700;}
+.list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
 
 #critical_list { 
-  top: 48px; max-height: 480px;
+  top: 48px; max-height: 480px; overflow: auto;
 }
 .critical_msg {
-  width: 95%;
-  box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
+  margin: 6px; padding: 0px 2px;
+  box-shadow: 0px 1px 3px 1px #aaa; border-radius: 2px;
 }
 
 #tracked_user_list {
