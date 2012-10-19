@@ -17,6 +17,7 @@ var MAP_MARKERS_HASH = new Object();
 
 
 
+
 function polling_conversation_guid(guid){  
   // Create polling workers for one Conversation
   var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
@@ -29,11 +30,6 @@ function polling_conversation_guid(guid){
       console.log(rcv_json);
       CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
       console.log(CONVERSATIONS_HASH[guid]);
-        //for(var i=0; i<rcv_json.GUIDs.length; ++i){
-              //  if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
-              //    console.log("Received new conversation: "+rcv_json.GUIDs[i])
-              //  }        
-              //}
     },
     false
   );
@@ -81,7 +77,6 @@ function initialize() {
           polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
-      
     },
     false
   );
@@ -89,7 +84,7 @@ function initialize() {
 
 
 
-  //gm_create_marker("test", [37.410425,-122.059754]);
+  gm_create_marker("test", [37.410425,-122.059754]);
 
 
 
