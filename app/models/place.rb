@@ -2,7 +2,7 @@ class Place < ActiveRecord::Base
   self.table_name = 'Place'
   self.primary_key = 'placeId'
 
-  attr_accessible :placeId, :version, :label
+  attr_accessible :placeId, :version, :label, :latitude, :longitude
 
   before_validation(:on => :create) do
     self.placeId = UUIDTools::UUID.timestamp_create.to_s

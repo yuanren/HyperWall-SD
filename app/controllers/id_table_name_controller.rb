@@ -104,12 +104,12 @@ class IdTableNameController < ApplicationController
     if @depth >= 1
       # if object is a message, include its conversation in result and vice versa
       if @tableName == "Conversation" and @type.nil? or @type == "Message"
-        @associatedObjects << @object.message
+        @associatedObjects << ["Message", @object.message]
+        # association from conversation to message is considered as one hop
         @depth -= 1
       end
       if @tableName == "Message" and @type.nil? or @type == "Conversation"
-        @associatedObjects << @object.conversation
-        @depth -= 1
+        @associatedObjects << ["Conversation", @object.conversation]
       end
     end
     if @depth >= 1
@@ -122,9 +122,9 @@ class IdTableNameController < ApplicationController
         @associatedObjectsPerAssociation = Array.new
         @objectIds = ImmutableAssociation.find_by_sql("select objectId from ImmutableAssociation where associationId = '#{association.associationId}'")
         @objectIds.each do |objectId|
-          @associatedTableName = idTableName.find(objectId).tableName
+          @associatedTableName = IdTableName.find(objectId).tableName
           if @type.nil? or @type == @associatedTableName
-            @associatedObjectsPerAssociation << @associatedTableName.constantize.find(objectId)
+            @associatedObjectsPerAssociation << [@associatedTableName, @associatedTableName.constantize.find(objectId)]
           end
         end
         @hash["objects"] = @associatedObjectsPerAssociation
@@ -209,9 +209,8 @@ class IdTableNameController < ApplicationController
       end
       if @text.nil? or params[:valueRange].nil? or @text =~ /#{params[:valueRange]}/
         if (@minLat != -1 or @minLon != -1) and !@place.nil?
-          @spatialThing = SpatialThing.find(@place.placeId)
-          if (@minLat == -1 or (@minLat..@maxLat).cover?(@spatialThing.latitude)) and
-              (@minLon == -1 or (@minLon..@maxLon).cover?(@spatialThing.longitude))
+          if (@minLat == -1 or (@minLat..@maxLat).cover?(@place.latitude)) and
+              (@minLon == -1 or (@minLon..@maxLon).cover?(@place.longitude))
             @resultGuids << @id
           end
         else

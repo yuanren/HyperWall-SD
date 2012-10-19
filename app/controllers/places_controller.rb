@@ -42,6 +42,8 @@ class PlacesController < ApplicationController
   def create
     @place = Place.new
     @place.label = params[:label]
+    @place.latitude = params[:latitude]
+    @place.longitude = params[:longitude]
     @place.version = 1
     respond_to do |format|
       if @place.save
