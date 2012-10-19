@@ -7,12 +7,12 @@ function poll_conversation_guids(){
       if (xhr.readyState == 4) {
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout(poll_conversations_guids(), Poll_Timeout);
+        setTimeout(poll_conversation_guids(), Poll_Timeout);
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
     xhr.send();
-  } catch(e){ postMessage("ERROR:"+e.message); setTimeout(poll_conversations_guids(), Poll_Timeout);}
+  } catch(e){ postMessage("ERROR:"+e.message); setTimeout(poll_conversation_guids(), Poll_Timeout);}
 }
 
 self.addEventListener('message', function(e) {
