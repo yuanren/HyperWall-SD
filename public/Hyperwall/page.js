@@ -107,7 +107,7 @@ function initialize() {
         '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
 
         '<div class="dialog_pics">'+
-        '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">John</a> @ MM:SS</div>'+
+        '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
         '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
 
         '<div class="dialog_texts">';
@@ -117,9 +117,10 @@ function initialize() {
         this.dateTime+'</div><div class="dialog_text">'+this.payload+'</div>';
       });
 
-      test_info_str += '</div>';
+      test_info_str += '<input type="text" class="response_text" style="width: 100% ></div>';
+      
   
-      console.log(test_info_str);
+      
 
       CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
       google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
