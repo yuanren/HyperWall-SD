@@ -129,16 +129,18 @@ function initialize() {
         CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
       });
 
+      $(".inmap_dialog").parent().parent().parent().css('box-shadow', '1px 1px 10px 5px #c42c2b');
+
 
     }
   );
   
   $('body').on("click", ".more_info_btn", function(){
-    alert($(".response_text").val());
-    //sd_create(
-    //  "messages",
-    //  { text: $(".response_text")[0].val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", Conversation: test_guid }
-    //);
+    //alert($(".response_text").val());
+    sd_create(
+      "messages",
+      { text: $(".response_text")[0].val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", Conversation: test_guid }
+    );
   });  
 
     
