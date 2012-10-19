@@ -134,7 +134,7 @@ function initialize() {
   );
   
   $('body').on("click", ".more_info_btn", function(){
-    alert($(".response_text")[0].val());
+    alert($(".response_text").val());
     //sd_create(
     //  "messages",
     //  { text: $(".response_text")[0].val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", Conversation: test_guid }
