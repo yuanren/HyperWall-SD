@@ -164,12 +164,12 @@ class IdTableNameController < ApplicationController
       @minLon = params[:lonRange][0]
       @maxLon = params[:lonRange][1]
     end
-    if params[:dateRange].nil?
+    if params[:timeRange].nil?
       @minTime = 0
       @maxTime = 0
     else
-      @minTime = params[:dateRange][0]
-      @maxTime = params[:dateRange][1]
+      @minTime = params[:timeRange][0]
+      @maxTime = params[:timeRange][1]
     end
 
     @idTableNames = IdTableName.all
@@ -222,5 +222,9 @@ class IdTableNameController < ApplicationController
     respond_to do |format|
       format.json { render :json => {:GUIDs => @resultGuids}}
     end
+  end
+
+  def search_in_conversation
+
   end
 end
