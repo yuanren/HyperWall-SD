@@ -31,6 +31,7 @@ html, body {
 
 /* Inmap Dialog Styling*/ 
 .inmap_dialog {  width: 480px; }
+.inmap_dialog hr { margin-bottom: 2px;}
 .dialog_title {
   margin: 0px 0px 6px 0px;
   font-size: 28px;
@@ -45,8 +46,11 @@ html, body {
   border-radius: 2px;
 }
 .dialog_pic_title {
+  color: #fff;
   position: absolute;
+  background-color: #6a7062;
 }
+.dialog_pic_user, .dialog_text_user { font-weight: 700; color: #9dbe65; }
 
 .dialog_texts {
   margin-left: 6px;
@@ -55,7 +59,7 @@ html, body {
   vertical-align: top;
 }
 
-.dialog_text_title { font-size: 10px; }
+.dialog_text_title { font-size: 12px; }
 
 /* Inmap Dialog Styling*/ 
 /*
