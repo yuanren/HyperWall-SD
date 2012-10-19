@@ -5,9 +5,10 @@ function poll_conversation_guids(){
     var xhr=new XMLHttpRequest();
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4) {
-        if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
+        if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); 
+        setTimeout(poll_conversation_guids(), 5000);}
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout(poll_conversation_guids(), 5000);
+        
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
