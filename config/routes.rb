@@ -23,6 +23,8 @@ DMI::Application.routes.draw do
 
   match 'associate_guids' => 'IdTableName#associate_guids'
 
+  match 'get_objects' => 'IdTableName#get_objects'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

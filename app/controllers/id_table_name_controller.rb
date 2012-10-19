@@ -146,7 +146,6 @@ class IdTableNameController < ApplicationController
     #timeRange (optional)	 the range of the datetime of the object, use 0 to present it as not specified	 [2012-03-21 18:56:21, 2012-03-21 20:57:55] or [2012-03-21 18:56:21, 0]
     #Expected Response of /GET_GUID
     #Reponse Parameters	Description	Example
-    #type    type of the given GUID
     #GUIDs	 an array of global resource IDs matching selection criteria.
 
     @type = params[:type]
@@ -195,7 +194,7 @@ class IdTableNameController < ApplicationController
           @text = @object.label
           @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Image"
-          @object = Message.find(@id)
+          @object = Image.find(@id)
           next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
               (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
           @text = @object.label
@@ -227,6 +226,98 @@ class IdTableNameController < ApplicationController
     end
     respond_to do |format|
       format.json { render :json => {:GUIDs => @resultGuids}}
+    end
+  end
+
+  def get_objects
+    #Request Parameters	Description	Example
+    #Type (optional)       only get GUID of specified types
+    #ValueRange (optional)	 regular expression	 “[Ff][Ii][Rr][Ee]”
+    #latRange (optional)	 the range of the latitude of the object if applicable	 [37.410333, 37.920211]
+    #lonRange (optional)	 the range of the longitude of the object if applicable	 [-122.05876, -123.00219]
+    #timeRange (optional)	 the range of the datetime of the object, use 0 to present it as not specified	 [2012-03-21 18:56:21, 2012-03-21 20:57:55] or [2012-03-21 18:56:21, 0]
+    #Expected Response of /get_objects
+    #Reponse Parameters	Description	Example
+    #GUIDs	 an array of objects matching selection criteria.
+
+    @type = params[:type]
+    if params[:latRange].nil?
+      @minLat = -1
+      @maxLat = -1
+    else
+      @minLat = params[:latRange][0]
+      @maxLat = params[:latRange][1]
+    end
+    if params[:lonRange].nil?
+      @minLon = -1
+      @maxLon = -1
+    else
+      @minLon = params[:lonRange][0]
+      @maxLon = params[:lonRange][1]
+    end
+    if params[:timeRange].nil?
+      @minTime = 0
+      @maxTime = 0
+    else
+      @minTime = params[:timeRange][0]
+      if (@minTime == "0")
+        @minTime = 0
+      end
+      @maxTime = params[:timeRange][1]
+      if (@maxTime == "0")
+        @maxTime = 0
+      end
+    end
+
+    @idTableNames = IdTableName.all
+    @resultObjects = Array.new
+    @idTableNames.each do |idTableName|
+      next if !@type.nil? and @type != idTableName.tableName
+      @id = idTableName.id
+      case idTableName.tableName
+        when "Event"
+          @object = Event.find(@id)
+          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @text = @object.label
+          @place = EventPlace.find(:all, :conditions => ['eventId = ?', "#{@id}"])
+        when "Person", "Thing"
+          @object = Resource.find(@id)
+          @text = @object.label
+          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Image"
+          @object = Image.find(@id)
+          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @text = @object.label
+          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Place"
+          @place = Place.find(@id)
+          @text = @place.label
+        when "Message"
+          @object = Message.find(@id)
+          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @text = @object.payload
+          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Conversation"
+          @object = Conversation.find(@id)
+          @text = @object.label
+          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+      end
+      if @text.nil? or params[:valueRange].nil? or @text =~ /#{params[:valueRange]}/
+        if (@minLat != -1 or @minLon != -1) and !@place.nil?
+          if (@minLat == -1 or (@minLat..@maxLat).cover?(@place.latitude)) and
+              (@minLon == -1 or (@minLon..@maxLon).cover?(@place.longitude))
+            @resultObjects << @object
+          end
+        else
+          @resultObjects << @object
+        end
+      end
+    end
+    respond_to do |format|
+      format.json { render :json => {:objects => @resultObjects}}
     end
   end
 
