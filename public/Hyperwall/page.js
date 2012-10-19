@@ -139,7 +139,7 @@ function initialize() {
     //alert($(".response_text").val());
     sd_create(
       "messages",
-      { text: $(".response_text").val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", Conversation: test_guid }
+      { text: $(".response_text").val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", conversation: test_guid }
     );
   });  
 

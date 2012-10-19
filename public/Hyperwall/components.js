@@ -4,7 +4,6 @@ $(document).ready(function(){
 
   $("body").on("DOMNodeInserted", function(e){
     var targetElements = $(e.target).find('.inmap_dialog');
-    console.log(targetElements);
     targetElements.parent().parent().parent().css('box-shadow', '1px 1px 10px 5px #c42c2b'); // do something
   });
 
