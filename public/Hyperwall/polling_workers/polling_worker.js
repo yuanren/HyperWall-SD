@@ -7,7 +7,7 @@ function poll_conversations(){
       if (xhr.readyState == 4) {
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout(poll_conversations(), 5000);
+        //setTimeout(poll_conversations(), 5000);
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Event",true);
