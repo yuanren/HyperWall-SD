@@ -7,7 +7,7 @@ function poll_conversation_guids(){
       if (xhr.readyState == 4) {
         if (xhr.status == 200 || xhr.status ==0) { postMessage(xhr.responseText); }
         else { throw  xhr.status+xhr.responseText; }
-        setTimeout(poll_conversation_guids(), 5000);
+        //setTimeout(poll_conversation_guids(), 5000);
 	    }
 	  };
     xhr.open("GET","../../get_guid?type=Conversation",true);
@@ -17,7 +17,7 @@ function poll_conversation_guids(){
 
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
-  Timeout = e.data.interval;
+  //Poll_Timeout = e.data.interval;
   switch(e.data.type){
     case "Conversation_GUIDs":
       poll_conversation_guids();
