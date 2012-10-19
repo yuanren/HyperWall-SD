@@ -18,11 +18,10 @@ function sd_get (type, get_data, callback_function){
 // Shorthanded Google Map API calls
 function gm_create_marker(type, location) {
   //switch(type)
-  console.log(location[0]);
-  console.log(location[1]);
   var marker = new google.maps.Marker({
     position: new google.maps.LatLng( location[0], location[1]),
     map: MAP,
     icon: "http://maps.google.com/mapfiles/marker.png"
   });
+  return marker;
 }

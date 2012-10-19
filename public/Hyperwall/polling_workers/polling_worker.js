@@ -30,6 +30,7 @@ function poll_conversation(guid){
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
 
+
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
   Poll_Timeout = e.data.interval;
@@ -41,5 +42,4 @@ self.addEventListener('message', function(e) {
       poll_conversation(e.data.GUID);
       break;
   }
-  //if(e.data.type == "Conversation_GUIDs"){ poll_conversations(); }
 }, false);

@@ -2,8 +2,8 @@
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATION_GUIDS_POLL_INTERVAL = 5000;
-var MSG_POLL_INTERVAL = 3000, CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 8000;
+var CONVERSATION_GUIDS_POLL_INTERVAL = 50000;
+var CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 80000;
 
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
@@ -13,16 +13,15 @@ var EVENTS_HASH = new Object();
 
 var CONVERSATION_POLLING_WORKERS_HASH = new Object();
 
-var MAP_MARKERS_HASH = new Object();
+var CONVERSATION_MAP_MARKERS_HASH = new Object();
+var CONVERSATION_INFO_WINDOWS_HASH = new Object();
 
 
 
 function add_to_critical_list(msg){
- 
   $("#critical_list header").after(
     '<div class="critical_msg">'+msg+'</div>'
   );
-
 }
 
 
@@ -39,7 +38,7 @@ function polling_conversation_guid(guid){
       if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated){
         console.log("new or updated conversation: "+guid);
         CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
-        add_to_critical_list(rcv_json.object.label)
+        add_to_critical_list("<b>Conversation</b>: "rcv_json.object.label)
       }
     },
     false
@@ -94,8 +93,41 @@ function initialize() {
   guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
 
 
+  // Mockup & Response Test
+  test_guid = "26329f98-198b-11e2-8473-7071bc51ad1f"
+  CONVERSATION_MAP_MARKERS_HASH[test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
 
-  gm_create_marker("test", [37.410425,-122.059754]);
+  var test_info_str = "";
+  sd_get(
+    "properties",
+    { GUID: test_guid, depth: 1 },
+    function(rcv_data){
+      console.log(rcv_data);
+      test_info_str =
+        '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
+
+        '<div class="dialog_pics">'+
+        '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">John</a> @ MM:SS</div>'+
+        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
+
+        '<div class="dialog_texts">';
+
+      $(rcv_data.associated_objects[0][1]).each( function(){ 
+        test_info_str += '<hr><div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
+        this.dateTime+'</div><div class="dialog_text">'+this.payload+'</div>'
+      });
+
+      test_info_str += '</div>';
+    }
+  );
+
+  CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+  google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
+    MAP.setZoom(17);
+    CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+  });  
+
+
 
 
 
