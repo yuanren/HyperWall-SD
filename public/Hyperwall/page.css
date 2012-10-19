@@ -33,15 +33,16 @@ html, body {
 .inmap_dialog {  width: 480px; }
 .inmap_dialog hr { margin-bottom: 2px;}
 .dialog_title {
+  color: #6a7062;
   margin: 0px 0px 6px 0px;
-  font-size: 20px;
+  font-size: 22px;
 }
 .dialog_pics { 
   width: 260px;
   margin:0;
   display: inline-block;
 }
-.
+
 .dialog_pic img {
   width: 256px;
   border-radius: 2px;
