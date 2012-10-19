@@ -117,7 +117,7 @@ function initialize() {
         this.dateTime+'</div><div class="dialog_text">'+this.payload+'</div>';
       });
 
-      test_info_str += '<input type="text" class="response_text" style="width: 100% ></div></div>';
+      test_info_str += '<input type="text" class="response_text" style="width: 100%"></div></div>';
       
   
       
