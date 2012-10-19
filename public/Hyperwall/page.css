@@ -29,8 +29,33 @@ html, body {
 }
 
 
+/* Inmap Dialog Styling*/ 
+.inmap_dialog {  width: 480px; }
+.dialog_title {
+  margin: 0px 0px 6px 0px;
+  font-size: 28px;
+}
+.dialog_pics { 
+  width: 260px;
+  margin:0;
+  display: inline-block;
+}
+.dialog_pic img {
+  width: 256px;
+  border-radius: 2px;
+}
+.dialog_pic_title {
+  position: absolute;
+}
 
+.dialog_texts {
+  margin-left: 6px;
+  width: 210px;
+  display: inline-block;
+  vertical-align: top;
+}
 
+.dialog_text_title { font-size: 10px; }
 
 /* Inmap Dialog Styling*/ 
 /*
