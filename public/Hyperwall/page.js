@@ -111,22 +111,26 @@ function initialize() {
         '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
 
         '<div class="dialog_texts">';
-        console.log(test_info_str);
+        
       $(rcv_data.associated_objects[0][1]).each( function(){ 
         test_info_str += '<hr><div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
         this.dateTime+'</div><div class="dialog_text">'+this.payload+'</div>';
       });
 
       test_info_str += '</div>';
+  
+      console.log(test_info_str);
+
+      CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+      google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
+        MAP.setZoom(17);
+        CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+      });
     }
   );
-  console.log(test_info_str);
+  
 
-  CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-  google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
-    MAP.setZoom(17);
-    CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
-  });  
+    
 
 
 
