@@ -4,16 +4,42 @@ var MAP;
 // Global Hyperwall variables
 var CONVERSATION_GUIDS_POLL_INTERVAL = 5000;
 var MSG_POLL_INTERVAL = 3000, CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 8000;
+
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
+
 var CONVERSATIONS_HASH = new Object();
 var EVENTS_HASH = new Object();
 
-var CONVERSATION_POLLING_WORKERS = new Array();
+var CONVERSATION_POLLING_WORKERS_HASH = new Object();
 
 var MAP_MARKERS_HASH = new Object();
 
-function 
+
+
+function polling_conversation_guid(guid){  
+  // Create polling workers for one Conversation
+  var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
+  CONVERSATION_POLLING_WORKERS_HASH[guid] = conversation_polling_worker;
+  conversation_polling_worker.addEventListener(
+    'message',
+    function(e){
+      // Receive Conversation properties from Server
+      var rcv_json = $.parseJSON(e.data);
+      console.log(rcv_json);
+      CONVERSATIONS_HASH[guid] = rcv_json.object.lastupdated;
+      console.log(CONVERSATIONS_HASH[guid]);
+        //for(var i=0; i<rcv_json.GUIDs.length; ++i){
+              //  if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
+              //    console.log("Received new conversation: "+rcv_json.GUIDs[i])
+              //  }        
+              //}
+    },
+    false
+  );
+  conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}); 
+
+}
 
 
 function initialize() {
@@ -52,24 +78,7 @@ function initialize() {
         if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
           console.log("Received new conversation: "+rcv_json.GUIDs[i])
           CONVERSATIONS_HASH[rcv_json.GUIDs[i]] = true;
-          
-          // Create polling workers for one Conversation
-          var  conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
-          conversation_polling_worker.addEventListener(
-            'message',
-            function(e){
-              // Receive Conversation properties from Server
-              var rcv_json = $.parseJSON(e.data);
-              console.log(rcv_json);
-              //for(var i=0; i<rcv_json.GUIDs.length; ++i){
-              //  if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
-              //    console.log("Received new conversation: "+rcv_json.GUIDs[i])
-              //  }        
-              //}
-            },
-            false
-          );
-          conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: rcv_json.GUIDs[i]}); 
+          polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
       
