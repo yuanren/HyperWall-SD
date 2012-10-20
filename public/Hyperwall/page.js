@@ -50,8 +50,11 @@ function polling_conversation_guid(guid){
 
 function initialize() {
   // Register Hyperwall on SDB
+
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
+    // Temporary give a dedicated GUID
+    localStorage['HYPERWALL_USER_GUID'] = "7d8689c0-1829-11e2-abd6-7071bc51ad1f"; 
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
       console.log("Register New Hyperwall GUID");
       sd_create(
