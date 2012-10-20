@@ -4,15 +4,17 @@
   <tr>
     <th>ResourceId</th>
     <th>Label</th>
+    <th>Last Updated</th>
     <th></th>
     <th></th>
     <th></th>
   </tr>
 
-<% @conversations.each do |conversation| %>
+<% @conversations.sort_by(&:lastUpdated).each do |conversation| %>
   <tr>
     <td><%= conversation.resourceId %></td>
     <td><%= conversation.label %></td>
+    <td><%= conversation.lastUpdated %></td>
     <td><%= link_to 'Show', conversation %></td>
     <td><%= link_to 'Edit', edit_conversation_path(conversation) %></td>
     <td><%= link_to 'Destroy', conversation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
