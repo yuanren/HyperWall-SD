@@ -17,7 +17,7 @@ html, body {
 .list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
 
 #critical_list { 
-  top: 48px; max-height: 480px; overflow: auto;
+  top: 48px; right: 32px; max-height: 480px; overflow: auto;
 }
 .critical_msg {
   margin: 6px; padding: 0px 2px;
