@@ -32,10 +32,10 @@ function polling_conversation_guid(guid){
   conversation_polling_worker.addEventListener(
     'message',
     function(e){
-      // Receive Conversation properties from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated){
+      // if Conversation is new/updated and not ignored.
+      if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated && CONVERSATIONS_HASH[guid] != "Ignore"){
         console.log("new or updated conversation: "+guid);
         CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
         add_to_critical_list("<b>Conversation</b>:<br> "+rcv_json.object.label);
@@ -135,6 +135,9 @@ function initialize() {
 
     }
   );
+
+  CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+
   
   $('body').on("click", ".more_info_btn", function(){
     sd_create(

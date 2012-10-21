@@ -25,7 +25,7 @@ html, body {
 }
 
 #tracked_user_list {
-  left: 24px;
+  left: 24px; bottom: 32px;
 }
 
 
