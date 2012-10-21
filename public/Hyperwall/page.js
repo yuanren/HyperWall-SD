@@ -136,10 +136,14 @@ function initialize() {
     }
   );
 
-  CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+  //$()
+  $('body').on("click", "#tracked_user_list a", function(){  
+    console.log("click");
+    CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+  });  
 
   
-  $('body').on("click", ".more_info_btn", function(){
+  $('#map_canvas').on("click", ".more_info_btn", function(){
     sd_create(
       "messages",
       { text: $(".response_text").val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", conversation: test_guid }
