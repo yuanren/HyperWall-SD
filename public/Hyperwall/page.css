@@ -6,7 +6,7 @@ html, body {
 }
 @media print { html, body { height: auto; } }
 #map_canvas { height: 100%; width: 100%; }
-
+.hidden { display: none;}
 
 .list { 
   position: absolute;

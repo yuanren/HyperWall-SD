@@ -136,10 +136,10 @@ function initialize() {
     }
   );
 
-  //$()
+  
   $('body').on("click", "#tracked_user_list a", function(){  
-    console.log("click");
-    CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+  //  console.log("click");
+    CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
   });  
 
   
