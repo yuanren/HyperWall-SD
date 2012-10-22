@@ -18,18 +18,20 @@ var CONVERSATION_INFO_WINDOWS_HASH = new Object();
 
 
 
-function add_to_critical_list(msg){
+function add_to_critical_list(guid, msg){
   $("#critical_list header").after(
-    '<div class="critical_msg">'+msg+'</div>'
+    '<div class="critical_msg">'+
+    '<input type="hidden" class="Conversation_GUID" value="'+guid'">'+msg+'</div>'
   );
 }
 
 
 function polling_conversation_guid(guid){  
   // Create polling workers for one Conversation
-  var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
-  CONVERSATION_POLLING_WORKERS_HASH[guid] = conversation_polling_worker;
-  conversation_polling_worker.addEventListener(
+  //var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
+  //CONVERSATION_POLLING_WORKERS_HASH[guid] = conversation_polling_worker;
+  CONVERSATION_POLLING_WORKERS_HASH[guid] = new Worker('polling_workers/polling_worker.js');
+  CONVERSATION_POLLING_WORKERS_HASH[guid].addEventListener(
     'message',
     function(e){
       var rcv_json = $.parseJSON(e.data);
@@ -43,7 +45,9 @@ function polling_conversation_guid(guid){
     },
     false
   );
-  conversation_polling_worker.postMessage( {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}); 
+  CONVERSATION_POLLING_WORKERS_HASH[guid].postMessage(
+   {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}
+  ); 
 
 }
 
@@ -97,7 +101,7 @@ function initialize() {
 
 
   // Mockup & Response Test
-  test_guid = "26329f98-198b-11e2-8473-7071bc51ad1f"
+  test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
   CONVERSATION_MAP_MARKERS_HASH[test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
 
   var test_info_str = "";
@@ -108,6 +112,7 @@ function initialize() {
       console.log(rcv_data);
       test_info_str =
         '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
+        '<input type="hidden" class="Conversation_GUID" value="'+test_guid'">'+
 
         '<div class="dialog_pics">'+
         '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
@@ -139,7 +144,8 @@ function initialize() {
   
   $('body').on("click", "#tracked_user_list a", function(){  
   //  console.log("click");
-    CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
+    //remove a marker
+    //CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
   });  
 
   
