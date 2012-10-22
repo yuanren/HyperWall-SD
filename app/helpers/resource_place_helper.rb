@@ -1,0 +1,2 @@
+module ResourcePlaceHelper
+end
