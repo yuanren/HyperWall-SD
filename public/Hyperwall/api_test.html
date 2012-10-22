@@ -39,7 +39,7 @@
         $("#btn_add_breadcrumb").click(function() {
           $.ajax({
             type: 'POST', url: "../add_breadcrumb",
-            data: { object: $("#add_breadcrumb_obj").val(), latitude: $("#add_breadcrumb_latitude").val(), longitude: $("#add_breadcrumb_longitude") }, dataType: 'json',
+            data: { object: $("#add_breadcrumb_obj").val(), latitude: $("#add_breadcrumb_latitude").val(), longitude: $("#add_breadcrumb_longitude").val() }, dataType: 'json',
             success: function(rcv_data){ 
               console.log(rcv_data);          
             }
@@ -58,7 +58,7 @@
           sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } );
         });
 
-        $("#btn_get_properties").click(function() {
+        $("#btn_get_breadcrumbs").click(function() {
           sd_get("breadcumbs", { GUIDs: [$("#get_breadcrumbs_guids").val()] } );
         });
 
