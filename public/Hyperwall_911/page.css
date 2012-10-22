@@ -1,0 +1,45 @@
+/* General Styling*/
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+
+@media print { html, body { height: auto; }}
+
+#map_canvas { height: 100%; width: 100%; }
+
+
+a, a:visited { color: #000; }
+.overlay_link { 
+  position: absolute; text-align: center; font-size: 14px;
+  background-color: #fff; border: 1px solid #666; border-radius: 3px;
+  box-shadow: 2px 2px 2px #aaa; font-weight: 700; opacity: 0.8;
+}
+#mike_dashboard_link{ width: 96px; right: 120px; bottom: 16px; }
+#mike_incidents_link{ width: 96px; right: 16px; bottom: 16px; }
+#polling_citizen_911{ width: 96px; left: 80px; top: 16px; }
+
+/* Inmap Dialog Styling*/ 
+.inmap_dialog { width: 280px; }
+.inmap_dialog h1 { margin: 0px 0px 6px; font-size: 28px; }
+.event_content { width: 256px; margin:0; display: inline-block; }
+
+/* Mockup Dialog */
+/*.semantic_dialog { width: 280px; }
+.s_event_content { width: 256px; margin:0; display: inline-block; }*/
+.semantic_dialog { padding: 0 12px; width: 400px; height: 450px;}
+.s_event_content h1{ margin: 0px 0px 3px; font-size: 22px; color: #fff; background-color: #800;}
+.s_event_content h2{ margin: 0px 0px 3px; font-size: 16px; }
+.s_event_content h3{ margin: 0px 0px 1px; font-size: 14px; font-weight: 500;}
+.cat_level_1, .cat_level_2 {width: 400px;}
+.cat_1_title, .cat_2_title { color: RoyalBlue; font-weight: 700; }
+
+.msg_box_1, .msg_box_2 {
+  display: none; 
+  padding: 1px 3px; margin: 2px 0px; font-size: 14px;
+  border: 1px solid #666; border-radius: 3px; box-shadow: 1px 1px 2px #ccc;
+}
+
+.cat_level_2 {display: none;}

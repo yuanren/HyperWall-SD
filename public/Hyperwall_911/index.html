@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Google Maps</title>
+    <link href="page.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script src="page_citizen911.js"></script>
+
+  </head>
+  <body onload="initialize()">
+    <div id="map_canvas"></div>
+    <a href="#"><div id="polling_citizen_911" class="overlay_link"> Poll Citizen 911 Data</div></a>
+    <a href="http://www.citizen911.com/common/mashup/dashboard.html" rel='external' target='_blank'><div id="mike_dashboard_link" class="overlay_link">Citizen 911<br>Dashboard</div></a>
+    <a href="http://www.citizen911.com/common/mashup/incidents.html" rel='external' target='_blank'><div id="mike_incidents_link" class="overlay_link">Citizen 911<br>Incidents</div></a>
+  </body>
+</html>

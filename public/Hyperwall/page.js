@@ -28,8 +28,6 @@ function add_to_critical_list(guid, msg){
 
 function polling_conversation_guid(guid){  
   // Create polling workers for one Conversation
-  //var conversation_polling_worker = new Worker('polling_workers/polling_worker.js');
-  //CONVERSATION_POLLING_WORKERS_HASH[guid] = conversation_polling_worker;
   CONVERSATION_POLLING_WORKERS_HASH[guid] = new Worker('polling_workers/polling_worker.js');
   CONVERSATION_POLLING_WORKERS_HASH[guid].addEventListener(
     'message',
@@ -46,7 +44,7 @@ function polling_conversation_guid(guid){
     false
   );
   CONVERSATION_POLLING_WORKERS_HASH[guid].postMessage(
-   {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}
+    {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}
   ); 
 
 }
