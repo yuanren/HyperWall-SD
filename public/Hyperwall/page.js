@@ -21,7 +21,7 @@ var CONVERSATION_INFO_WINDOWS_HASH = new Object();
 function add_to_critical_list(guid, msg){
   $("#critical_list header").after(
     '<div class="critical_msg">'+
-    '<input type="hidden" class="Conversation_GUID" value="'+guid'">'+msg+'</div>'
+    '<input type="hidden" class="Conversation_GUID" value="'+guid+'">'+msg+'</div>'
   );
 }
 
