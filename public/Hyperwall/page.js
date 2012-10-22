@@ -112,7 +112,7 @@ function initialize() {
       console.log(rcv_data);
       test_info_str =
         '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
-        '<input type="hidden" class="Conversation_GUID" value="'+test_guid'">'+
+        '<input type="hidden" class="Conversation_GUID" value="'+test_guid+'">'+
 
         '<div class="dialog_pics">'+
         '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
