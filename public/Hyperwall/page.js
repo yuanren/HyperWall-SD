@@ -40,7 +40,7 @@ function polling_conversation_guid(guid){
       if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated && CONVERSATIONS_HASH[guid] != "Ignore"){
         console.log("new or updated conversation: "+guid);
         CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
-        add_to_critical_list("<b>Conversation</b>:<br> "+rcv_json.object.label);
+        add_to_critical_list(guid, "<b>Conversation</b>:<br> "+rcv_json.object.label);
       }
     },
     false
