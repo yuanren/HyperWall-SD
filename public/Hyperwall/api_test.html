@@ -36,15 +36,30 @@
           });
         });
         
+        $("#btn_add_breadcrumb").click(function() {
+          $.ajax({
+            type: 'POST', url: "../add_breadcrumb",
+            data: { object: $("#add_breadcrumb_obj").val(), latitude: $("#add_breadcrumb_latitude").val(), longitude: $("#add_breadcrumb_longitude") }, dataType: 'json',
+            success: function(rcv_data){ 
+              console.log(rcv_data);          
+            }
+          });
+        });
+
+
         //GET
         $("#btn_get_guid").click(function() {
-          sd_get("guid", { type: $("#get_guid_type").val(), valueRange: $("#get_guid_valueRange").val() } )
+          sd_get("guid", { type: $("#get_guid_type").val(), valueRange: $("#get_guid_valueRange").val() } );
         });
         $("#btn_get_objects").click(function() {
-          sd_get("objects", { type: $("#get_objects_type").val(), valueRange: $("#get_objects_valueRange").val() } )
+          sd_get("objects", { type: $("#get_objects_type").val(), valueRange: $("#get_objects_valueRange").val() } );
         });
         $("#btn_get_properties").click(function() {
-          sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
+          sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } );
+        });
+
+        $("#btn_get_properties").click(function() {
+          sd_get("breadcumbs", { GUIDs: [$("#get_breadcrumbs_guids").val()] } );
         });
 
       });
@@ -86,6 +101,13 @@
         object1:<input id="association_obj1" type="text"> object2:<input id="association_obj2" type="text"> <button id="btn_associate">Associate</button>
       </li>
       
+
+      <li>
+        ADD_BREADCRUMB <br>
+        object:<input id="add_breadcrumb_obj" type="text"> latitude:<input id="add_breadcrumb_latitude" type="text"> longitude:<input id="add_breadcrumb_longitude" type="text"> <button id="btn_add_breadcrumb">Add</button>
+      </li>
+
+
       <li>
         GET_GUID <br>
         type:<input id="get_guid_type" type="text"> valueRange:<input id="get_guid_valueRange" type="text"> <button id="btn_get_guid">GET</button>
@@ -94,11 +116,16 @@
         GET_Object <br>
         type:<input id="get_objects_type" type="text"> valueRange:<input id="get_objects_valueRange" type="text"> <button id="btn_get_objects">GET</button>
       </li>
-
       <li>
         GET_PROPERTIES <br>
         guid:<input id="get_properties_guid" type="text"> depth:<input id="get_properties_depth" type="text"> <button id="btn_get_properties">GET</button>
       </li>
+
+      <li>
+        GET_BREADCRUMBS <br>
+        GUIDs:<input id="get_breadcrumbs_guids" type="text"> <button id="btn_get_breadcrumbs">GET</button>
+      </li>
+
     </ul>
 
   </body>
