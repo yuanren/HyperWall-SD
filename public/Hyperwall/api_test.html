@@ -40,6 +40,9 @@
         $("#btn_get_guid").click(function() {
           sd_get("guid", { type: $("#get_guid_type").val(), valueRange: $("#get_guid_valueRange").val() } )
         });
+        $("#btn_get_objects").click(function() {
+          sd_get("objects", { type: $("#get_objects_type").val(), valueRange: $("#get_objects_valueRange").val() } )
+        });
         $("#btn_get_properties").click(function() {
           sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
         });
@@ -87,6 +90,11 @@
         GET_GUID <br>
         type:<input id="get_guid_type" type="text"> valueRange:<input id="get_guid_valueRange" type="text"> <button id="btn_get_guid">GET</button>
       </li>
+      <li>
+        GET_Object <br>
+        type:<input id="get_objects_type" type="text"> valueRange:<input id="get_objects_valueRange" type="text"> <button id="btn_get_objects">GET</button>
+      </li>
+
       <li>
         GET_PROPERTIES <br>
         guid:<input id="get_properties_guid" type="text"> depth:<input id="get_properties_depth" type="text"> <button id="btn_get_properties">GET</button>
