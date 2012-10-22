@@ -93,10 +93,17 @@ class ConversationsController < ApplicationController
   def destroy
     @conversation = Conversation.find(params[:id])
     @conversation.destroy
-    @idTableName =
+    @idTableName = IdTableName.find(params[:id])
+    @idTableName.destroy
     respond_to do |format|
       format.html { redirect_to conversations_url }
       format.json { head :no_content }
     end
+  end
+
+  # ESCALATE /conversations/1/escalate
+  def escalate
+    @conversation = Conversation.find(params[:id])
+    @conversation.isEscalated = true
   end
 end

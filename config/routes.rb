@@ -25,6 +25,10 @@ DMI::Application.routes.draw do
 
   match 'get_objects' => 'IdTableName#get_objects'
 
+  match 'add_breadcrumb' => 'ResourcePlace#add_breadcrumb'
+
+  match 'get_breadcrumbs' => 'ResourcePlace#get_breadcrumbs'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

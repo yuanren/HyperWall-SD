@@ -91,7 +91,13 @@ class IdTableNameController < ApplicationController
 
     @id = params[:GUID]
     @type = params[:type]
-    @idTableName = IdTableName.find(@id)
+    @idTableName = IdTableName.find_by_id(@id)
+    if @idTableName.nil?
+      respond_to do |format|
+        format.json { render :json => {:error => "GUID doesn't exist"}}
+      end
+      return
+    end
     @tableName = @idTableName.tableName
     #TODO: check if tableName is valid
     @object = @tableName.constantize.find(@id)
@@ -114,22 +120,24 @@ class IdTableNameController < ApplicationController
     end
     if @depth >= 1
       # 1. get associations
-      @associations = ImmutableAssociation.find(:all, :conditions => ['objectId = ?', @id])
-      # 2. for each association get objects
-      @associations.each do |association|
-        @hash = Hash.new
-        @hash["association"] = association
-        @associatedObjectsPerAssociation = Array.new
-        @objectAssociations = ImmutableAssociation.find(:all, :conditions => ['associationId = ?', "#{association.associationId}"])
-        @objectAssociations.each do |objectAssociation|
-          @objectId = objectAssociation.objectId
-          @associatedTableName = IdTableName.find(:all, :conditions => ['id = ?', "#{@objectId}"])[0].tableName
-          if @type.nil? or @type == @associatedTableName
-            @associatedObjectsPerAssociation << [@associatedTableName, @associatedTableName.constantize.find(@objectId)]
+      @associations = ImmutableAssociation.find_all_by_objectId(@id)
+      if !@associations.nil?
+        # 2. for each association get objects
+        @associations.each do |association|
+          @hash = Hash.new
+          @hash["association"] = association
+          @associatedObjectsPerAssociation = Array.new
+          @objectAssociations = ImmutableAssociation.find_all_by_associationId(association.associationId)
+          @objectAssociations.each do |objectAssociation|
+            @objectId = objectAssociation.objectId
+            @associatedTableName = IdTableName.find_last_by_objectId(@objectId).tableName
+            if @type.nil? or @type == @associatedTableName
+              @associatedObjectsPerAssociation << [@associatedTableName, @associatedTableName.constantize.find(@objectId)]
+            end
           end
+          @hash["objects"] = @associatedObjectsPerAssociation
+          @associatedObjects << @hash
         end
-        @hash["objects"] = @associatedObjectsPerAssociation
-        @associatedObjects << @hash
       end
     end
     respond_to do |format|
@@ -184,39 +192,52 @@ class IdTableNameController < ApplicationController
       @id = idTableName.id
       case idTableName.tableName
         when "Event"
-          @object = Event.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-                   (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Event.find_by_eventId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.label
-          @place = EventPlace.find(:all, :conditions => ['eventId = ?', "#{@id}"])
-        when "Person", "Thing"
-          @object = Resource.find(@id)
+        when "Person"
+          @object = Person.find_by_resourceId(@id)
+          next if @object.nil?
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Thing"
+          @object = Thing.find_by_resourceId(@id)
+          next if @object.nil?
+          @text = @object.label
         when "Image"
-          @object = Image.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Image.find_by_resourceId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Place"
-          @place = Place.find(@id)
           @text = @place.label
         when "Message"
-          @object = Message.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Message.find_by_resourceId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.payload
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Conversation"
-          @object = Conversation.find(@id)
+          @object = Conversation.find_by_resourceId(@id)
+          next if @object.nil?
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       end
       if @text.nil? or params[:valueRange].nil? or @text =~ /#{params[:valueRange]}/
+        case idTableName.tableName
+          when "Event"
+            @eventPlace = EventPlace.find_last_by_eventId(@id)
+            @place = Place.find_by_placeId(@eventPlace.placeId) if !@eventPlace.nil?
+          when "Person", "Thing", "Image", "Message", "Conversation"
+            @resourcePlace = ResourcePlace.find_last_by_resourceId(@id)
+            @place = Place.find_by_placeId(@resourcePlace.placeId) if !@resourcePlace.nil?
+          when "Place"
+            @place = Place.find_by_placeId(@id)
+        end
         if (@minLat != -1 or @minLon != -1) and !@place.nil?
           if (@minLat == -1 or (@minLat..@maxLat).cover?(@place.latitude)) and
-              (@minLon == -1 or (@minLon..@maxLon).cover?(@place.longitude))
+             (@minLon == -1 or (@minLon..@maxLon).cover?(@place.longitude))
             @resultGuids << @id
           end
         else
@@ -276,36 +297,49 @@ class IdTableNameController < ApplicationController
       @id = idTableName.id
       case idTableName.tableName
         when "Event"
-          @object = Event.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Event.find_by_eventId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.label
-          @place = EventPlace.find(:all, :conditions => ['eventId = ?', "#{@id}"])
-        when "Person", "Thing"
-          @object = Resource.find(@id)
+        when "Person"
+          @object = Person.find_by_resourceId(@id)
+          next if @object.nil?
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
+        when "Thing"
+          @object = Thing.find_by_resourceId(@id)
+          next if @object.nil?
+          @text = @object.label
         when "Image"
-          @object = Image.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Image.find_by_resourceId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Place"
-          @place = Place.find(@id)
           @text = @place.label
         when "Message"
-          @object = Message.find(@id)
-          next if ((@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
-              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime))
+          @object = Message.find_by_resourceId(@id)
+          next if @object.nil? or
+              (@minTime != 0 and @object.dateTime < @minTime.to_datetime) or
+              (@maxTime != 0 and @object.dateTime > @maxTime.to_datetime)
           @text = @object.payload
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
         when "Conversation"
-          @object = Conversation.find(@id)
+          @object = Conversation.find_by_resourceId(@id)
+          next if @object.nil?
           @text = @object.label
-          @place = ResourcePlace.find(:all, :conditions => ['resourceId = ?', "#{@id}"])
       end
       if @text.nil? or params[:valueRange].nil? or @text =~ /#{params[:valueRange]}/
+        case idTableName.tableName
+          when "Event"
+            @eventPlace = EventPlace.find_last_by_eventId(@id)
+            @place = Place.find_by_placeId(@eventPlace.placeId) if !@eventPlace.nil?
+          when "Person", "Thing", "Image", "Message", "Conversation"
+            @resourcePlace = ResourcePlace.find_last_by_resourceId(@id)
+            @place = Place.find_by_placeId(@resourcePlace.placeId) if !@resourcePlace.nil?
+          when "Place"
+            @place = Place.find_by_placeId(@id)
+        end
         if (@minLat != -1 or @minLon != -1) and !@place.nil?
           if (@minLat == -1 or (@minLat..@maxLat).cover?(@place.latitude)) and
               (@minLon == -1 or (@minLon..@maxLon).cover?(@place.longitude))
