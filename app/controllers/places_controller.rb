@@ -75,7 +75,7 @@ class PlacesController < ApplicationController
           @idTableName.save
 
           format.html { redirect_to @place, notice: 'Place was successfully created.' }
-          format.json { render :json => {:GUID => @place.placeId} }
+          format.json { render :json => {:GUID => @place.placeId, :mutable => "false"} }
         else
           format.html { render action: "new" }
           format.json { render json: @place.errors, status: :unprocessable_entity }

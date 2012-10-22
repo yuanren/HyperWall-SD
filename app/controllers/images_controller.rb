@@ -60,7 +60,7 @@ class ImagesController < ApplicationController
         @idTableName.save
 
         format.html { redirect_to @image, notice: 'Image was successfully created.' }
-        format.json { render json: {:GUID => @image.resourceId}  }
+        format.json { render json: {:GUID => @image.resourceId, :mutable => "false"}  }
       else
         format.html { render action: "new" }
         format.json { render json: @image.errors, status: :unprocessable_entity }

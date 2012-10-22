@@ -60,7 +60,7 @@ class PeopleController < ApplicationController
         format.html { redirect_to @person, notice: 'Person was successfully created.' }
         #format.json { render
         # json: @person, status: :created, location: @person }
-        format.json { render :json => {:GUID => @person.resourceId} }
+        format.json { render :json => {:GUID => @person.resourceId, :mutable => "false"} }
       else
         format.html { render action: "new" }
         format.json { render json: @person.errors, status: :unprocessable_entity }

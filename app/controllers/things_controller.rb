@@ -59,7 +59,7 @@ class ThingsController < ApplicationController
 
         format.html { redirect_to @thing, notice: 'Thing was successfully created.' }
         #format.json { render json: @thing, status: :created, location: @thing }
-        format.json { render :json => {:GUID => @thing.resourceId} }
+        format.json { render :json => {:GUID => @thing.resourceId, :mutable => "false"} }
       else
         format.html { render action: "new" }
         format.json { render json: @thing.errors, status: :unprocessable_entity }

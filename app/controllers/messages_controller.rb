@@ -67,7 +67,7 @@ class MessagesController < ApplicationController
 
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         #format.json { render json: @message, status: :created, location: @message }
-        format.json { render :json => {:GUID => @message.resourceId} }
+        format.json { render :json => {:GUID => @message.resourceId, :mutable => "false"} }
       else
         format.html { render action: "new" }
         format.json { render json: @message.errors, status: :unprocessable_entity }

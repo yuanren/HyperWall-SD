@@ -64,7 +64,7 @@ class ConversationsController < ApplicationController
         @idTableName.save
 
         format.html { redirect_to @conversation, notice: 'Conversation was successfully created.' }
-        format.json { render :json => {:GUID => @conversation.resourceId} }
+        format.json { render :json => {:GUID => @conversation.resourceId, :mutable => "true"} }
       else
         format.html { render action: "new" }
         format.json { render json: @conversation.errors, status: :unprocessable_entity }
