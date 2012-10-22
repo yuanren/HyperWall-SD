@@ -11,7 +11,7 @@
     <th></th>
   </tr>
 
-<% @events.each do |event| %>
+<% @events.sort{|a,b| b.dateTime <=> a.dateTime}.each do |event| %>
   <tr>
     <td><%= event.eventId %></td>
     <td><%= event.label %></td>

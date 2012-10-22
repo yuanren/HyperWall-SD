@@ -13,7 +13,7 @@
     <th></th>
   </tr>
 
-<% @messages.sort_by(&:dateTime).reverse_each do |message| %>
+<% @messages.sort{|a,b| b.dateTime <=> a.dateTime}.each do |message| %>
   <tr>
     <td><%= message.resourceId %></td>
     <td><%= message.conversationResourceId %></td>

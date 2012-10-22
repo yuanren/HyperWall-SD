@@ -10,7 +10,7 @@
     <th></th>
   </tr>
 
-<% @images.sort_by(&:dateTime).reverse_each do |image| %>
+<% @images.sort{|a,b| b.dateTime <=> a.dateTime}.each do |image| %>
   <tr>
     <td><%= image.resourceId %></td>
     <td><%= image.label %></td>

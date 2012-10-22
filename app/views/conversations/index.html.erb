@@ -10,7 +10,7 @@
     <th></th>
   </tr>
 
-<% @conversations.sort_by(&:lastUpdated).reverse_each do |conversation| %>
+<% @conversations.sort{|a,b| b.lastUpdated <=> a.lastUpdated}.each do |conversation| %>
   <tr>
     <td><%= conversation.resourceId %></td>
     <td><%= conversation.label %></td>
