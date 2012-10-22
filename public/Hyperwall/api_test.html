@@ -38,7 +38,7 @@
         
         //GET
         $("#btn_get_guid").click(function() {
-          sd_get("guid", { type: $("#get_guid_type").val() } )
+          sd_get("guid", { type: $("#get_guid_type").val(), valueRange: $("#get_guid_valueRange").val() } )
         });
         $("#btn_get_properties").click(function() {
           sd_get("properties", { GUID: $("#get_properties_guid").val(), depth: $("#get_properties_depth").val() } )
@@ -85,7 +85,7 @@
       
       <li>
         GET_GUID <br>
-        type:<input id="get_guid_type" type="text"> <button id="btn_get_guid">GET</button>
+        type:<input id="get_guid_type" type="text"> valueRange:<input id="get_guid_valueRange" type="text"> <button id="btn_get_guid">GET</button>
       </li>
       <li>
         GET_PROPERTIES <br>
