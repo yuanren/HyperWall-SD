@@ -266,9 +266,9 @@ function initialize() {
     //$('input[value="'+test_guid+'"]').after("test");
 
     //prepare_conversation(test_guid);
-    $.when(prepare_conversation(test_guid)).then(function(resp){
-      console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
-    });
+    //$.when(prepare_conversation(test_guid)).then(function(resp){
+    //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
+    //});
   });  
 
   
