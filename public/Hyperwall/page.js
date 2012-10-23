@@ -8,14 +8,14 @@ var CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 80000;
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
-var CONVERSATIONS_HASH = new Object(); // [GUID] -> lastUpdated or "Ignore"
+var CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
-var CONVERSATION_POLLING_WORKERS_HASH = new Object(); // [GUID] -> Polling Worker 
-var CONVERSATION_MAP_MARKERS_HASH = new Object(); // [GUID] -> Map Marker
-var CONVERSATION_INFO_WINDOWS_HASH = new Object(); // [GUID] -> Info Window
-var CONVERSATION_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
+var CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
+var CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
+var CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
+var CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
@@ -35,29 +35,73 @@ function add_to_critical_list(guid, msg){
 
 
 
+function prepare_conversation(conversation_guid){
+  /*sd_get(
+    "properties",
+    { GUID: conversation_guid, depth: 1 },
+    function(rcv_data){
 
-function polling_conversation_guid(guid){  
+      
+      test_info_str =
+        '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
+        '<input type="hidden" class="Conversation_GUID" value="'+test_guid+'">'+
+
+        '<div class="dialog_pics">'+
+        '<div class="dialog_pic"><input type="hidden" class="msg_GUID"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
+        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
+
+        '<div class="dialog_texts">';
+        
+      $(rcv_data.associated_objects[0][1]).each( function(){ 
+        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
+        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
+        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
+      });
+
+      test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
+      '<button class="more_info_btn">More Info</button> </div></div>';
+      
+  
+      
+
+      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
+        MAP.setZoom(17);
+        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
+      });
+
+
+    }
+  );
+*/
+}
+
+
+
+
+function polling_conversation_guid(conversation_guid){  
   // Create polling workers for one Conversation
-  CONVERSATION_POLLING_WORKERS_HASH[guid] = new Worker('polling_workers/polling_worker.js');
-  CONVERSATION_POLLING_WORKERS_HASH[guid].addEventListener(
+  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid] = new Worker('polling_workers/polling_worker.js');
+  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid].addEventListener(
     'message',
     function(e){
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
       // if Conversation is new/updated and not ignored.
-      if (CONVERSATIONS_HASH[guid] != rcv_json.object.lastUpdated && CONVERSATIONS_HASH[guid] != "Ignore"){
+      if (CONVERSATION_HASH["STATUS"][conversation_guid] != rcv_json.object.lastUpdated && CONVERSATION_HASH["STATUS"][conversation_guid] != "Ignore"){
         console.log("new or updated conversation: "+guid);
-        CONVERSATIONS_HASH[guid] = rcv_json.object.lastUpdated;
-        add_to_critical_list(guid, "<b>Conversation</b>:<br> "+rcv_json.object.label);
+        CONVERSATION_HASH["STATUS"][conversation_guid] = rcv_json.object.lastUpdated;
+        add_to_critical_list(conversation_guid, "<b>Conversation</b>:<br> "+rcv_json.object.label);
       }
     },
     false
   );
-  CONVERSATION_POLLING_WORKERS_HASH[guid].postMessage(
-    {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: guid}
+  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid].postMessage(
+    {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: conversation_guid}
   ); 
-
 }
+
+
 
 // Main Function
 function initialize() {
@@ -96,9 +140,9 @@ function initialize() {
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
       for(var i=0; i<rcv_json.GUIDs.length; ++i){
-        if(!CONVERSATIONS_HASH.hasOwnProperty(rcv_json.GUIDs[i])){
+        if(!CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.GUIDs[i])){
           console.log("Received new conversation: "+rcv_json.GUIDs[i])
-          CONVERSATIONS_HASH[rcv_json.GUIDs[i]] = true;
+          CONVERSATION_HASH["STATUS"][rcv_json.GUIDs[i]] = true;
           polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
@@ -110,7 +154,7 @@ function initialize() {
 
   // Mockup & Response Test
   test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
-  CONVERSATION_MAP_MARKERS_HASH[test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
+  CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
 
   var test_info_str = "";
   sd_get(
@@ -140,10 +184,10 @@ function initialize() {
   
       
 
-      CONVERSATION_INFO_WINDOWS_HASH[test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-      google.maps.event.addListener(CONVERSATION_MAP_MARKERS_HASH[test_guid], 'click', function() {
+      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
         MAP.setZoom(17);
-        CONVERSATION_INFO_WINDOWS_HASH[test_guid].open(MAP, CONVERSATION_MAP_MARKERS_HASH[test_guid]);
+        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
       });
 
 
@@ -154,7 +198,7 @@ function initialize() {
   $('body').on("click", "#tracked_user_list a", function(){  
   //  console.log("click");
     //remove a marker
-    //CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
+    //CONVERSATION_HASH["MAP_MARKERS"][test_guid].setMap(null);   
     //insert something according to guid
     //$('input[value="'+test_guid+'"]').after("test");
 
