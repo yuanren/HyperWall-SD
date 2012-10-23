@@ -12,21 +12,21 @@ var SPECIAL_USERS = new Array();
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
-CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
-CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
-CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
-CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
-CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
-CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
-CONVERSATION_HASH["PLACE"] = new Object();
+//CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
+//CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
+//CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
+//CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
+//CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
+//CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
+//CONVERSATION_HASH["PLACE"] = new Object();
 
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
-IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
-IMMUTABLE_HASH["PERSON"] = new Object();
-IMMUTABLE_HASH["PLACE"] = new Object();
-IMMUTABLE_HASH["IMAGE"] = new Object();
+//IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
+//IMMUTABLE_HASH["PERSON"] = new Object();
+//IMMUTABLE_HASH["PLACE"] = new Object();
+//IMMUTABLE_HASH["IMAGE"] = new Object();
 
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
@@ -129,6 +129,15 @@ function prepare_conversation(conversation_guid){
 
 
 
+function construct_conversation(conversation_guid){
+  //$.when(prepare_conversation(test_guid)).then(function(resp){
+  //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
+  //});
+
+}
+
+
+
 
 
 /*
@@ -159,7 +168,6 @@ function polling_conversation_guid(conversation_guid){
 // Main Function
 function initialize() {
   // Register Hyperwall on SDB
-
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
     // Temporary give a dedicated GUID
@@ -194,14 +202,16 @@ function initialize() {
       console.log(rcv_json);
       for(var i=0; i<rcv_json.objects.length; ++i){
         // Ckeck if it is ignored or updated
-        if( CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.objects[i].resourceId) ) {
-          if( CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] != "IGNORED" ){
-            console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
-            //do something for updated conversation
+        if( CONVERSATION_HASH.hasOwnProperty(rcv_json.objects[i].resourceId) ) {
+          if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != "IGNORED" ){
+            if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated )
+              console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
+              //do something for updated conversation
+            }
           }
         } else {
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
-          CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] = rcv_json.objects[i].lastUpdated;
+          CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
           add_to_critical_list(rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
         }
       }
@@ -212,7 +222,7 @@ function initialize() {
 
   
 
-
+/*
   // Mockup & Response Test
   test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
   CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
@@ -254,7 +264,7 @@ function initialize() {
 
     }
   );
-
+*/
   
 
 
