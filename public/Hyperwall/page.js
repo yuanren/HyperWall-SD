@@ -8,12 +8,16 @@ var CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 80000;
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
-var CONVERSATIONS_HASH = new Object();
-var CONVERSATION_POLLING_WORKERS_HASH = new Object();
-var CONVERSATION_MAP_MARKERS_HASH = new Object();
-var CONVERSATION_INFO_WINDOWS_HASH = new Object();
-var CONVERSATIONS_MSGS_HASH = new Object();
+var CONVERSATIONS_HASH = new Object(); // [GUID] -> lastUpdated or "Ignore"
+var CONVERSATION_POLLING_WORKERS_HASH = new Object(); // [GUID] -> Polling Worker 
+var CONVERSATION_MAP_MARKERS_HASH = new Object(); // [GUID] -> Map Marker
+var CONVERSATION_INFO_WINDOWS_HASH = new Object(); // [GUID] -> Info Window
+var CONVERSATIONS_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
+var MSG_HASH // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
 
+var PERSON_HASH // [GUID] -> Label
+
+var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
 
 function add_to_critical_list(guid, msg){
@@ -21,6 +25,23 @@ function add_to_critical_list(guid, msg){
     '<div class="critical_msg">'+
     '<input type="hidden" class="Conversation_GUID" value="'+guid+'">'+msg+'</div>'
   );
+}
+
+// Infrastructure wrappers
+function get_person_label(guid){
+  if(PERSON_HASH.hasOwnProperty(guid)){
+    console.log("exist");
+    return PERSON_HASH(guid);
+  } else {
+    sd_get(
+      "properties",
+      { GUID: guid, depth: 0 },
+      function(rcv_data){
+        PERSON_HASH[guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
+        return PERSON_HASH(guid);
+      }
+    );
+  }
 }
 
 
@@ -47,7 +68,7 @@ function polling_conversation_guid(guid){
 
 }
 
-
+// Main Function
 function initialize() {
   // Register Hyperwall on SDB
 
@@ -142,7 +163,11 @@ function initialize() {
   //  console.log("click");
     //remove a marker
     //CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
-    $('input[value="'+test_guid+'"]').after("test");
+    //insert something according to guid
+    //$('input[value="'+test_guid+'"]').after("test");
+
+    get_person_label("9604a822-1948-11e2-8dbe-7071bc51ad1f");
+
   });  
 
   
