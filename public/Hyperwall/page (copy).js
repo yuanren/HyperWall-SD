@@ -206,7 +206,7 @@ function initialize() {
 
   
   // Mockup & Response Test
-  test_guid = "f6793fca-1d57-11e2-b908-7071bc51ad1f"
+  test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
   CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
 
   var test_info_str = "";
