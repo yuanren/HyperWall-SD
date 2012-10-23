@@ -16,13 +16,17 @@ CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
 CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
 CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
 CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
+CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
 CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
+CONVERSATION_HASH["PLACE"] = new Object();
+
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
-IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
+IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
 IMMUTABLE_HASH["PERSON"] = new Object();
 IMMUTABLE_HASH["PLACE"] = new Object();
+IMMUTABLE_HASH["IMAGE"] = new Object();
 
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
@@ -36,46 +40,90 @@ function add_to_critical_list(guid, msg){
 
 
 
+function prepare_person(person_guid){
+  if(IMMUTABLE_HASH["PERSON"].hasOwnProperty(person_guid)) { return false; }
+  sd_get(
+    "properties",
+    { GUID: person_guid, depth: 0 },
+    function(rcv_data){
+      IMMUTABLE_HASH["PERSON"][person_guid] =
+      {
+        label: rcv_data.object.label
+      }
+    }
+  );
+}
+
+function prepare_msg(msg_guid){
+  if(IMMUTABLE_HASH["MSG"].hasOwnProperty(msg_guid)) { return false; }
+  sd_get(
+    "properties",
+    { GUID: msg_guid, depth: 1 },
+    function(rcv_data){
+      // Check if any place or image is associated to the msg
+      var place_guid, img_guid;
+      for(var i=1; i<2; ++i){ // skip i=0 because it points to the msg itself
+        if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
+          place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
+          if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
+            IMMUTABLE_HASH["PLACE"][place_guid] =
+            {
+              label: rcv_data.associated_objects[1].objects[i][1].label,
+              latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
+              longitude: rcv_data.associated_objects[1].objects[i][1].longitude
+            };
+          }
+          // Check if the Conversation is already assigned a place
+          if(!CONVERSATION_HASH["PLACE"].hasOwnProperty(rcv_data.object.conversationResourceId)){
+            CONVERSATION_HASH["PLACE"][rcv_data.object.conversationResourceId] = 
+            {
+              latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
+              longitude: rcv_data.associated_objects[1].objects[i][1].longitude
+            }
+          }
+        } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
+          img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
+          if(!IMMUTABLE_HASH["IMAGE"].hasOwnProperty(img_guid)){
+            IMMUTABLE_HASH["IMAGE"][img_guid] = 
+            {
+              label: rcv_data.associated_objects[1].objects[i][1].label
+            };
+          }
+        }
+      }
+      IMMUTABLE_HASH["MSG"][msg_guid] = 
+      {
+        text: rcv_data.object.payload,
+        source: rcv_data.object.fromResourceId,
+        destination: rcv_data.object.toResourceId,
+        conversation: rcv_data.object.conversationResourceId,
+        datetime: rcv_data.object.dateTime,
+        place: place_guid,
+        img: img_guid
+      };
+      // Finally Prepare Person
+      prepare_person(rcv_data.object.fromResourceId);
+    }
+  );
+}
+
 function prepare_conversation(conversation_guid){
-  /*sd_get(
+  sd_get(
     "properties",
     { GUID: conversation_guid, depth: 1 },
     function(rcv_data){
-
-      
-      test_info_str =
-        '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
-        '<input type="hidden" class="Conversation_GUID" value="'+test_guid+'">'+
-
-        '<div class="dialog_pics">'+
-        '<div class="dialog_pic"><input type="hidden" class="msg_GUID"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
-        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
-
-        '<div class="dialog_texts">';
-        
-      $(rcv_data.associated_objects[0][1]).each( function(){ 
-        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
-        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
-        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
+      CONVERSATION_HASH["LABELS"][conversation_guid] = rcv_data.object.label;
+      // iterate through msgs
+      CONVERSATION_HASH["MSGS"][conversation_guid] = new Object();
+      $(rcv_data.associated_objects[0][1]).each( function(){
+        CONVERSATION_HASH["MSGS"][conversation_guid][this.resourceID] = true;
+        prepare_msg(this.resourceID);
       });
-
-      test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
-      '<button class="more_info_btn">More Info</button> </div></div>';
-      
-  
-      
-
-      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
-        MAP.setZoom(17);
-        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
-      });
-
-
     }
   );
-*/
 }
+
+
 
 
 
@@ -144,15 +192,15 @@ function initialize() {
         if(!CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.GUIDs[i])){
           console.log("Received new conversation: "+rcv_json.GUIDs[i])
           CONVERSATION_HASH["STATUS"][rcv_json.GUIDs[i]] = true;
-          polling_conversation_guid(rcv_json.GUIDs[i]);
+          //polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
     },
     false
   );
-  guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
+  //guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
 
-
+  
   // Mockup & Response Test
   test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
   CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
@@ -196,6 +244,8 @@ function initialize() {
   );
 
   
+
+
   $('body').on("click", "#tracked_user_list a", function(){  
   //  console.log("click");
     //remove a marker
@@ -203,7 +253,7 @@ function initialize() {
     //insert something according to guid
     //$('input[value="'+test_guid+'"]').after("test");
 
-    console.log(get_person_label("9604a822-1948-11e2-8dbe-7071bc51ad1f"));
+    prepare_conversation(test_guid);
 
   });  
 
