@@ -9,12 +9,10 @@ var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
 var CONVERSATIONS_HASH = new Object();
-var EVENTS_HASH = new Object();
-
 var CONVERSATION_POLLING_WORKERS_HASH = new Object();
-
 var CONVERSATION_MAP_MARKERS_HASH = new Object();
 var CONVERSATION_INFO_WINDOWS_HASH = new Object();
+var CONVERSATIONS_MSGS_HASH = new Object();
 
 
 
@@ -144,6 +142,7 @@ function initialize() {
   //  console.log("click");
     //remove a marker
     //CONVERSATION_MAP_MARKERS_HASH[test_guid].setMap(null);   
+    $('input[value="'+test_guid+'"]').after("test");
   });  
 
   
