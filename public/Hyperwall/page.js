@@ -130,13 +130,24 @@ function prepare_conversation(conversation_guid){
 
 
 function construct_conversation(conversation_guid){
-  //$.when(prepare_conversation(test_guid)).then(function(resp){
-  //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
-  //});
   $.when(
-    $.ajax({
+    sd_get(
+      "properties",
+      { GUID: conversation_guid, depth: 1 },
+      function(rcv_data){
+        CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
+        // iterate through msgs
+        CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
+        $(rcv_data.associated_objects[0][1]).each( function(){
+          CONVERSATION_HASH[conversation_guid][this.resourceID]["MSGS"] = true;
+          //prepare_msg(this.resourceId);
+        });
+      }
+    )
+    /*$.ajax({
       type: 'GET', dataType: 'json', url: "../get_properties",
-      data: { GUID: conversation_guid, depth: 1 },/* async: false,*/
+      data: { GUID: conversation_guid, depth: 1 },
+      // Get conversation properties callback
       success: function(rcv_data){ 
         console.log(rcv_data);
         CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
@@ -147,7 +158,7 @@ function construct_conversation(conversation_guid){
           //prepare_msg(this.resourceId);
         });
       }
-    })
+    })*/
   ).done(function(){
     console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
