@@ -212,7 +212,7 @@ function initialize() {
         } else {
           // Initialize a New Conversation
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
-          CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = new Objects();
+          CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = new Object();
           CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
           add_to_critical_list(rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
         }
