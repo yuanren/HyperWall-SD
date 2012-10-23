@@ -64,33 +64,33 @@ function prepare_msg(msg_guid){
       var place_guid, img_guid;
       for(var i=1; i<2; ++i){ // skip i=0 because it points to the msg itself        
         try{
-        if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
-          place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
-          if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
-            IMMUTABLE_HASH["PLACE"][place_guid] =
-            {
-              label: rcv_data.associated_objects[1].objects[i][1].label,
-              latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
-              longitude: rcv_data.associated_objects[1].objects[i][1].longitude
-            };
-          }
-          // Check if the Conversation is already assigned a place
-          if(!CONVERSATION_HASH["PLACE"].hasOwnProperty(rcv_data.object.conversationResourceId)){
-            CONVERSATION_HASH["PLACE"][rcv_data.object.conversationResourceId] = 
-            {
-              latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
-              longitude: rcv_data.associated_objects[1].objects[i][1].longitude
+          if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
+            place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
+            if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
+              IMMUTABLE_HASH["PLACE"][place_guid] =
+              {
+                label: rcv_data.associated_objects[1].objects[i][1].label,
+                latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
+                longitude: rcv_data.associated_objects[1].objects[i][1].longitude
+              };
+            }
+            // Check if the Conversation is already assigned a place
+            if(!CONVERSATION_HASH["PLACE"].hasOwnProperty(rcv_data.object.conversationResourceId)){
+              CONVERSATION_HASH["PLACE"][rcv_data.object.conversationResourceId] = 
+              {
+                latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
+                longitude: rcv_data.associated_objects[1].objects[i][1].longitude
+              }
+            }
+          } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
+            img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
+            if(!IMMUTABLE_HASH["IMAGE"].hasOwnProperty(img_guid)){
+              IMMUTABLE_HASH["IMAGE"][img_guid] = 
+              {
+                label: rcv_data.associated_objects[1].objects[i][1].label
+              };
             }
           }
-        } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
-          img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
-          if(!IMMUTABLE_HASH["IMAGE"].hasOwnProperty(img_guid)){
-            IMMUTABLE_HASH["IMAGE"][img_guid] = 
-            {
-              label: rcv_data.associated_objects[1].objects[i][1].label
-            };
-          }
-        }
         } catch(err) { console.log(err);}
       }
     
@@ -122,6 +122,7 @@ function prepare_conversation(conversation_guid){
         CONVERSATION_HASH["MSGS"][conversation_guid][this.resourceID] = true;
         prepare_msg(this.resourceId);
       });
+      console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
     }
   );
 }
