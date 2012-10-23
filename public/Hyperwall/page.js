@@ -12,11 +12,11 @@ var SPECIAL_USERS = new Array();
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
-var CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
-var CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
-var CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
-var CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
-var CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
+CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
+CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
+CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
+CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
+CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
