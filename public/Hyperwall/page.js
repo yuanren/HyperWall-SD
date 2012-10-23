@@ -134,10 +134,11 @@ function construct_conversation(conversation_guid){
   //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
   //});
   $.when(
-    sd_get(
-      "properties",
-      { GUID: conversation_guid, depth: 1 },
-      function(rcv_data){
+    $.ajax({
+      type: 'GET', dataType: 'json', url: "../get_properties",
+      data: { GUID: conversation_guid, depth: 1 },/* async: false,*/
+      success: function(rcv_data){ 
+        console.log(rcv_data);
         CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
         // iterate through msgs
         CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
@@ -145,9 +146,8 @@ function construct_conversation(conversation_guid){
           CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceID] = true;
           //prepare_msg(this.resourceId);
         });
-        //console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
       }
-    );
+    })
   ).done(function(){
     console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
