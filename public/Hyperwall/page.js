@@ -148,7 +148,7 @@ function construct_conversation(conversation_guid){
         //console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
       }
     )
-  ).then(function(){
+  ).done(function(){
     console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
 }
