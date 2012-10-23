@@ -204,7 +204,7 @@ function initialize() {
         // Ckeck if it is ignored or updated
         if( CONVERSATION_HASH.hasOwnProperty(rcv_json.objects[i].resourceId) ) {
           if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != "IGNORED" ){
-            if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated )
+            if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated ){
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
             }
