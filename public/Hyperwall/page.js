@@ -38,11 +38,11 @@ function get_person_label(guid){
       { GUID: guid, depth: 0 },
       function(rcv_data){
         PERSON_HASH[guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
-        return PERSON_HASH[guid];
       }
     );
     //return PERSON_HASH(guid);
   }
+  if(!PERSON_HASH.hasOwnProperty(guid)){ get_person_label(guid); }
 }
 
 
