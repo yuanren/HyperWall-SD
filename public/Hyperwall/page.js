@@ -8,10 +8,11 @@ var CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 80000;
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
-var CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
+
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
+var CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
 var CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
 var CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
 var CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
