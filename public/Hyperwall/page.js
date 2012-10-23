@@ -9,10 +9,13 @@ var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
 var CONVERSATIONS_HASH = new Object(); // [GUID] -> lastUpdated or "Ignore"
+
+// Conversation Properties Hashes
+var CONVERSATION_HASH = new Object();
 var CONVERSATION_POLLING_WORKERS_HASH = new Object(); // [GUID] -> Polling Worker 
 var CONVERSATION_MAP_MARKERS_HASH = new Object(); // [GUID] -> Map Marker
 var CONVERSATION_INFO_WINDOWS_HASH = new Object(); // [GUID] -> Info Window
-var CONVERSATIONS_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
+var CONVERSATION_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
@@ -30,24 +33,7 @@ function add_to_critical_list(guid, msg){
   );
 }
 
-// Infrastructure wrappers
-function get_person_label(guid){
-  if(IMMUTABLE_HASH["PERSON"].hasOwnProperty(guid)){
-    console.log("exist");
-    return IMMUTABLE_HASH["PERSON"][guid];
-  } else {
-    sd_get(
-      "properties",
-      { GUID: guid, depth: 0 },
-      function(rcv_data){
-        IMMUTABLE_HASH["PERSON"][guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
-        return get_person_label[guid];
-      }
-    );
-    //return PERSON_HASH(guid);
-  }
-  //if(!PERSON_HASH.hasOwnProperty(guid)){ get_person_label(guid); }
-}
+
 
 
 function polling_conversation_guid(guid){  
@@ -137,14 +123,15 @@ function initialize() {
         '<input type="hidden" class="Conversation_GUID" value="'+test_guid+'">'+
 
         '<div class="dialog_pics">'+
-        '<div class="dialog_pic"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
+        '<div class="dialog_pic"><input type="hidden" class="msg_GUID"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
         '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
 
         '<div class="dialog_texts">';
         
       $(rcv_data.associated_objects[0][1]).each( function(){ 
-        test_info_str += '<hr><div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
-        this.dateTime+'</div><div class="dialog_text">'+this.payload+'</div>';
+        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
+        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
+        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
       });
 
       test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
