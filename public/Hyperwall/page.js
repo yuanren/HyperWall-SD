@@ -56,7 +56,7 @@ function prepare_person(person_guid){
 
 function prepare_msg(msg_guid){
   if(IMMUTABLE_HASH["MSG"].hasOwnProperty(msg_guid)) { return false; }
-  sd_get(
+  return sd_get(
     "properties",
     { GUID: msg_guid, depth: 1 },
     function(rcv_data){
@@ -127,6 +127,16 @@ function prepare_conversation(conversation_guid){
   );
 }
 
+function get_immutable(guid){
+  return IMMUTABLE_HASH[guid] ||
+  sd_get(
+    "properties",
+    { GUID: guid, depth: 0 },
+    function(rcv_data){
+      
+    }
+  );
+}
 
 
 function construct_conversation(conversation_guid){
@@ -139,26 +149,11 @@ function construct_conversation(conversation_guid){
         // iterate through msgs
         CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
         $(rcv_data.associated_objects[0][1]).each( function(){
-          CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceID] = true;
-          //prepare_msg(this.resourceId);
-        });
-      }
-    )
-    /*$.ajax({
-      type: 'GET', dataType: 'json', url: "../get_properties",
-      data: { GUID: conversation_guid, depth: 1 },
-      // Get conversation properties callback
-      success: function(rcv_data){ 
-        console.log(rcv_data);
-        CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
-        // iterate through msgs
-        CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
-        $(rcv_data.associated_objects[0][1]).each( function(){
           CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceId] = true;
           //prepare_msg(this.resourceId);
         });
       }
-    })*/
+    )
   ).done(function(){
     console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });

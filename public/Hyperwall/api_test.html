@@ -23,7 +23,7 @@
           sd_create("places", {label: $("#place_label").val(), latitude: $("#place_latitude").val(), longitude: $("#place_longitude").val()} );
         });
         $("#btn_create_message").click(function() {
-            sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), Conversation: $("#message_conversation").val() } );
+            sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), "conversation": $("#message_conversation").val() } );
         });
         
         $("#btn_associate").click(function() {
