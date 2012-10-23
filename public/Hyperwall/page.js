@@ -122,7 +122,7 @@ function prepare_conversation(conversation_guid){
         CONVERSATION_HASH["MSGS"][conversation_guid][this.resourceID] = true;
         prepare_msg(this.resourceId);
       });
-      console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
+      //console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
     }
   );
 }
@@ -257,8 +257,10 @@ function initialize() {
     //insert something according to guid
     //$('input[value="'+test_guid+'"]').after("test");
 
-    prepare_conversation(test_guid);
-
+    //prepare_conversation(test_guid);
+    $.when(prepare_conversation(test_guid)).then(function(resp){
+      console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
+    });
   });  
 
   
