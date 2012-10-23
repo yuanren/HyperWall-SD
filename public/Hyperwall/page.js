@@ -13,9 +13,12 @@ var CONVERSATION_POLLING_WORKERS_HASH = new Object(); // [GUID] -> Polling Worke
 var CONVERSATION_MAP_MARKERS_HASH = new Object(); // [GUID] -> Map Marker
 var CONVERSATION_INFO_WINDOWS_HASH = new Object(); // [GUID] -> Info Window
 var CONVERSATIONS_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
-var MSG_HASH = new Object(); // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
 
-var PERSON_HASH = new Object(); // [GUID] -> Label
+// Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
+var IMMUTABLE_HASH = new Object();
+IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
+IMMUTABLE_HASH["PERSON"] = new Object();
+IMMUTABLE_HASH["PLACE"] = new Object();
 
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
@@ -29,20 +32,21 @@ function add_to_critical_list(guid, msg){
 
 // Infrastructure wrappers
 function get_person_label(guid){
-  if(PERSON_HASH.hasOwnProperty(guid)){
+  if(IMMUTABLE_HASH["PERSON"].hasOwnProperty(guid)){
     console.log("exist");
-    return PERSON_HASH[guid];
+    return IMMUTABLE_HASH["PERSON"][guid];
   } else {
     sd_get(
       "properties",
       { GUID: guid, depth: 0 },
       function(rcv_data){
-        PERSON_HASH[guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
+        IMMUTABLE_HASH["PERSON"][guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
+        return get_person_label[guid];
       }
     );
     //return PERSON_HASH(guid);
   }
-  if(!PERSON_HASH.hasOwnProperty(guid)){ get_person_label(guid); }
+  //if(!PERSON_HASH.hasOwnProperty(guid)){ get_person_label(guid); }
 }
 
 
