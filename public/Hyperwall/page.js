@@ -139,7 +139,7 @@ function construct_conversation(conversation_guid){
         // iterate through msgs
         CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
         $(rcv_data.associated_objects[0][1]).each( function(){
-          CONVERSATION_HASH[conversation_guid][this.resourceID]["MSGS"] = true;
+          CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceID] = true;
           //prepare_msg(this.resourceId);
         });
       }
