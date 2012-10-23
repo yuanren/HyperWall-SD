@@ -131,7 +131,7 @@ function prepare_conversation(conversation_guid){
 
 
 
-/*
+
 function polling_conversation_guid(conversation_guid){  
   // Create polling workers for one Conversation
   CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid] = new Worker('polling_workers/polling_worker.js');
@@ -153,7 +153,7 @@ function polling_conversation_guid(conversation_guid){
     {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: conversation_guid}
   ); 
 }
-*/
+
 
 
 // Main Function
@@ -192,27 +192,19 @@ function initialize() {
       // Receive Conversation GUIDs from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      for(var i=0; i<rcv_json.objects.length; ++i){
-        // Ckeck if it is ignored or updated
-        if( CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.objects[i].resourceId ) {
-          if( CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] != "IGNORED" ){
-            console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
-            //do something for updated conversation
-          }
-        } else {
-          console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
-          CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] = rcv_json.objects[i].lastUpdated;
-          add_to_critical_list(rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
+      for(var i=0; i<rcv_json.GUIDs.length; ++i){
+        if(!CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.GUIDs[i])){
+          console.log("Received new conversation: "+rcv_json.GUIDs[i])
+          CONVERSATION_HASH["STATUS"][rcv_json.GUIDs[i]] = true;
+          //polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
     },
     false
   );
-  guids_polling_worker.postMessage( {type: "Conversations", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
+  //guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
 
   
-
-
   // Mockup & Response Test
   test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
   CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
