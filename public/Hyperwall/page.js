@@ -194,7 +194,7 @@ function initialize() {
       console.log(rcv_json);
       for(var i=0; i<rcv_json.objects.length; ++i){
         // Ckeck if it is ignored or updated
-        if( CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.objects[i].resourceId ) {
+        if( CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.objects[i].resourceId) ) {
           if( CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] != "IGNORED" ){
             console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
             //do something for updated conversation
@@ -203,7 +203,7 @@ function initialize() {
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
           CONVERSATION_HASH["STATUS"][rcv_json.objects[i].resourceId] = rcv_json.objects[i].lastUpdated;
           add_to_critical_list(rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
-        }        
+        }
       }
     },
     false
