@@ -236,7 +236,9 @@ function initialize() {
   );
   guids_polling_worker.postMessage( {type: "Conversations", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
 
-  
+  test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
+  construct_conversation(test_guid);
+
 
 /*
   // Mockup & Response Test
