@@ -196,13 +196,13 @@ function initialize() {
         if(!CONVERSATION_HASH["STATUS"].hasOwnProperty(rcv_json.GUIDs[i])){
           console.log("Received new conversation: "+rcv_json.GUIDs[i])
           CONVERSATION_HASH["STATUS"][rcv_json.GUIDs[i]] = true;
-          //polling_conversation_guid(rcv_json.GUIDs[i]);
+          polling_conversation_guid(rcv_json.GUIDs[i]);
         }        
       }
     },
     false
   );
-  //guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
+  guids_polling_worker.postMessage( {type: "Conversation_GUIDs", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
 
   
   // Mockup & Response Test
