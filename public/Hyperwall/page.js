@@ -63,6 +63,7 @@ function prepare_msg(msg_guid){
       // Check if any place or image is associated to the msg
       var place_guid, img_guid;
       for(var i=1; i<2; ++i){ // skip i=0 because it points to the msg itself        
+        try{
         if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
           place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
           if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
@@ -90,7 +91,9 @@ function prepare_msg(msg_guid){
             };
           }
         }
+        } catch(err) { console.log(err);}
       }
+    
       IMMUTABLE_HASH["MSG"][msg_guid] = 
       {
         text: rcv_data.object.payload,
