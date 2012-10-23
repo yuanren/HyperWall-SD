@@ -62,7 +62,7 @@ function prepare_msg(msg_guid){
     function(rcv_data){
       // Check if any place or image is associated to the msg
       var place_guid, img_guid;
-      for(var i=0; i<2; ++i){ // skip i=0 because it points to the msg itself
+      for(var i=1; i<2; ++i){ // skip i=0 because it points to the msg itself
         if(rcv_data.associated_objects[1].objects[i] != undefined){
         if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
           place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
@@ -119,7 +119,7 @@ function prepare_conversation(conversation_guid){
       CONVERSATION_HASH["MSGS"][conversation_guid] = new Object();
       $(rcv_data.associated_objects[0][1]).each( function(){
         CONVERSATION_HASH["MSGS"][conversation_guid][this.resourceID] = true;
-        prepare_msg(this.resourceID);
+        prepare_msg(this.resourceId);
       });
     }
   );
