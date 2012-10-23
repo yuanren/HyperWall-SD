@@ -13,9 +13,9 @@ var CONVERSATION_POLLING_WORKERS_HASH = new Object(); // [GUID] -> Polling Worke
 var CONVERSATION_MAP_MARKERS_HASH = new Object(); // [GUID] -> Map Marker
 var CONVERSATION_INFO_WINDOWS_HASH = new Object(); // [GUID] -> Info Window
 var CONVERSATIONS_MSGS_HASH = new Object(); // [GUID] -> Msgs Hash
-var MSG_HASH // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
+var MSG_HASH = new Object(); // [GUID] -> { Place, Text, Source, Conversation, Destination, Img Array }
 
-var PERSON_HASH // [GUID] -> Label
+var PERSON_HASH = new Object(); // [GUID] -> Label
 
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
