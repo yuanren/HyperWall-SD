@@ -63,7 +63,7 @@ function prepare_msg(msg_guid){
       // Check if any place or image is associated to the msg
       var place_guid, img_guid;
       for(var i=1; i<2; ++i){ // skip i=0 because it points to the msg itself
-        if(rcv_data.associated_objects[1].objects[i] != undefined && rcv_data.associated_objects[1].objects != undefined){
+        if(rcv_data.associated_objects[1].objects[i] != undefined && rcv_data.associated_objects[1].objects != undefined && rcv_data.associated_objects[1] != undefined){
         if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
           place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
           if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
