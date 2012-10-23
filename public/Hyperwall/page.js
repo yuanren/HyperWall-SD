@@ -31,16 +31,17 @@ function add_to_critical_list(guid, msg){
 function get_person_label(guid){
   if(PERSON_HASH.hasOwnProperty(guid)){
     console.log("exist");
-    return PERSON_HASH(guid);
+    return PERSON_HASH[guid];
   } else {
     sd_get(
       "properties",
       { GUID: guid, depth: 0 },
       function(rcv_data){
         PERSON_HASH[guid] = (rcv_data.object.label == null)? "Anonymous":rcv_data.object.label;
-        return PERSON_HASH(guid);
+        return PERSON_HASH[guid];
       }
     );
+    //return PERSON_HASH(guid);
   }
 }
 
