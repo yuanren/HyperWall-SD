@@ -167,7 +167,7 @@ function initialize() {
     //insert something according to guid
     //$('input[value="'+test_guid+'"]').after("test");
 
-    get_person_label("9604a822-1948-11e2-8dbe-7071bc51ad1f");
+    console.log(get_person_label("9604a822-1948-11e2-8dbe-7071bc51ad1f"));
 
   });  
 
