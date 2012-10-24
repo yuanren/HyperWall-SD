@@ -16,6 +16,10 @@ html, body {
 }
 .list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
 
+#conversations_with_no_place {
+  top: 48px; left: 80px; overflow: auto; 
+}
+
 
 #critical_list {
   top: 48px; right: 32px; max-height: 480px; overflow: auto;

@@ -126,6 +126,7 @@ function construct_conversation(conversation_guid){
     })
   ).done(function(){
 
+    console.log(IMMUTABLE_HASH["MSG"]);
     //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
     var info_str =
       '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["label"]+'</h1>'+
