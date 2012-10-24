@@ -23,10 +23,7 @@ var CONVERSATION_HASH = new Object();
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
-IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
-//IMMUTABLE_HASH["PERSON"] = new Object();
-//IMMUTABLE_HASH["PLACE"] = new Object();
-//IMMUTABLE_HASH["IMAGE"] = new Object();
+IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { place, text, source, conversation, destination, img }
 
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
@@ -62,8 +59,11 @@ function prepare_msg(msg_guid){
           if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
             place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
             // Check if the Conversation is already assigned a place
-            if(!CONVERSATION_HASH[rcv_data.object.conversationResourceId].hasOwnProperty("PLACE") ){
-              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["PLACE"] = place_guid;
+            if(!CONVERSATION_HASH[rcv_data.object.conversationResourceId].hasOwnProperty("MAP_MARKER") ){
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER"] = gm_create_marker(
+                "Conversation", 
+                [rcv_data.associated_objects[1].objects[i][1].latitude, rcv_data.associated_objects[1].objects[i][1].longitude]
+              );
             }
           } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
             img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
@@ -73,10 +73,10 @@ function prepare_msg(msg_guid){
     
       IMMUTABLE_HASH["MSG"][msg_guid] = 
       {
-        text: rcv_data.object.payload,
-        source: rcv_data.object.fromResourceId,
-        destination: rcv_data.object.toResourceId,
-        conversation: rcv_data.object.conversationResourceId,
+        payload: rcv_data.object.payload,
+        fromResourceId: rcv_data.object.fromResourceId,
+        toResourceId: rcv_data.object.toResourceId,
+        conversationResourceId: rcv_data.object.conversationResourceId,
         datetime: rcv_data.object.dateTime,
         place: place_guid,
         img: img_guid
@@ -126,8 +126,7 @@ function initialize() {
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
       console.log("Register New Hyperwall GUID");
       sd_create(
-        "people",
-        { label: "HyperWall_User" },
+        "people", { label: "HyperWall_User" },
         function(rcv_data){ 
           console.log("Receive GUID: "+rcv_data.GUID);
           localStorage['HYPERWALL_USER_GUID'] = rcv_data.GUID;
