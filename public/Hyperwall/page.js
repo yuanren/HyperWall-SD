@@ -38,9 +38,10 @@ function add_to_list(type, guid, msg){
 
 function insert_msg(conversation_guid, msg_guid){
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
+  /*
   if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
-  }
+  }*/
 
   var text_str =
     '<hr><input type="hidden" class="msg_guid">'+
@@ -144,6 +145,7 @@ function construct_conversation(conversation_guid){
     }
 
     for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
+      console.log(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
     }
       
