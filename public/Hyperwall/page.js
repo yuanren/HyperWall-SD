@@ -48,7 +48,7 @@ function insert_msg(conversation_guid, msg_guid){
     get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]).label+
     '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
     '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
-  target_container.find('.dialog_texts').insert(text_str);
+  target_container.find('.dialog_texts').prepend(text_str);
 }
 
 
@@ -137,9 +137,9 @@ function construct_conversation(conversation_guid){
     
     // Check if Place information is available
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-      $("#conversations_with_no_place").insert(info_str);
+      $("#conversations_with_no_place").append(info_str);
     } else {
-      $("#conversations_with_no_place").insert(info_str);
+      $("#conversations_with_no_place").append(info_str);
     }
 
     for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
