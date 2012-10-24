@@ -38,6 +38,7 @@ function add_to_critical_list(guid, msg){
   );
 }
 
+
 function get_immutable(guid){
   return IMMUTABLE_HASH[guid] ||
   sd_get(
@@ -49,25 +50,7 @@ function get_immutable(guid){
   );
 }
 
-
-/*
-function prepare_person(person_guid){
-  if(IMMUTABLE_HASH["PERSON"].hasOwnProperty(person_guid)) { return false; }
-  sd_get(
-    "properties",
-    { GUID: person_guid, depth: 0 },
-    function(rcv_data){
-      IMMUTABLE_HASH["PERSON"][person_guid] =
-      {
-        label: rcv_data.object.label
-      }
-    }
-  );
-}
-*/
-
 function prepare_msg(msg_guid){
-  if(IMMUTABLE_HASH["MSG"].hasOwnProperty(msg_guid)) { return false; }
   return sd_get(
     "properties",
     { GUID: msg_guid, depth: 1 },
@@ -78,30 +61,12 @@ function prepare_msg(msg_guid){
         try{
           if(rcv_data.associated_objects[1].objects[i][0] == "Place"){
             place_guid = rcv_data.associated_objects[1].objects[i][1].placeId;
-            if(!IMMUTABLE_HASH["PLACE"].hasOwnProperty(place_guid)){
-              IMMUTABLE_HASH["PLACE"][place_guid] =
-              {
-                label: rcv_data.associated_objects[1].objects[i][1].label,
-                latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
-                longitude: rcv_data.associated_objects[1].objects[i][1].longitude
-              };
-            }
             // Check if the Conversation is already assigned a place
-            if(!CONVERSATION_HASH["PLACE"].hasOwnProperty(rcv_data.object.conversationResourceId)){
-              CONVERSATION_HASH["PLACE"][rcv_data.object.conversationResourceId] = 
-              {
-                latitude: rcv_data.associated_objects[1].objects[i][1].latitude, 
-                longitude: rcv_data.associated_objects[1].objects[i][1].longitude
-              }
+            if(!CONVERSATION_HASH[rcv_data.object.conversationResourceId].hasOwnProperty("PLACE") ){
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["PLACE"] = place_guid;
             }
           } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
             img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
-            if(!IMMUTABLE_HASH["IMAGE"].hasOwnProperty(img_guid)){
-              IMMUTABLE_HASH["IMAGE"][img_guid] = 
-              {
-                label: rcv_data.associated_objects[1].objects[i][1].label
-              };
-            }
           }
         } catch(err) { console.log(err);}
       }
@@ -116,8 +81,6 @@ function prepare_msg(msg_guid){
         place: place_guid,
         img: img_guid
       };
-      // Finally Prepare Person
-      prepare_person(rcv_data.object.fromResourceId);
     }
   );
 }
@@ -137,15 +100,20 @@ function prepare_conversation(conversation_guid){
   );
 }
 
+
 function construct_conversation(conversation_guid){
   $.when(
     prepare_conversation(conversation_guid).pipe( function(){
-      console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+      //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+      for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
+        prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
+      }
     })
   ).done(function(){
     //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
 }
+
 
 
 // Main Function
