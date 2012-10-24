@@ -1,4 +1,6 @@
 DMI::Application.routes.draw do
+  resources :escalations
+
   resources :immutable_associations
 
   resources :images
@@ -24,6 +26,8 @@ DMI::Application.routes.draw do
   match 'associate_guids' => 'IdTableName#associate_guids'
 
   match 'get_objects' => 'IdTableName#get_objects'
+
+  match 'get_escalated_objects' => 'IdTableName#get_escalated_objects'
 
   match 'add_breadcrumb' => 'ResourcePlace#add_breadcrumb'
 

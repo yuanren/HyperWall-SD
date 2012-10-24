@@ -40,14 +40,7 @@ class ImagesController < ApplicationController
   # POST /images
   # POST /images.json
   def create
-    @resource = Resource.new
-    @resource.version = 1
-    @resource.type = "Image"
-    @resource.label = params[:label]
-    @resource.save
-
     @image = Image.new
-    @image.resourceId = @resource.resourceId
     @image.label = params[:label]
     @image.imageBinary = params[:binary]
     @image.dateTime = Time.now
@@ -58,6 +51,13 @@ class ImagesController < ApplicationController
         @idTableName.tableName = "Image"
         @idTableName.version = 1
         @idTableName.save
+
+        @resource = Resource.new
+        @resource.resourceId = @image.resourceId
+        @resource.version = 1
+        @resource.type = "Image"
+        @resource.label = params[:label]
+        @resource.save
 
         format.html { redirect_to @image, notice: 'Image was successfully created.' }
         format.json { render json: {:GUID => @image.resourceId, :mutable => "false"}  }

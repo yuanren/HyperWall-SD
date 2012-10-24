@@ -326,6 +326,43 @@ class IdTableNameController < ApplicationController
     end
   end
 
+  def get_escalated_objects
+    @level = params[:level]
+    if @level.nil?
+      @level = 0
+    end
+    @type = params[:type]
+    @escalatedObjects = Array.new
+    Escalation.all.each do |escalation|
+      next if escalation.level < @level
+      @id = escalation.id
+      @associations = ImmutableAssociation.find_all_by_objectId(@id)
+      next if @associations.nil?
+      @associations.each do |association|
+        @hash = Hash.new
+        @associatedObjectsPerEscalation = Array.new
+        @objectAssociations = ImmutableAssociation.find_all_by_associationId(association.associationId)
+        @objectAssociations.each do |objectAssociation|
+          @objectId = objectAssociation.objectId
+          @associatedTableName = IdTableName.find_last_by_id(@objectId).tableName
+          if @associatedTableName == "Escalation"
+            @hash["escalation"] = Escalation.find_by_id(@objectId)
+          elsif @type.nil? or @type == @associatedTableName
+            @associatedObjectsPerEscalation << [@associatedTableName, @associatedTableName.constantize.find(@objectId)]
+          end
+        end
+        if !@associatedObjectsPerEscalation.empty?
+          @hash["objects"] = @associatedObjectsPerEscalation
+          @escalatedObjects << @hash
+        end
+      end
+    end
+    respond_to do |format|
+      #format.json { render :json => {:escalated_objects => @escalatedObjects} }
+      format.json { render :json => @escalatedObjects }
+    end
+  end
+
   def search_in_conversation
 
   end

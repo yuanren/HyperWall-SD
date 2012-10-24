@@ -40,14 +40,7 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.json
   def create
-    @resource = Resource.new
-    @resource.version = 1
-    @resource.type = "Person"
-    @resource.label = params[:label]
-    @resource.save
-
     @person = Person.new
-    @person.resourceId = @resource.resourceId
     @person.label = params[:label]
     respond_to do |format|
       if @person.save
@@ -56,6 +49,13 @@ class PeopleController < ApplicationController
         @idTableName.tableName = "Person"
         @idTableName.version = 1
         @idTableName.save
+
+        @resource = Resource.new
+        @resource.resourceId = @person.resourceId
+        @resource.version = 1
+        @resource.type = "Person"
+        @resource.label = params[:label]
+        @resource.save
 
         format.html { redirect_to @person, notice: 'Person was successfully created.' }
         #format.json { render

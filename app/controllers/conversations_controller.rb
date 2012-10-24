@@ -40,19 +40,7 @@ class ConversationsController < ApplicationController
   # POST /conversations
   # POST /conversations.json
   def create
-    @resource = Resource.new
-    @resource.label = params[:label]
-    @resource.type = "Conversation"
-    @resource.version = 1
-    @resource.save
-
-    @informationArtifact = InformationArtifact.new
-    @informationArtifact.resourceId = @resource.resourceId
-    @informationArtifact.type = "Conversation"
-    @informationArtifact.save
-
     @conversation = Conversation.new
-    @conversation.resourceId = @resource.resourceId
     @conversation.label = params[:label]
     @conversation.lastUpdated = Time.now
     respond_to do |format|
@@ -63,8 +51,20 @@ class ConversationsController < ApplicationController
         @idTableName.version = 1
         @idTableName.save
 
+        @resource = Resource.new
+        @resource.resourceId = @conversation.resourceId
+        @resource.label = params[:label]
+        @resource.type = "Conversation"
+        @resource.version = 1
+        @resource.save
+
+        @informationArtifact = InformationArtifact.new
+        @informationArtifact.resourceId = @resource.resourceId
+        @informationArtifact.type = "Conversation"
+        @informationArtifact.save
+
         format.html { redirect_to @conversation, notice: 'Conversation was successfully created.' }
-        format.json { render :json => {:GUID => @conversation.resourceId, :mutable => "true"} }
+        format.json { render :json => {:GUID => @conversation.resourceId} }
       else
         format.html { render action: "new" }
         format.json { render json: @conversation.errors, status: :unprocessable_entity }

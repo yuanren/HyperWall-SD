@@ -1,0 +1,29 @@
+<h1>Listing escalations</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Level</th>
+    <th>Datetime</th>
+    <th>Label</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @escalations.each do |escalation| %>
+  <tr>
+    <td><%= escalation.id %></td>
+    <td><%= escalation.level %></td>
+    <td><%= escalation.dateTime %></td>
+    <td><%= escalation.label %></td>
+    <td><%= link_to 'Show', escalation %></td>
+    <td><%= link_to 'Edit', edit_escalation_path(escalation) %></td>
+    <td><%= link_to 'Destroy', escalation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Escalation', new_escalation_path %>

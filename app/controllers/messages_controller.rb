@@ -40,15 +40,7 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.json
   def create
-    @resource = Resource.new
-    @resource.version = 1
-    @resource.type = "Message"
-    @resource.save
-    @informationArtifact = InformationArtifact.new
-    @informationArtifact.resourceId = @resource.resourceId
-    @informationArtifact.save
     @message = Message.new
-    @message.resourceId = @resource.resourceId
     @message.conversationResourceId = params[:conversation]
     @message.fromResourceId = params[:sender]
     @message.toResourceId = params[:recipient]
@@ -61,6 +53,15 @@ class MessagesController < ApplicationController
         @idTableName.tableName = "Message"
         @idTableName.version = 1
         @idTableName.save
+
+        @resource = Resource.new
+        @resource.resourceId = @message.resourceId
+        @resource.version = 1
+        @resource.type = "Message"
+        @resource.save
+        @informationArtifact = InformationArtifact.new
+        @informationArtifact.resourceId = @resource.resourceId
+        @informationArtifact.save
 
         @message.conversation.lastUpdated = @message.dateTime
         @message.conversation.save
