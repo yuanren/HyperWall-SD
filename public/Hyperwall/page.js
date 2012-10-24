@@ -4,10 +4,10 @@ var MAP;
 // Global Hyperwall variables
 var CONVERSATIONS_POLL_INTERVAL = 50000, CRUMB_POLL_INTERVAL = 2000;
 var CONVERSATIONS_POLLING_WORKER;
+var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
-
 
 
 // Conversation Properties Hashes
@@ -25,12 +25,11 @@ var CONVERSATION_HASH = new Object();
 var IMMUTABLE_HASH = new Object();
 IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { place, text, source, conversation, destination, img }
 
-var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
 
-function add_to_critical_list(guid, msg){
-  $("#critical_list header").after(
-    '<div class="critical_msg">'+
+function add_to_list(type, guid, msg){
+  $("#"+type+"_list header").after(
+    '<div class="list_msg">'+
     '<input type="hidden" class="Conversation_GUID" value="'+guid+'">'+msg+'</div>'
   );
 }
@@ -158,7 +157,7 @@ function initialize() {
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
           CONVERSATION_HASH[rcv_json.objects[i].resourceId] = new Object();
           CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
-          add_to_critical_list(rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
+          add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
         }
       }
     },
