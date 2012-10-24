@@ -5,11 +5,11 @@ class ResourcePlaceController < ApplicationController
     @place = Place.find_by_sql(["select * from Place where latitude = ? and longitude = ?", params[:latitude], params[:longitude]])[0]
     if @place.nil?
       @place = Place.new
+      @place.placeId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
       @place.label = params[:label]
       @place.latitude = params[:latitude]
       @place.longitude = params[:longitude]
       @place.version = 1
-      @place.save
 
       @point = Point.new
       @point.placeId = @place.placeId
@@ -22,6 +22,8 @@ class ResourcePlaceController < ApplicationController
       @spatialThing.altitude = 0.0
       @spatialThing.type = "Place"
       @spatialThing.save
+
+      @place.save
 
       @idTableName = IdTableName.new
       @idTableName.id = @place.placeId

@@ -51,7 +51,7 @@ class EventsController < ApplicationController
         @idTableName.save
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         #format.json { render json: @event, status: :created, location: @event }
-        format.json { render :json => {:GUID => @event.eventId, :mutable => "false"} }
+        format.json { render :json => {:GUID => @event.eventId} }
       else
         format.html { render action: "new" }
         format.json { render json: @event.errors, status: :unprocessable_entity }

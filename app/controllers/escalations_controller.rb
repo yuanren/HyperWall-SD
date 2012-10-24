@@ -53,7 +53,7 @@ class EscalationsController < ApplicationController
         @idTableName.save
 
         format.html { redirect_to @escalation, notice: 'Escalation was successfully created.' }
-        format.json { render :json => {:GUID => @escalation.id, :mutable => "false"} }
+        format.json { render :json => {:GUID => @escalation.id} }
       else
         format.html { render action: "new" }
         format.json { render json: @escalation.errors, status: :unprocessable_entity }

@@ -41,7 +41,16 @@ class PeopleController < ApplicationController
   # POST /people.json
   def create
     @person = Person.new
+    @person.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @person.label = params[:label]
+
+    @resource = Resource.new
+    @resource.resourceId = @person.resourceId
+    @resource.version = 1
+    @resource.type = "Person"
+    @resource.label = params[:label]
+    @resource.save
+
     respond_to do |format|
       if @person.save
         @idTableName = IdTableName.new
@@ -50,17 +59,10 @@ class PeopleController < ApplicationController
         @idTableName.version = 1
         @idTableName.save
 
-        @resource = Resource.new
-        @resource.resourceId = @person.resourceId
-        @resource.version = 1
-        @resource.type = "Person"
-        @resource.label = params[:label]
-        @resource.save
-
         format.html { redirect_to @person, notice: 'Person was successfully created.' }
         #format.json { render
         # json: @person, status: :created, location: @person }
-        format.json { render :json => {:GUID => @person.resourceId, :mutable => "false"} }
+        format.json { render :json => {:GUID => @person.resourceId} }
       else
         format.html { render action: "new" }
         format.json { render json: @person.errors, status: :unprocessable_entity }
