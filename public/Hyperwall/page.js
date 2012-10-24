@@ -129,7 +129,7 @@ function construct_conversation(conversation_guid){
   //$.when(
     prepare_conversation(conversation_guid).pipe( function(){
       for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
-        prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
+        return prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       }
     })
   .pipe(function(){
