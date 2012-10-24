@@ -23,7 +23,7 @@ var CONVERSATION_HASH = new Object();
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
-//IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
+IMMUTABLE_HASH["MSG"] = new Object(); // [GUID] -> { place, text, source, conversation, destination, img }
 //IMMUTABLE_HASH["PERSON"] = new Object();
 //IMMUTABLE_HASH["PLACE"] = new Object();
 //IMMUTABLE_HASH["IMAGE"] = new Object();
@@ -35,6 +35,17 @@ function add_to_critical_list(guid, msg){
   $("#critical_list header").after(
     '<div class="critical_msg">'+
     '<input type="hidden" class="Conversation_GUID" value="'+guid+'">'+msg+'</div>'
+  );
+}
+
+function get_immutable(guid){
+  return IMMUTABLE_HASH[guid] ||
+  sd_get(
+    "properties",
+    { GUID: guid, depth: 0 },
+    function(rcv_data){
+      IMMUTABLE_HASH[guid] = rcv_data.object;
+    }
   );
 }
 
@@ -116,81 +127,25 @@ function prepare_conversation(conversation_guid){
     "properties",
     { GUID: conversation_guid, depth: 1 },
     function(rcv_data){
-      CONVERSATION_HASH["LABELS"][conversation_guid] = rcv_data.object.label;
+      CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
       // iterate through msgs
-      CONVERSATION_HASH["MSGS"][conversation_guid] = new Object();
+      CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
       $(rcv_data.associated_objects[0][1]).each( function(){
-        CONVERSATION_HASH["MSGS"][conversation_guid][this.resourceID] = true;
-        prepare_msg(this.resourceId);
+        CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceID] = true;
       });
-      //console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
     }
   );
 }
-
-
-
-function get_immutable(guid){
-  return IMMUTABLE_HASH[guid] ||
-  sd_get(
-    "properties",
-    { GUID: guid, depth: 0 },
-    function(rcv_data){
-      IMMUTABLE_HASH[guid] = rcv_data.object;
-    }
-  );
-}
-
 
 function construct_conversation(conversation_guid){
   $.when(
-    sd_get(
-      "properties",
-      { GUID: conversation_guid, depth: 1 },
-      function(rcv_data){
-        CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
-        // iterate through msgs
-        CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
-        $(rcv_data.associated_objects[0][1]).each( function(){
-          CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceId] = true;
-          //prepare_msg(this.resourceId);
-        });
-      }
-    )/*.pipe( function(){
-
-    })*/
+    prepare_conversation(conversation_guid).pipe( function(){
+      console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+    })
   ).done(function(){
-    console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+    //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
 }
-
-
-
-
-
-/*
-function polling_conversation_guid(conversation_guid){  
-  // Create polling workers for one Conversation
-  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid] = new Worker('polling_workers/polling_worker.js');
-  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid].addEventListener(
-    'message',
-    function(e){
-      var rcv_json = $.parseJSON(e.data);
-      console.log(rcv_json);
-      // if Conversation is new/updated and not ignored.
-      if (CONVERSATION_HASH["STATUS"][conversation_guid] != rcv_json.object.lastUpdated && CONVERSATION_HASH["STATUS"][conversation_guid] != "Ignore"){
-        console.log("new or updated conversation: "+conversation_guid);
-        CONVERSATION_HASH["STATUS"][conversation_guid] = rcv_json.object.lastUpdated;
-        add_to_critical_list(conversation_guid, "<b>Conversation</b>:<br> "+rcv_json.object.label);
-      }
-    },
-    false
-  );
-  CONVERSATION_HASH["POLLING_WORKERS"][conversation_guid].postMessage(
-    {type: "Conversation", interval: CONVERSATION_POLL_INTERVAL, GUID: conversation_guid}
-  ); 
-}
-*/
 
 
 // Main Function
