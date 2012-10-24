@@ -129,9 +129,9 @@ function prepare_conversation(conversation_guid){
     function(rcv_data){
       CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
       // iterate through msgs
-      CONVERSATION_HASH[conversation_guid]["MSGS"] = new Object();
+      CONVERSATION_HASH[conversation_guid]["MSGS"] = new Array();
       $(rcv_data.associated_objects[0][1]).each( function(){
-        CONVERSATION_HASH[conversation_guid]["MSGS"][this.resourceId] = true;
+        CONVERSATION_HASH[conversation_guid]["MSGS"].push(this.resourceId);
       });
     }
   );
