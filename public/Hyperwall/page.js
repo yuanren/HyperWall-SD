@@ -105,7 +105,7 @@ function prepare_conversation(conversation_guid){
   return sd_get(
     "properties", { GUID: conversation_guid, depth: 1 },
     function(rcv_data){
-      CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
+      CONVERSATION_HASH[conversation_guid]["LABEL"] = rcv_data.object.label;
       // iterate through msgs
       CONVERSATION_HASH[conversation_guid]["MSGS"] = new Array(); // reserve time order 
       CONVERSATION_HASH[conversation_guid]["MSGS_HASH"] = new Object(); // for quick check of existence
@@ -127,11 +127,10 @@ function construct_conversation(conversation_guid){
     })
   ).done(function(){
 
-    console.log(CONVERSATION_HASH);
-    console.log(IMMUTABLE_HASH["MSG"]);
-    //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+    //console.log(CONVERSATION_HASH);
+    //console.log(IMMUTABLE_HASH["MSG"]);
     var info_str =
-      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["label"]+'</h1>'+
+      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
       '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
         '<div class="dialog_pics"></div>'+
         '<div class="dialog_texts"></div>'+
