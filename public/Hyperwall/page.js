@@ -127,6 +127,7 @@ function construct_conversation(conversation_guid){
     })
   ).done(function(){
 
+    console.log(CONVERSATION_HASH);
     console.log(IMMUTABLE_HASH["MSG"]);
     //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
     var info_str =
@@ -134,7 +135,7 @@ function construct_conversation(conversation_guid){
       '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
         '<div class="dialog_pics"></div>'+
         '<div class="dialog_texts"></div>'+
-        '<input type="text" class="response_text" style="width: 100%">'+
+        '<input type="text" class="response_text">'+
       '<button class="more_info_btn">More Info</button></div>';
     
     // Check if Place information is available
