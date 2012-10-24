@@ -126,33 +126,45 @@ function prepare_conversation(conversation_guid){
 
 
 function construct_conversation(conversation_guid){
-  //$.when(
-    prepare_conversation(conversation_guid).pipe( function(){
-      for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
+  $.when(
+    prepare_conversation(conversation_guid)
+  ).done( function(){
+    /*  for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
         return prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
-      }
-    })
-  .pipe(function(){
+      }*/
 
-    var info_str =
-      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
-      '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
-        '<div class="dialog_pics"></div>'+
-        '<div class="dialog_texts"></div>'+
+    var msg_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(i, val) {
+      console.log(val);
+      return prepare_msg(val);
+    }); 
+
+    $.when.apply(null, msg_requests_array).done( function(){
+
+      var info_str =
+        '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
+        '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
+          '<div class="dialog_pics"></div>'+
+          '<div class="dialog_texts"></div>'+
         '<input type="text" class="response_text">'+
-      '<button class="more_info_btn">More Info</button></div>';
+        '<button class="more_info_btn">More Info</button></div>';
     
-    // Check if Place information is available
-    if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-      $("#conversations_with_no_place").append(info_str);
-    } else {
-      $("#conversations_with_no_place").append(info_str);
-    }
+      // Check if Place information is available
+      if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+        $("#conversations_with_no_place").append(info_str);
+      } else {
+        $("#conversations_with_no_place").append(info_str);
+      }
 
-    for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
-      //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
-      insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
-    }
+      for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
+        //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
+        insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+      }
+
+    });
+
+  });
+    
+
       
   
       
@@ -193,7 +205,6 @@ function construct_conversation(conversation_guid){
       });
 */
 
-  });
 }
 
 
