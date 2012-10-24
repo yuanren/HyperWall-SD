@@ -49,25 +49,26 @@ class PlacesController < ApplicationController
       end
     else
       @place = Place.new
+      @place.placeId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
       @place.label = params[:label]
       @place.latitude = params[:latitude]
       @place.longitude = params[:longitude]
       @place.version = 1
 
+      @point = Point.new
+      @point.placeId = @place.placeId
+      @point.save
+
+      @spatialThing = SpatialThing.new
+      @spatialThing.placeId = @point.placeId
+      @spatialThing.latitude = params[:latitude]
+      @spatialThing.longitude = params[:longitude]
+      @spatialThing.altitude = 0.0
+      @spatialThing.type = "Place"
+      @spatialThing.save
+
       respond_to do |format|
         if @place.save
-          @point = Point.new
-          @point.placeId = @place.placeId
-          @point.save
-
-          @spatialThing = SpatialThing.new
-          @spatialThing.placeId = @point.placeId
-          @spatialThing.latitude = params[:latitude]
-          @spatialThing.longitude = params[:longitude]
-          @spatialThing.altitude = 0.0
-          @spatialThing.type = "Place"
-          @spatialThing.save
-
           @idTableName = IdTableName.new
           @idTableName.id = @place.placeId
           @idTableName.tableName = "Place"
@@ -75,7 +76,7 @@ class PlacesController < ApplicationController
           @idTableName.save
 
           format.html { redirect_to @place, notice: 'Place was successfully created.' }
-          format.json { render :json => {:GUID => @place.placeId, :mutable => "false"} }
+          format.json { render :json => {:GUID => @place.placeId} }
         else
           format.html { render action: "new" }
           format.json { render json: @place.errors, status: :unprocessable_entity }

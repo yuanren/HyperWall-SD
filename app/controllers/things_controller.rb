@@ -41,7 +41,16 @@ class ThingsController < ApplicationController
   # POST /things.json
   def create
     @thing = Thing.new
+    @thing.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @thing.label = params[:label]
+
+    @resource = Resource.new
+    @resource.resourceId = @thing.resourceId
+    @resource.version = 1
+    @resource.type = "Thing"
+    @resource.label = params[:label]
+    @resource.save
+
     respond_to do |format|
       if @thing.save
         @idTableName = IdTableName.new
@@ -50,16 +59,9 @@ class ThingsController < ApplicationController
         @idTableName.version = 1
         @idTableName.save
 
-        @resource = Resource.new
-        @resource.resourceId = @thing.resourceId
-        @resource.version = 1
-        @resource.type = "Thing"
-        @resource.label = params[:label]
-        @resource.save
-
         format.html { redirect_to @thing, notice: 'Thing was successfully created.' }
         #format.json { render json: @thing, status: :created, location: @thing }
-        format.json { render :json => {:GUID => @thing.resourceId, :mutable => "false"} }
+        format.json { render :json => {:GUID => @thing.resourceId} }
       else
         format.html { render action: "new" }
         format.json { render json: @thing.errors, status: :unprocessable_entity }

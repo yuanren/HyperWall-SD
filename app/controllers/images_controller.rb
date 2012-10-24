@@ -41,9 +41,18 @@ class ImagesController < ApplicationController
   # POST /images.json
   def create
     @image = Image.new
+    @image.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @image.label = params[:label]
     @image.imageBinary = params[:binary]
     @image.dateTime = Time.now
+
+    @resource = Resource.new
+    @resource.resourceId = @image.resourceId
+    @resource.version = 1
+    @resource.type = "Image"
+    @resource.label = params[:label]
+    @resource.save
+
     respond_to do |format|
       if @image.save
         @idTableName = IdTableName.new
@@ -52,15 +61,8 @@ class ImagesController < ApplicationController
         @idTableName.version = 1
         @idTableName.save
 
-        @resource = Resource.new
-        @resource.resourceId = @image.resourceId
-        @resource.version = 1
-        @resource.type = "Image"
-        @resource.label = params[:label]
-        @resource.save
-
         format.html { redirect_to @image, notice: 'Image was successfully created.' }
-        format.json { render json: {:GUID => @image.resourceId, :mutable => "false"}  }
+        format.json { render json: {:GUID => @image.resourceId}  }
       else
         format.html { render action: "new" }
         format.json { render json: @image.errors, status: :unprocessable_entity }

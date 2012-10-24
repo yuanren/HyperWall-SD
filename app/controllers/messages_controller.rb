@@ -41,11 +41,22 @@ class MessagesController < ApplicationController
   # POST /messages.json
   def create
     @message = Message.new
+    @message.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @message.conversationResourceId = params[:conversation]
     @message.fromResourceId = params[:sender]
     @message.toResourceId = params[:recipient]
     @message.payload = params[:text]
     @message.dateTime = Time.now
+
+    @resource = Resource.new
+    @resource.resourceId = @message.resourceId
+    @resource.version = 1
+    @resource.type = "Message"
+    @resource.save
+    @informationArtifact = InformationArtifact.new
+    @informationArtifact.resourceId = @resource.resourceId
+    @informationArtifact.save
+
     respond_to do |format|
       if @message.save
         @idTableName = IdTableName.new
@@ -54,21 +65,12 @@ class MessagesController < ApplicationController
         @idTableName.version = 1
         @idTableName.save
 
-        @resource = Resource.new
-        @resource.resourceId = @message.resourceId
-        @resource.version = 1
-        @resource.type = "Message"
-        @resource.save
-        @informationArtifact = InformationArtifact.new
-        @informationArtifact.resourceId = @resource.resourceId
-        @informationArtifact.save
-
         @message.conversation.lastUpdated = @message.dateTime
         @message.conversation.save
 
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         #format.json { render json: @message, status: :created, location: @message }
-        format.json { render :json => {:GUID => @message.resourceId, :mutable => "false"} }
+        format.json { render :json => {:GUID => @message.resourceId} }
       else
         format.html { render action: "new" }
         format.json { render json: @message.errors, status: :unprocessable_entity }
