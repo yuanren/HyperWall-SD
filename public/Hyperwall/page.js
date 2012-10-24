@@ -39,9 +39,9 @@ function add_to_list(type, guid, msg){
 function insert_msg(conversation_guid, msg_guid){
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
-  console.log(IMMUTABLE_HASH["MSG"]);
-  console.log(msg_guid);
-  console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
+  //console.log(IMMUTABLE_HASH["MSG"]);
+  //console.log(msg_guid);
+  //console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -126,20 +126,14 @@ function prepare_conversation(conversation_guid){
 
 
 function construct_conversation(conversation_guid){
-  $.when(
-    prepare_conversation(conversation_guid)
+  $.when( prepare_conversation(conversation_guid)
   ).done( function(){
-    /*  for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
-        return prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
-      }*/
 
     var msg_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(val, i) {
-      console.log(val);
       return prepare_msg(val);
-    }); 
+    });
 
     $.when.apply(null, msg_requests_array).done( function(){
-
       var info_str =
         '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
         '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
@@ -155,8 +149,7 @@ function construct_conversation(conversation_guid){
         $("#conversations_with_no_place").append(info_str);
       }
 
-      for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
-        //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
+      for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
         insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
       }
 
