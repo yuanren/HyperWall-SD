@@ -27,13 +27,33 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 
 
+
+// HTML MANIPULATION THINGS
 function add_to_list(type, guid, msg){
   $("#"+type+"_list header").after(
     '<div class="list_msg">'+
-    '<input type="hidden" class="Conversation_GUID" value="'+guid+'">'+msg+'</div>'
+    '<input type="hidden" class="conversation_guid" value="'+guid+'">'+msg+'</div>'
   );
 }
 
+function insert_msg(conversation_guid, msg_guid){
+  var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
+  if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
+    console.log("we have some pictures!")
+  }
+
+  var text_str =
+    '<hr><input type="hidden" class="msg_guid">'+
+    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">'+
+    get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]).label+
+    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
+    '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
+  target_container.find('.dialog_texts').insert(text_str);
+}
+
+
+
+// INFRASTRUCTURE THINGS
 
 function get_immutable(guid){
   return IMMUTABLE_HASH[guid] ||
@@ -68,13 +88,13 @@ function prepare_msg(msg_guid){
 
       IMMUTABLE_HASH["MSG"][msg_guid] = 
       {
-        payload: rcv_data.object.payload,
-        fromResourceId: rcv_data.object.fromResourceId,
-        toResourceId: rcv_data.object.toResourceId,
-        conversationResourceId: rcv_data.object.conversationResourceId,
-        datetime: rcv_data.object.dateTime,
-        place: place_guid,
-        img: img_guid
+        "payload": rcv_data.object.payload,
+        "fromResourceId": rcv_data.object.fromResourceId,
+        "toResourceId": rcv_data.object.toResourceId,
+        "conversationResourceId": rcv_data.object.conversationResourceId,
+        "dateTime": rcv_data.object.dateTime,
+        "place": place_guid,
+        "img": img_guid
       };
     }
   );
@@ -86,9 +106,11 @@ function prepare_conversation(conversation_guid){
     function(rcv_data){
       CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
       // iterate through msgs
-      CONVERSATION_HASH[conversation_guid]["MSGS"] = new Array();
+      CONVERSATION_HASH[conversation_guid]["MSGS"] = new Array(); // reserve time order 
+      CONVERSATION_HASH[conversation_guid]["MSGS_HASH"] = new Object(); // for quick check of existence
       $(rcv_data.associated_objects[0][1]).each( function(){
         CONVERSATION_HASH[conversation_guid]["MSGS"].push(this.resourceId);
+        CONVERSATION_HASH[conversation_guid]["MSGS_HASH"][this.resourceId] = true;
       });
     }
   );
@@ -103,7 +125,66 @@ function construct_conversation(conversation_guid){
       }
     })
   ).done(function(){
+
     //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
+    var info_str =
+      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["label"]+'</h1>'+
+      '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
+        '<div class="dialog_pics"></div>'+
+        '<div class="dialog_texts"></div>'+
+        '<input type="text" class="response_text" style="width: 100%">'+
+      '<button class="more_info_btn">More Info</button></div>';
+    
+    // Check if Place information is available
+    if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+      $("#conversations_with_no_place").insert(info_str);
+    } else {
+      $("#conversations_with_no_place").insert(info_str);
+    }
+
+    for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
+      insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+    }
+      
+  
+      
+/*
+      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
+        MAP.setZoom(17);
+        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
+      });
+
+
+//old
+
+      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid][label]+'</h1>'+
+      '<input type="hidden" class="Conversation_GUID" value="'+conversation_guid+'">'+
+        '<div class="dialog_pics">'+
+        '<div class="dialog_pic"><input type="hidden" class="msg_GUID">'+
+        '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
+        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
+        '<div class="dialog_texts">';
+        
+      $(rcv_data.associated_objects[0][1]).each( function(){ 
+        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
+        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
+        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
+      });
+
+      test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
+      '<button class="more_info_btn">More Info</button> </div></div>';
+      
+  
+      
+
+      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
+      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
+        MAP.setZoom(17);
+        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
+      });
+*/
+
   });
 }
 
