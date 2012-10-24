@@ -41,7 +41,7 @@ function insert_msg(conversation_guid, msg_guid){
   
   console.log(IMMUTABLE_HASH["MSG"]);
   console.log(msg_guid);
-  console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
+  console.log(IMMUTABLE_HASH["MSG"][msg_guid.toString()]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
