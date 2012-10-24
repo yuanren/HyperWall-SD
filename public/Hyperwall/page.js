@@ -39,7 +39,7 @@ function add_to_critical_list(guid, msg){
 }
 
 
-
+/*
 function prepare_person(person_guid){
   if(IMMUTABLE_HASH["PERSON"].hasOwnProperty(person_guid)) { return false; }
   sd_get(
@@ -53,6 +53,7 @@ function prepare_person(person_guid){
     }
   );
 }
+*/
 
 function prepare_msg(msg_guid){
   if(IMMUTABLE_HASH["MSG"].hasOwnProperty(msg_guid)) { return false; }
@@ -111,7 +112,7 @@ function prepare_msg(msg_guid){
 }
 
 function prepare_conversation(conversation_guid){
-  sd_get(
+  return sd_get(
     "properties",
     { GUID: conversation_guid, depth: 1 },
     function(rcv_data){
@@ -127,13 +128,15 @@ function prepare_conversation(conversation_guid){
   );
 }
 
+
+
 function get_immutable(guid){
   return IMMUTABLE_HASH[guid] ||
   sd_get(
     "properties",
     { GUID: guid, depth: 0 },
     function(rcv_data){
-      
+      IMMUTABLE_HASH[guid] = rcv_data.object;
     }
   );
 }
@@ -153,7 +156,9 @@ function construct_conversation(conversation_guid){
           //prepare_msg(this.resourceId);
         });
       }
-    )
+    )/*.pipe( function(){
+
+    })*/
   ).done(function(){
     console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
   });
