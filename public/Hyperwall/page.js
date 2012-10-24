@@ -133,7 +133,7 @@ function construct_conversation(conversation_guid){
         return prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       }*/
 
-    var msg_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(i, val) {
+    var msg_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(val, i) {
       console.log(val);
       return prepare_msg(val);
     }); 
