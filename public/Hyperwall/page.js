@@ -39,16 +39,22 @@ function add_to_list(type, guid, msg){
 function insert_msg(conversation_guid, msg_guid){
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
-  if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
+  console.log(IMMUTABLE_HASH["MSG"]);
+  console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
+  /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
-  }
+  }*/
 
   var text_str =
     '<hr><input type="hidden" class="msg_guid">'+
-    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">'+
-    get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]).label+
+    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
+  $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+    text_str += res.label;
+  });
+  text_str +=
     '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
     '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
+  
   target_container.find('.dialog_texts').prepend(text_str);
 }
 
@@ -127,8 +133,6 @@ function construct_conversation(conversation_guid){
     })
   ).done(function(){
 
-    //console.log(CONVERSATION_HASH);
-    //console.log(IMMUTABLE_HASH["MSG"]);
     var info_str =
       '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
       '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
@@ -144,7 +148,6 @@ function construct_conversation(conversation_guid){
       $("#conversations_with_no_place").append(info_str);
     }
 
-    console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
     for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
       //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
