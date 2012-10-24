@@ -40,6 +40,7 @@ function insert_msg(conversation_guid, msg_guid){
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
   console.log(IMMUTABLE_HASH["MSG"]);
+  console.log(msg_guid);
   console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
