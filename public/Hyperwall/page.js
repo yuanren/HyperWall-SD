@@ -2,8 +2,8 @@
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATION_GUIDS_POLL_INTERVAL = 50000;
-var CRUMB_POLL_INTERVAL = 2000, CONVERSATION_POLL_INTERVAL = 80000;
+var CONVERSATIONS_POLL_INTERVAL = 50000, CRUMB_POLL_INTERVAL = 2000;
+var CONVERSATIONS_POLLING_WORKER;
 
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
@@ -39,18 +39,14 @@ function add_to_critical_list(guid, msg){
 function get_immutable(guid){
   return IMMUTABLE_HASH[guid] ||
   sd_get(
-    "properties",
-    { GUID: guid, depth: 0 },
-    function(rcv_data){
-      IMMUTABLE_HASH[guid] = rcv_data.object;
-    }
+    "properties", { GUID: guid, depth: 0 },
+    function(rcv_data){ IMMUTABLE_HASH[guid] = rcv_data.object; }
   );
 }
 
 function prepare_msg(msg_guid){
   return sd_get(
-    "properties",
-    { GUID: msg_guid, depth: 1 },
+    "properties", { GUID: msg_guid, depth: 1 },
     function(rcv_data){
       // Check if any place or image is associated to the msg
       var place_guid, img_guid;
@@ -70,7 +66,7 @@ function prepare_msg(msg_guid){
           }
         } catch(err) { console.log(err);}
       }
-    
+
       IMMUTABLE_HASH["MSG"][msg_guid] = 
       {
         payload: rcv_data.object.payload,
@@ -87,8 +83,7 @@ function prepare_msg(msg_guid){
 
 function prepare_conversation(conversation_guid){
   return sd_get(
-    "properties",
-    { GUID: conversation_guid, depth: 1 },
+    "properties", { GUID: conversation_guid, depth: 1 },
     function(rcv_data){
       CONVERSATION_HASH[conversation_guid]["LABELS"] = rcv_data.object.label;
       // iterate through msgs
@@ -104,7 +99,6 @@ function prepare_conversation(conversation_guid){
 function construct_conversation(conversation_guid){
   $.when(
     prepare_conversation(conversation_guid).pipe( function(){
-      //console.log(CONVERSATION_HASH[conversation_guid]["MSGS"]);
       for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
         prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       }
@@ -118,7 +112,7 @@ function construct_conversation(conversation_guid){
 
 // Main Function
 function initialize() {
-  // Register Hyperwall on SDB
+  // Register Hyperwall on Situation DB
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
     // Temporary give a dedicated GUID
@@ -143,8 +137,8 @@ function initialize() {
   );
 
   // Start conversation polling worker thread
-  var guids_polling_worker = new Worker('polling_workers/polling_worker.js');
-  guids_polling_worker.addEventListener(
+  CONVERSATIONS_POLLING_WORKER = new Worker('polling_workers/polling_worker.js');
+  CONVERSATIONS_POLLING_WORKER.addEventListener(
     'message',
     function(e){
       // Receive Conversation GUIDs from Server
@@ -170,7 +164,7 @@ function initialize() {
     },
     false
   );
-  guids_polling_worker.postMessage( {type: "Conversations", interval: CONVERSATION_GUIDS_POLL_INTERVAL}); 
+  CONVERSATIONS_POLLING_WORKER.postMessage( {type: "Conversations", interval: CONVERSATIONS_POLL_INTERVAL}); 
 
 
   // test space
