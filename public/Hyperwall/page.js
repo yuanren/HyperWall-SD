@@ -41,7 +41,7 @@ function insert_msg(conversation_guid, msg_guid){
   
   console.log(IMMUTABLE_HASH["MSG"]);
   console.log(msg_guid);
-  console.log(IMMUTABLE_HASH["MSG"][msg_guid.toString()]);
+  console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -126,13 +126,13 @@ function prepare_conversation(conversation_guid){
 
 
 function construct_conversation(conversation_guid){
-  $.when(
+  //$.when(
     prepare_conversation(conversation_guid).pipe( function(){
       for(var i=0; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i){
         prepare_msg(CONVERSATION_HASH[conversation_guid]["MSGS"][i]);
       }
     })
-  ).done(function(){
+  .pipe(function(){
 
     var info_str =
       '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
