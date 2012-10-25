@@ -306,7 +306,8 @@ function initialize() {
 
   $('body').on("click", ".more_info_btn", function(){
     console.log($(this));
-    console.log($(this).closest(".response_text"));
+    console.log($(this).parent().find(".response_text"));
+    console.log($(this).parent().find(".conversation_guid"));
     /*sd_create(
       "messages",
       { 
