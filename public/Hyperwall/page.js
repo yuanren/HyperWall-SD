@@ -233,7 +233,7 @@ function initialize() {
 
 
   // UI Related
-  $(".list_msg").on("click", function(){
+  $("#general_list").on("click", ".list_msg", function(event){
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       console.log("test trigger");
