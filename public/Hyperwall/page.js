@@ -157,7 +157,7 @@ function construct_conversation(conversation_guid){
         return get_immutable(IMMUTABLE_HASH["MSG"][val]["fromResourceId"]);
       });
       $.when.apply(null, person_requests_array).done( function(){
-        console,log("here?");
+        console.log("here?");
         for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
           insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
         }      
