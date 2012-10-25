@@ -169,47 +169,6 @@ function construct_conversation(conversation_guid){
 
   });
     
-
-      
-  
-      
-/*
-      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
-        MAP.setZoom(17);
-        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
-      });
-
-
-//old
-
-      '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid][label]+'</h1>'+
-      '<input type="hidden" class="Conversation_GUID" value="'+conversation_guid+'">'+
-        '<div class="dialog_pics">'+
-        '<div class="dialog_pic"><input type="hidden" class="msg_GUID">'+
-        '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
-        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
-        '<div class="dialog_texts">';
-        
-      $(rcv_data.associated_objects[0][1]).each( function(){ 
-        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
-        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
-        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
-      });
-
-      test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
-      '<button class="more_info_btn">More Info</button> </div></div>';
-      
-  
-      
-
-      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
-        MAP.setZoom(17);
-        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
-      });
-*/
-
 }
 
 
@@ -255,7 +214,7 @@ function initialize() {
             if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated ){
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
-              CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] == rcv_json.objects[i].lastUpdated;
+              CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
             }
           }
         } else {
@@ -264,6 +223,7 @@ function initialize() {
           CONVERSATION_HASH[rcv_json.objects[i].resourceId] = new Object();
           CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
           add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
+          construct_conversation(rcv_json.objects[i].resourceId);
         }
       }
     },
@@ -273,9 +233,9 @@ function initialize() {
 
 
   // test space
-  test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
-  CONVERSATION_HASH[test_guid] = new Object();
-  construct_conversation(test_guid);
+  //test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
+  //CONVERSATION_HASH[test_guid] = new Object();
+  //construct_conversation(test_guid);
 
 
 /*
