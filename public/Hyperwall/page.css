@@ -89,7 +89,8 @@ html, body {
 
 .ignore_btn { color: #666; }
 .escalate_btn { color: #600; }
-.more_info_btn { color: #9dbe65; }
+.more_info_btn { float:right; color: #9dbe65; }
+.response_text { float:right; }
 
 
 
