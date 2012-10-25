@@ -51,7 +51,7 @@ function insert_msg(conversation_guid, msg_guid){
       '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
   
 
-  return $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+  $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     
 
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
