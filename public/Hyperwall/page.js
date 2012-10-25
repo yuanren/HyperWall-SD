@@ -106,6 +106,9 @@ function prepare_msg(msg_guid){
         "place": place_guid,
         "img": img_guid
       };
+
+      get_immutable(rcv_data.object.fromResourceId);
+      if(!img_guid){ get_immutable(img_guid) };
     }
   );
 }
