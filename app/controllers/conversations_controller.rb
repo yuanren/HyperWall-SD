@@ -41,8 +41,22 @@ class ConversationsController < ApplicationController
   # POST /conversations.json
   def create
     @conversation = Conversation.new
+    @conversation.resourceId = 'M-' + UUIDTools::UUID.timestamp_create.to_s
     @conversation.label = params[:label]
     @conversation.lastUpdated = Time.now
+
+    @resource = Resource.new
+    @resource.resourceId = @conversation.resourceId
+    @resource.label = params[:label]
+    @resource.type = "Conversation"
+    @resource.version = 1
+    @resource.save
+
+    @informationArtifact = InformationArtifact.new
+    @informationArtifact.resourceId = @resource.resourceId
+    @informationArtifact.type = "Conversation"
+    @informationArtifact.save
+
     respond_to do |format|
       if @conversation.save
         @idTableName = IdTableName.new
@@ -50,18 +64,6 @@ class ConversationsController < ApplicationController
         @idTableName.tableName = "Conversation"
         @idTableName.version = 1
         @idTableName.save
-
-        @resource = Resource.new
-        @resource.resourceId = @conversation.resourceId
-        @resource.label = params[:label]
-        @resource.type = "Conversation"
-        @resource.version = 1
-        @resource.save
-
-        @informationArtifact = InformationArtifact.new
-        @informationArtifact.resourceId = @resource.resourceId
-        @informationArtifact.type = "Conversation"
-        @informationArtifact.save
 
         format.html { redirect_to @conversation, notice: 'Conversation was successfully created.' }
         format.json { render :json => {:GUID => @conversation.resourceId} }
