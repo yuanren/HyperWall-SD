@@ -37,8 +37,7 @@ function add_to_list(type, guid, msg){
 }
 
 function insert_msg(conversation_guid, msg_guid){
-  return $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
-    var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
+  var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
     //console.log(IMMUTABLE_HASH["MSG"]);
     //console.log(msg_guid);
@@ -51,6 +50,9 @@ function insert_msg(conversation_guid, msg_guid){
       '<hr><input type="hidden" class="msg_guid">'+
       '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
   
+
+  return $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+    
 
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str +=
