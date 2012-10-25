@@ -40,7 +40,7 @@ html, body {
 
 
 /* Inmap Dialog Styling*/ 
-.inmap_dialog {  width: 480px; }
+.inmap_dialog {  width: 500px; height: 420px;}
 .inmap_dialog hr { margin-bottom: 2px;}
 .dialog_title {
   color: #6a7062;
@@ -48,9 +48,10 @@ html, body {
   font-size: 22px;
 }
 .dialog_pics { 
-  width: 260px;
+  width: 260px; height: 390px;
   margin:0;
   display: inline-block;
+  vertical-align: top;
 }
 
 .dialog_pic img {
@@ -67,7 +68,7 @@ html, body {
 
 .dialog_texts {
   margin-left: 6px;
-  width: 210px;
+  width: 210px; height: 390px;
   display: inline-block;
   vertical-align: top;
 }
