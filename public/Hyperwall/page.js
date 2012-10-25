@@ -196,7 +196,7 @@ function construct_conversation(conversation_guid){
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
             '<div class="inmap_dialog">'+
-            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").html()+
+            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().html()+
             '</div>'
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
@@ -292,7 +292,7 @@ function initialize() {
       MAP.setZoom(17);
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
         '<div class="inmap_dialog">'+
-        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").html()+
+        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().html()+
         '</div>'
       );
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
