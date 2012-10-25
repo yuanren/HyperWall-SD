@@ -37,6 +37,7 @@ function add_to_list(type, guid, msg){
 function insert_msg(conversation_guid, msg_guid){
 
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
+  console.log(target_container);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -251,7 +252,7 @@ function initialize() {
             if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated ){
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
-              CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated
+              CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] == rcv_json.objects[i].lastUpdated;
             }
           }
         } else {
