@@ -142,10 +142,13 @@ function construct_conversation(conversation_guid){
     
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-        //$("#conversations_with_no_place").append(info_str);
-        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: info_str });
+        $("#conversations_with_no_place").append(info_str);
+        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: "" });
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
+          CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
+            $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().parent().html();
+          );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
         });
       } else {
