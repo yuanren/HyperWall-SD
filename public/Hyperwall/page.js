@@ -13,7 +13,6 @@ var SPECIAL_USERS = new Array();
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
 //CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
-//CONVERSATION_HASH["POLLING_WORKERS"] = new Object(); // [GUID] -> Polling Worker 
 //CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
 //CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
 //CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
@@ -49,7 +48,7 @@ function insert_msg(conversation_guid, msg_guid){
   var text_str =
     '<hr><input type="hidden" class="msg_guid">'+
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
-  return $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+  $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str +=
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
@@ -152,17 +151,14 @@ function construct_conversation(conversation_guid){
         $("#conversations_with_no_place").append(info_str);
       }
 
-      /*for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
-        insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
-      }*/
-
-      var result = insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][0] );
-      for (var i = 1 ; i < CONVERSATION_HASH[conversation_guid]["MSGS"].length ; i++) {
-        result = result.pipe(function() {
-        return insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+      var person_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(val, i) {
+        return get_immutable(IMMUTABLE_HASH["MSG"][val]["fromResourceId"]);
       });
-      }
-
+      $.when.apply(null, person_requests_array).done( function(){
+        for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
+          insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+        }      
+      });
 
     });
 
