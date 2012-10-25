@@ -49,7 +49,7 @@ function insert_msg(conversation_guid, msg_guid){
   var text_str =
     '<hr><input type="hidden" class="msg_guid">'+
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
-  $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+  //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str +=
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
@@ -57,7 +57,7 @@ function insert_msg(conversation_guid, msg_guid){
   
     target_container.find('.dialog_texts').prepend(text_str);
 
-  });
+  //});
 }
 
 
