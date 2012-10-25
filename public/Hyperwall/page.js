@@ -37,7 +37,6 @@ function add_to_list(type, guid, msg){
 function insert_msg(conversation_guid, msg_guid){
 
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
-  console.log(target_container);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -230,6 +229,23 @@ function initialize() {
     false
   );
   CONVERSATIONS_POLLING_WORKER.postMessage( {type: "Conversations", interval: CONVERSATIONS_POLL_INTERVAL}); 
+
+
+
+  // UI Related
+  $(".list_msg").on("click", function(){
+    var conversation_guid = $(this).find(".conversation_guid").val();
+    if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+      console.log("test trigger");
+      $(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]).trigger('click');
+    } else {
+      $("#conversations_with_no_place .inmap_dialog").hide();
+      $("#conversations_with_no_place .conversation_guid[value="+conversation_guid+"]").show();
+      $("#conversations_with_no_place").fadeIn();
+    }
+  });
+
+
 
 
   // test space
