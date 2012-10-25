@@ -195,7 +195,7 @@ function construct_conversation(conversation_guid){
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-            '<div class="inmap_dialog">'+
+            '<div class="inmap_dialog" style="display: inline">'+
             $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().html()+
             '</div>'
           );
@@ -298,7 +298,7 @@ function initialize() {
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-        '<div class="inmap_dialog">'+
+        '<div class="inmap_dialog" style="display: inline">'+
         $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().html()+
         '</div>'
       );
