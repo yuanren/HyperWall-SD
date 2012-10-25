@@ -141,7 +141,7 @@ function construct_conversation(conversation_guid){
         '<button class="more_info_btn">More Info</button></div>';
     
       // Check if Place information is available
-      if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+      if(!CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
         //$("#conversations_with_no_place").append(info_str);
         CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: info_str });
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
