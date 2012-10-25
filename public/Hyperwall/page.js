@@ -28,7 +28,7 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 
 
-// HTML MANIPULATION THINGS
+// HTML MANIPULATION Functions
 function add_to_list(type, guid, msg){
   $("#"+type+"_list header").after(
     '<div class="list_msg">'+
@@ -39,9 +39,9 @@ function add_to_list(type, guid, msg){
 function insert_msg(conversation_guid, msg_guid){
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
-  console.log(IMMUTABLE_HASH["MSG"]);
-  console.log(msg_guid);
-  console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
+  //console.log(IMMUTABLE_HASH["MSG"]);
+  //console.log(msg_guid);
+  //console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -51,12 +51,13 @@ function insert_msg(conversation_guid, msg_guid){
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
   $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += res.label;
-  });
-  text_str +=
-    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
-    '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
+    text_str +=
+      '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
+      '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
-  target_container.find('.dialog_texts').prepend(text_str);
+    target_container.find('.dialog_texts').prepend(text_str);
+
+  });
 }
 
 
@@ -64,6 +65,7 @@ function insert_msg(conversation_guid, msg_guid){
 // INFRASTRUCTURE THINGS
 
 function get_immutable(guid){
+  console.log("try get Immutable");
   return IMMUTABLE_HASH[guid] ||
   sd_get(
     "properties", { GUID: guid, depth: 0 },
@@ -239,6 +241,7 @@ function initialize() {
             if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated ){
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
+              CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != rcv_json.objects[i].lastUpdated
             }
           }
         } else {
