@@ -285,44 +285,8 @@ function initialize() {
 
 
 
-  // UI Related
-  $("#general_list").on("click", ".list_msg", function(event){
-    var conversation_guid = $(this).find(".conversation_guid").val();
-    console.log(conversation_guid);
-    if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-      MAP.setZoom(17);
-      CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-        '<div class="inmap_dialog">'+
-        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().html()+
-        '</div>'
-      );
-      CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
-    } else {
-      $("#conversations_pool .inmap_dialog").hide();
-      $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().show();
-      $("#conversations_pool").fadeIn();
-    }
-  });
-
-  $('body').on("click", ".more_info_btn", function(){
-    //console.log($(this));
-    //console.log($(this).parent().find(".response_text"));
-    //console.log($(this).parent().find(".conversation_guid"));
-    sd_create(
-      "messages",
-      { 
-        text: $(this).parent().find(".response_text").val(),
-        sender: HYPERWALL_USER_GUID, recipient: "",
-        "conversation": $(this).parent().find(".conversation_guid").val()
-      }
-    );
-  }); 
 
 
-  // test space
-  //test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
-  //CONVERSATION_HASH[test_guid] = new Object();
-  //construct_conversation(test_guid);
 
 
 /*
@@ -383,96 +347,6 @@ function initialize() {
     //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
     //});
   });  
-
-  /*
-  $('#map_canvas').on("click", ".more_info_btn", function(){
-    sd_create(
-      "messages",
-      { text: $(".response_text").val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", conversation: test_guid }
-    );
-  });  
-*/
-    
-
-
-
-
-
-
-/*
-  var parsed_json = jQuery.parseJSON(JSON.stringify(json_data));
-  $(parsed_json.markers).each( function(){
-
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng( this.place.latitude, this.place.longitude),
-      map: map,
-      animation: google.maps.Animation.DROP,
-      icon: "http://maps.google.com/mapfiles/marker.png"
-    });
-
-    var info_str = '<div class="inmap_dialog"><h1>Conversation Label</h1><div class="event_content" >';
-    //info_str += '';
-    //info_str += '<b>ResourceID</b>: '+this.resourceID;
-    //info_str += '<br><b>EventID</b>: '+this.eventID;
-    //info_str += '<br><b>Time</b>: '+this.datetime;
-    
-    if(this.images != {} ) { info_str += '<div class="test_event"><div style="position:absolute; margin: 8px 3px; width: 256px; background-color: #000; color: #fff;">Label - <a href="#">John</a> on HH:MM:SS</div><img style="max-width: 256px" src="'+this.images[0]+'"></div></div>'};
-    info_str += '<div class="event_messages">';
-    //info_str += '<b>Messages</b>:';
-    $(this.messages).each( function(){ info_str += '<div class="event_msg"><b>'+this+'</b> - <a href="#">John</a><div style="display:block; text-align:right; font-size:12px;">HH:MM:SS</div></div>'; });
-    //+this.messages[0];
-    info_str += '<input type="text" style="width: 100%;"></div>';
-    info_str += '</div>';
-    var info_window = new google.maps.InfoWindow({ content: info_str });
-    //info_windows.push(info_window);
-    google.maps.event.addListener(marker, 'click', function() {
-      map.setZoom(17);
-      info_window.open(map,marker);
-    });
-  });
-  // end of situation db actions
-
-
-  $('body').on("click", ".inmap_dialog a", function(){
-    console.log('click');
-    var marker = new google.maps.Marker({
-      position: new google.maps.LatLng( 37.410323, -122.05886),
-      map: map,
-      icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png"
-    });
-    var marker2 = new google.maps.Marker({
-      position: new google.maps.LatLng( 37.410313, -122.05896),
-      map: map,
-      icon: "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png"
-    });
-    var marker5 = new google.maps.Marker({
-      position: new google.maps.LatLng( 37.410343, -122.05897),
-      map: map,
-      icon: "http://files.softicons.com/download/system-icons/web0.2ama-icons-by-chrfb/png/24x24/Maps%20-%20Pedestrian.png"
-    });
-   
-    var info_str = '<div style="width: 160px;"><h1>John</h1>';
-    
-    //info_str += '<div class="test_event"><div style="position:absolute; margin: 8px 3px; width: 256px; background-color: #000; color: #fff;">Label - <a href="#">John</a> on HH:MM:SS</div><img style="max-width: 256px" src="'+this.images[0]+'"></div></div>'};
-    //info_str += '<div class="event_messages">';
-    //info_str += '<b>Messages</b>:';
-    //$(this.messages).each( function(){ info_str += '<div class="event_msg"><b>'+this+'</b> - <a href="#">John</a><div style="display:block; text-align:right; font-size:12px;">HH:MM:SS</div></div>'; });
-    //+this.messages[0];
-    //info_str += '</div>';
-    info_str += '</div>';
-    var info_window = new google.maps.InfoWindow({ content: info_str });
-    //info_windows.push(info_window);
-    //google.maps.event.addListener(marker, 'click', function() {
-      //map.setZoom(17);
-      info_window.open(map,marker5);
-    //});
-
-  });
-*/
-
-
-  
-
 
 
 }
