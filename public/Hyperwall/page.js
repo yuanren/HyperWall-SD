@@ -152,9 +152,17 @@ function construct_conversation(conversation_guid){
         $("#conversations_with_no_place").append(info_str);
       }
 
-      for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
+      /*for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
         insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+      }*/
+
+      var result = insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][0] );
+      for (var i = 1 ; i < CONVERSATION_HASH[conversation_guid]["MSGS"].length ; i++) {
+        result = result.pipe(function() {
+        return insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+      });
       }
+
 
     });
 
