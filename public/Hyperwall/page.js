@@ -131,7 +131,7 @@ function update_conversation(conversation_guid){
           }
         });
       }
-    );
+    )
   ).done( function(){
 
     var msg_requests_array = $.map(new_msg_guids, function(val, i) {
