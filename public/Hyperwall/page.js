@@ -146,7 +146,7 @@ function construct_conversation(conversation_guid){
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-            $("#conversations_pool.inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
         });
@@ -239,12 +239,12 @@ function initialize() {
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-        $("#conversations_pool.inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
       );
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
     } else {
-      $("#conversations_pool.inmap_dialog").hide();
-      $("#conversations_pool.conversation_guid[value="+conversation_guid+"]").parent().show();
+      $("#conversations_pool .inmap_dialog").hide();
+      $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().show();
       $("#conversations_pool").fadeIn();
     }
   });
