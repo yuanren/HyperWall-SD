@@ -183,8 +183,8 @@ function construct_conversation(conversation_guid){
       var info_str =
         '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
         '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
-          '<div class="dialog_pics"></div><div class="dialog_texts"></div>'+
-        '<button class="ignore_btn">Ignore</button><button class="ignore_btn">Escalate</button>'+
+          '<div class="dialog_pics"></div><div class="dialog_texts"></div><br>'+
+        '<button class="ignore_btn">Ignore</button><button class="escalate_btn">Escalate</button>'+
         '<input type="text" class="response_text">'+
         '<button class="more_info_btn">More Info</button></div>';
     
@@ -292,7 +292,6 @@ function initialize() {
     targetElements.parent().parent().parent().css('box-shadow', '1px 1px 10px 5px #c42c2b');
   });
 
-  // UI Related
   $("#general_list").on("click", ".list_msg", function(event){
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
