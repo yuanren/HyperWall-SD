@@ -12,12 +12,6 @@ var SPECIAL_USERS = new Array();
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
-//CONVERSATION_HASH["STATUS"] = new Object(); // [GUID] -> lastUpdated or "Ignore"
-//CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
-//CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
-//CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
-
-
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
@@ -122,6 +116,61 @@ function prepare_conversation(conversation_guid){
 }
 
 
+function update_conversation(conversation_guid){
+  var new_msg_guids = new Array();
+  $.when( 
+    sd_get(
+      "properties", { GUID: conversation_guid, depth: 1 },
+      function(rcv_data){
+        // iterate through msgs
+        $(rcv_data.associated_objects[0][1]).each( function(){
+          if(!CONVERSATION_HASH[conversation_guid]["MSGS_HASH"].hasOwnProperty(this.resourceId)){
+            new_msg_guids.push(this.resourceId);
+            CONVERSATION_HASH[conversation_guid]["MSGS"].push(this.resourceId);  
+            CONVERSATION_HASH[conversation_guid]["MSGS_HASH"][this.resourceId] = true;
+          }
+        });
+      }
+    );
+  ).done( function(){
+
+    var msg_requests_array = $.map(new_msg_guids, function(val, i) {
+      return prepare_msg(val);
+    });
+
+    $.when.apply(null, msg_requests_array).done( function(){
+      
+      // Check if Place information is available
+      if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: "" });
+        google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
+          MAP.setZoom(17);
+          CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
+            '<div class="inmap_dialog">'+
+            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").html()+
+            '</div>'
+          );
+          CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
+        });
+      }
+
+      // Prepare for person labels
+      var person_requests_array = $.map(new_msg_guids, function(val, i) {
+        return get_immutable(IMMUTABLE_HASH["MSG"][val]["fromResourceId"]);
+      });
+      $.when.apply(null, person_requests_array).done( function(){
+        for(var i=new_msg_guids.length-1; i>=0; --i){
+          insert_msg(conversation_guid, new_msg_guids[i] );
+        }      
+      });
+
+    });
+
+  });
+    
+}
+
+
 function construct_conversation(conversation_guid){
   $.when( prepare_conversation(conversation_guid)
   ).done( function(){
@@ -146,7 +195,9 @@ function construct_conversation(conversation_guid){
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+            '<div class="inmap_dialog">'+
+            $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").html()+
+            '</div>'
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
         });
@@ -214,6 +265,7 @@ function initialize() {
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
               CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
+              update_conversation(rcv_json.objects[i].resourceId);
             }
           }
         } else {
@@ -239,10 +291,10 @@ function initialize() {
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+        '<div class="inmap_dialog">'+
+        $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").html()+
+        '</div>'
       );
-      $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().show();
-      $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().hide();
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
     } else {
       $("#conversations_pool .inmap_dialog").hide();
