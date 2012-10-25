@@ -16,6 +16,7 @@ function poll_conversations(){
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
 
+/*
 function poll_conversation_guids(){
   try {
     var xhr=new XMLHttpRequest();
@@ -45,7 +46,7 @@ function poll_conversation(guid){
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
-
+*/
 
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
@@ -54,11 +55,11 @@ self.addEventListener('message', function(e) {
     case "Conversations":
       poll_conversations();
       break;
-    case "Conversation_GUIDs":
+    /*case "Conversation_GUIDs":
       poll_conversation_guids();
       break;
     case "Conversation":
       poll_conversation(e.data.GUID);
-      break;
+      break;*/
   }
 }, false);
