@@ -141,7 +141,7 @@ function construct_conversation(conversation_guid){
         '<button class="more_info_btn">More Info</button></div>';
     
       // Check if Place information is available
-      if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+      if(!CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
         //$("#conversations_with_no_place").append(info_str);
         CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: info_str });
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
@@ -157,7 +157,6 @@ function construct_conversation(conversation_guid){
         return get_immutable(IMMUTABLE_HASH["MSG"][val]["fromResourceId"]);
       });
       $.when.apply(null, person_requests_array).done( function(){
-        console.log("here?");
         for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
           insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
         }      
