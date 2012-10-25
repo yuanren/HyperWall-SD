@@ -235,12 +235,16 @@ function initialize() {
   // UI Related
   $("#general_list").on("click", ".list_msg", function(event){
     var conversation_guid = $(this).find(".conversation_guid").val();
+    console.log(conversation_guid);
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-      console.log("test trigger");
-      $(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]).trigger('click');
+      MAP.setZoom(17);
+      CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
+        $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+      );
+      CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
     } else {
       $("#conversations_with_no_place .inmap_dialog").hide();
-      $("#conversations_with_no_place .conversation_guid[value="+conversation_guid+"]").show();
+      $("#conversations_with_no_place .conversation_guid[value="+conversation_guid+"]").parent().show();
       $("#conversations_with_no_place").fadeIn();
     }
   });
