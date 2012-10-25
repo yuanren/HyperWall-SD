@@ -183,8 +183,8 @@ function construct_conversation(conversation_guid){
       var info_str =
         '<div class="inmap_dialog"><h1 class="dialog_title">'+CONVERSATION_HASH[conversation_guid]["LABEL"]+'</h1>'+
         '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
-          '<div class="dialog_pics"></div>'+
-          '<div class="dialog_texts"></div>'+
+          '<div class="dialog_pics"></div><div class="dialog_texts"></div>'+
+        '<button class="ignore_btn">Ignore</button><button class="ignore_btn">Escalate</button>'+
         '<input type="text" class="response_text">'+
         '<button class="more_info_btn">More Info</button></div>';
     

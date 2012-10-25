@@ -40,7 +40,7 @@ html, body {
 
 
 /* Inmap Dialog Styling*/ 
-.inmap_dialog {  width: 500px; height: 330px; display: none;}
+.inmap_dialog {  width: 500px; height: auto; display: none;}
 .inmap_dialog hr { margin-bottom: 2px;}
 
 #pool_close_btn {
@@ -87,6 +87,8 @@ html, body {
 }
 .dialog_text_title { font-size: 12px; }
 
+.ignore_btn { color: #666; }
+.escalate_btn { color: #600; }
 .more_info_btn { color: #9dbe65; }
 
 
