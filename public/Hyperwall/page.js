@@ -141,17 +141,17 @@ function construct_conversation(conversation_guid){
     
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-        $("#conversations_with_no_place").append(info_str);
+        $("#conversations_pool").append(info_str);
         CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: "" });
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-            $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+            $("#conversations_pool.inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
         });
       } else {
-        $("#conversations_with_no_place").append(info_str);
+        $("#conversations_pool").append(info_str);
       }
 
       // Prepare for person labels
@@ -221,7 +221,7 @@ function initialize() {
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
           CONVERSATION_HASH[rcv_json.objects[i].resourceId] = new Object();
           CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
-          add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation</b>:<br> "+rcv_json.objects[i].label);
+          add_to_list("general", rcv_json.objects[i].resourceId, "<b>New Conversation</b>:<br> "+rcv_json.objects[i].label);
           construct_conversation(rcv_json.objects[i].resourceId);
         }
       }
@@ -239,13 +239,13 @@ function initialize() {
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
-        $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
+        $("#conversations_pool.inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
       );
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
     } else {
-      $("#conversations_with_no_place .inmap_dialog").hide();
-      $("#conversations_with_no_place .conversation_guid[value="+conversation_guid+"]").parent().show();
-      $("#conversations_with_no_place").fadeIn();
+      $("#conversations_pool.inmap_dialog").hide();
+      $("#conversations_pool.conversation_guid[value="+conversation_guid+"]").parent().show();
+      $("#conversations_pool").fadeIn();
     }
   });
 
