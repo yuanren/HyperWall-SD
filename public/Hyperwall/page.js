@@ -265,6 +265,7 @@ function initialize() {
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
               CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
+              add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label);
               update_conversation(rcv_json.objects[i].resourceId);
             }
           }
@@ -303,7 +304,16 @@ function initialize() {
     }
   });
 
-
+  $('body').on("click", ".more_info_btn", function(){
+    sd_create(
+      "messages",
+      { 
+        text: $(this).closest(".response_text").val(),
+        sender: HYPERWALL_USER_GUID, recipient: "",
+        "conversation": $(this).closest(".conversation_guid").val()
+      }
+    );
+  }); 
 
 
   // test space
@@ -371,14 +381,14 @@ function initialize() {
     //});
   });  
 
-  
+  /*
   $('#map_canvas').on("click", ".more_info_btn", function(){
     sd_create(
       "messages",
       { text: $(".response_text").val(), sender: HYPERWALL_USER_GUID, recipient: "SSN", conversation: test_guid }
     );
   });  
-
+*/
     
 
 
