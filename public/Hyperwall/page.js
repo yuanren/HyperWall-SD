@@ -241,6 +241,8 @@ function initialize() {
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
         $("#conversations_pool .inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent()[0].outerHTML
       );
+      $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent().show();
+      $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().hide();
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
     } else {
       $("#conversations_pool .inmap_dialog").hide();
