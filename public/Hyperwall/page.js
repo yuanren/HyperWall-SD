@@ -48,7 +48,7 @@ function insert_msg(conversation_guid, msg_guid){
   var text_str =
     '<hr><input type="hidden" class="msg_guid">'+
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
-  $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+  //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str +=
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
@@ -56,7 +56,7 @@ function insert_msg(conversation_guid, msg_guid){
   
     target_container.find('.dialog_texts').prepend(text_str);
 
-  });
+  //});
 }
 
 
@@ -64,7 +64,6 @@ function insert_msg(conversation_guid, msg_guid){
 // INFRASTRUCTURE THINGS
 
 function get_immutable(guid){
-  console.log("try get Immutable");
   return IMMUTABLE_HASH[guid] ||
   sd_get(
     "properties", { GUID: guid, depth: 0 },
@@ -151,6 +150,7 @@ function construct_conversation(conversation_guid){
         $("#conversations_with_no_place").append(info_str);
       }
 
+      // Prepare for person labels
       var person_requests_array = $.map(CONVERSATION_HASH[conversation_guid]["MSGS"], function(val, i) {
         return get_immutable(IMMUTABLE_HASH["MSG"][val]["fromResourceId"]);
       });
