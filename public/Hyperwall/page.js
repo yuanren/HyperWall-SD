@@ -37,19 +37,21 @@ function add_to_list(type, guid, msg){
 }
 
 function insert_msg(conversation_guid, msg_guid){
-  var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
+  return $.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+    var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   
-  //console.log(IMMUTABLE_HASH["MSG"]);
-  //console.log(msg_guid);
-  //console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
-  /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
-    console.log("we have some pictures!")
-  }*/
+    //console.log(IMMUTABLE_HASH["MSG"]);
+    //console.log(msg_guid);
+    //console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
+    /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
+      console.log("we have some pictures!")
+    }*/
 
-  var text_str =
-    '<hr><input type="hidden" class="msg_guid">'+
-    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
-  //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
+    var text_str =
+      '<hr><input type="hidden" class="msg_guid">'+
+      '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
+  
+
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str +=
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
@@ -57,7 +59,7 @@ function insert_msg(conversation_guid, msg_guid){
   
     target_container.find('.dialog_texts').prepend(text_str);
 
-  //});
+  });
 }
 
 
@@ -107,8 +109,6 @@ function prepare_msg(msg_guid){
         "img": img_guid
       };
 
-      get_immutable(rcv_data.object.fromResourceId);
-      if(!img_guid){ get_immutable(img_guid) };
     }
   );
 }
@@ -154,9 +154,13 @@ function construct_conversation(conversation_guid){
         $("#conversations_with_no_place").append(info_str);
       }
 
-      for(var i=CONVERSATION_HASH[conversation_guid]["MSGS"].length-1; i>=0; --i){
-        insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+      var insert_tmp = insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][0] );
+      for(var i=1; i<CONVERSATION_HASH[conversation_guid]["MSGS"].length; ++i) {
+        insert_tmp = insert_tmp.pipe(function() {
+          return insert_msg(conversation_guid, CONVERSATION_HASH[conversation_guid]["MSGS"][i] );
+        });
       }
+
 
     });
 
