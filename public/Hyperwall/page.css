@@ -48,10 +48,11 @@ html, body {
   font-size: 22px;
 }
 .dialog_pics { 
-  width: 260px; height: 300px;
   margin:0;
+  width: 260px; height: 300px;
   display: inline-block;
   vertical-align: top;
+  overflow: auto;
 }
 
 .dialog_pic img {
@@ -71,6 +72,7 @@ html, body {
   width: 210px; height: 300px;
   display: inline-block;
   vertical-align: top;
+  overflow: auto;
 }
 .dialog_text {
   font-size: 14px; font-weight: 700;  
