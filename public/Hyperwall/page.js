@@ -305,14 +305,16 @@ function initialize() {
   });
 
   $('body').on("click", ".more_info_btn", function(){
-    sd_create(
+    console.log($(this));
+    console.log($(this).closest(".response_text"));
+    /*sd_create(
       "messages",
       { 
         text: $(this).closest(".response_text").val(),
         sender: HYPERWALL_USER_GUID, recipient: "",
         "conversation": $(this).closest(".conversation_guid").val()
       }
-    );
+    );*/
   }); 
 
 
