@@ -16,8 +16,7 @@ var CONVERSATION_HASH = new Object();
 //CONVERSATION_HASH["MAP_MARKERS"] = new Object(); // [GUID] -> Map Marker
 //CONVERSATION_HASH["INFO_WINDOWS"] = new Object(); // [GUID] -> Info Window
 //CONVERSATION_HASH["LABELS"] = new Object(); // [GUID] -> Label
-//CONVERSATION_HASH["MSGS"] = new Object(); // [GUID] -> Msgs Hash
-//CONVERSATION_HASH["PLACE"] = new Object();
+
 
 
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
@@ -36,11 +35,8 @@ function add_to_list(type, guid, msg){
 }
 
 function insert_msg(conversation_guid, msg_guid){
+
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
-  
-  //console.log(IMMUTABLE_HASH["MSG"]);
-  //console.log(msg_guid);
-  //console.log(IMMUTABLE_HASH["MSG"][msg_guid]);
   /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!")
   }*/
@@ -145,7 +141,12 @@ function construct_conversation(conversation_guid){
     
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
-        $("#conversations_with_no_place").append(info_str);
+        //$("#conversations_with_no_place").append(info_str);
+        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: info_str });
+        google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
+          MAP.setZoom(17);
+          CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
+        });
       } else {
         $("#conversations_with_no_place").append(info_str);
       }
