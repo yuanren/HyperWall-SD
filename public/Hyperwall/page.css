@@ -24,7 +24,7 @@ html, body {
 
 
 #right_list_container {
-  top: 48px; right: 32px; height: auto; overflow: auto;
+  top: 48px; right: 32px; max-height: 480px; overflow: auto;
 }
 
 /*#general_list {

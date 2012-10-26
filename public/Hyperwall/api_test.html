@@ -6,10 +6,8 @@
     <link href="page.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css' rel='stylesheet' type='text/css'>
-    <link href="johnlanz-jquery-fileuploader/css/fileUploader.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script src="johnlanz-jquery-fileuploader/js/jquery.fileUploader.js"></script>
     <script src="api_wrapper.js"></script>
     <script>
       $(document).ready(function(){
@@ -30,9 +28,18 @@
             sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), "conversation": $("#message_conversation").val() } );
         });
         
-        jQuery(function($){
-          $('.fileUpload').fileUploader();
+
+        $("#btn_create_img").click(function() {
+          var upload = $('#img_file')[0];
+          var reader = new FileReader();
+          reader.onload = function (event) {
+            //console.log(event.target.result);
+            sd_create("images", { binary: event.target.result } );
+          };
+          reader.readAsDataURL(upload.files[0]);
+          
         });
+
 
 
         $("#btn_associate").click(function() {
@@ -106,11 +113,9 @@
       
       <li>
         CREATE_IMAGE <br>
-        <form action="../images.json" method="post" enctype="multipart/form-data">
-          <input type="file" name="binary" class="fileUpload">
-          <button id="px-submit" type="submit">Upload</button>
-          <button id="px-clear" type="reset">Clear</button>
-        </form>
+        <!--<form action="../images.json" method="post" enctype="multipart/form-data">-->
+          <input type="file" id="img_file">
+          <button id="btn_create_img">Upload</button>
       </li>
 
 
