@@ -24,10 +24,10 @@ html, body {
 
 
 #critical_list {
-  top: 48px; right: 32px; max-height: 480px; overflow: auto;
+  top: 48px; right: 32px; height: 360px; overflow: auto;
 }
 #general_list {
-  top: 48px; right: 32px; max-height: 480px; overflow: auto;  
+  top: 440px; right: 32px; height: 0px; overflow: auto;  
 }
 .list_msg {
   margin: 6px; padding: 0px 2px; font-size: 14px;

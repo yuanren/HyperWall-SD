@@ -332,8 +332,9 @@ function initialize() {
       CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].close();
       CONVERSATION_HASH[conversation_guid]["MAP_MARKER"].setMap(null);
     }
+    $("#conversations_pool").fadeOut();
     $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().remove();
-    $(".list_msg .conversation_guid[value="+conversation_guid+"]").parent().remove();
+    $(".list_msg .conversation_guid[value="+conversation_guid+"]").parent().fadeOut().remove();
   }); 
 
 
