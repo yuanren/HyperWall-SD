@@ -30,7 +30,9 @@
             sd_create("messages", { text: $("#message_text").val(), sender: $("#message_sender").val(), recipient: $("#message_recipient").val(), "conversation": $("#message_conversation").val() } );
         });
         
-        $('.fileUpload').fileUploader();
+        jQuery(function($){
+          $('.fileUpload').fileUploader();
+        });
 
 
         $("#btn_associate").click(function() {
