@@ -1,0 +1,101 @@
+/* General Styling*/
+html, body {
+  height: 100%; margin: 0; padding: 0;
+  overflow: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+@media print { html, body { height: auto; } }
+#map_canvas { height: 100%; width: 100%; }
+.hidden { display: none;}
+
+.list { 
+  position: absolute;
+  width: 200px; min-height: 100px;
+  background-color: #fff; opacity: 0.92;
+  box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
+}
+.list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
+
+#conversations_pool {
+  display: none;
+  padding: 16px;
+  top: 48px; left: 80px; width: auto; height:auto; 
+}
+
+
+#critical_list {
+  top: 48px; right: 32px; max-height: 480px; overflow: auto;
+}
+#general_list {
+  top: 48px; right: 32px; max-height: 480px; overflow: auto;  
+}
+.list_msg {
+  margin: 6px; padding: 0px 2px; font-size: 14px;
+  box-shadow: 0px 1px 3px 1px #aaa; border-radius: 2px;
+}
+
+#tracked_user_list {
+  left: 24px; bottom: 32px;
+}
+
+
+/* Inmap Dialog Styling*/ 
+.inmap_dialog {  width: 500px; height: auto; display: none;}
+.inmap_dialog hr { margin-bottom: 2px;}
+
+#pool_close_btn {
+  width: 10px; height: 10px; overflow: hidden; position: absolute; opacity: 0.7; right: 12px; top: 12px; z-index: 10000; cursor: pointer;
+}
+#pool_close_btn img {
+  position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;  
+}
+
+.dialog_title {
+  color: #6a7062;
+  margin: 0px 0px 6px 0px;
+  font-size: 22px;
+}
+.dialog_pics { 
+  margin:0; margin-bottom: 6px;
+  width: 260px; height: 260px;
+  display: inline-block;
+  vertical-align: top;
+  overflow: auto;
+}
+
+.dialog_pic img {
+  width: 256px;
+  border-radius: 2px;
+}
+.dialog_pic_title {
+  width: 251px; padding-left: 5px;
+  color: #fff;
+  position: absolute;
+  background-color: #6a7062;
+}
+.dialog_pic_user, .dialog_text_user { font-weight: 700; color: #9dbe65; }
+
+.dialog_texts {
+  margin-left: 6px; margin-bottom: 6px;
+  width: 210px; height: 260px;
+  display: inline-block;
+  vertical-align: top;
+  overflow: auto;
+}
+.dialog_text {
+  font-size: 14px; font-weight: 700;  
+}
+.dialog_text_title { font-size: 12px; }
+
+.ignore_btn { color: #666; }
+.escalate_btn { color: #600; }
+.more_info_btn { float:right; color: #9dbe65; }
+.response_text { float:right; }
+
+
+
+/*
+img[src*="iws3.png"] {
+    display: none;
+}
+*/
