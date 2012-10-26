@@ -241,13 +241,15 @@ function initialize() {
       ); 
     } else { console.log("Found Local Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
-  }
+  } else { HYPERWALL_USER_GUID = "7d8689c0-1829-11e2-abd6-7071bc51ad1f"; } // Temporary give a dedicated GUID
+
 
   // Construct Google Map
   MAP = new google.maps.Map(
     document.getElementById('map_canvas'), 
     { zoom: 15, center: new google.maps.LatLng(37.410425,-122.059754), mapTypeId: google.maps.MapTypeId.ROADMAP }
   );
+
 
   // Start conversation polling worker thread
   CONVERSATIONS_POLLING_WORKER = new Worker('polling_workers/polling_worker.js');
@@ -295,7 +297,7 @@ function initialize() {
   });
 
   // General list item triggers
-  $("#general_list").on("click", ".list_msg", function(event){
+  $("#general_list, #critical_list").on("click", ".list_msg", function(event){
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
@@ -392,12 +394,6 @@ function initialize() {
 
 
   $('body').on("click", "#tracked_user_list a", function(){  
-  //  console.log("click");
-    //remove a marker
-    //CONVERSATION_HASH["MAP_MARKERS"][test_guid].setMap(null);   
-    //insert something according to guid
-    //$('input[value="'+test_guid+'"]').after("test");
-
     //prepare_conversation(test_guid);
     //$.when(prepare_conversation(test_guid)).then(function(resp){
     //  console.log(IMMUTABLE_HASH["PERSON"]["d462214e-18b7-11e2-93d7-7071bc51ad1f"]);
