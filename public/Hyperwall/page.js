@@ -25,7 +25,7 @@ function add_to_list(type, guid, msg){
   $("#"+type+"_list header").after(
     '<div class="list_msg">'+
     '<input type="hidden" class="conversation_guid" value="'+guid+'">'+msg+'</div>'
-  );
+  ).hide().fadeIn();
 }
 
 function insert_msg(conversation_guid, msg_guid){
@@ -44,7 +44,7 @@ function insert_msg(conversation_guid, msg_guid){
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
       '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
-    target_container.find('.dialog_texts').prepend(text_str);
+    target_container.find('.dialog_texts').prepend(text_str).hide().fadeIn();
 
   //});
 }
@@ -286,12 +286,15 @@ function initialize() {
 
 
 
-  // UI Behavior Related
+// UI Behavior Related
+
+  // Add red frame to dialog
   $("#map_canvas").on("DOMNodeInserted", function(e){
     var targetElements = $(e.target).find('.inmap_dialog');
     targetElements.parent().parent().parent().css('box-shadow', '1px 1px 10px 5px #c42c2b');
   });
 
+  // General list item triggers
   $("#general_list").on("click", ".list_msg", function(event){
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
@@ -309,6 +312,7 @@ function initialize() {
     }
   });
 
+  // More info button
   $('body').on("click", ".more_info_btn", function(){
     sd_create(
       "messages",
@@ -320,6 +324,21 @@ function initialize() {
     );
   }); 
 
+  // Ignore button
+  $('body').on("click", ".ignore_btn", function(){
+    var conversation_guid = $(this).parent().find(".conversation_guid").val();
+    CONVERSATION_HASH[conversation_guid]["STATUS"] = "IGNORED";
+    if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
+      CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].close();
+      CONVERSATION_HASH[conversation_guid]["MAP_MARKER"].setMap(null);
+    }
+    $("#conversations_pool .conversation_guid[value="+conversation_guid+"]").parent().remove();
+    $(".list_msg .conversation_guid[value="+conversation_guid+"]").parent().remove();
+  }); 
+
+
+
+  // Conversation pool section close
   $('#conversations_pool').on("click", "#pool_close_btn", function(){
     $('#conversations_pool').fadeOut();
   }); 
