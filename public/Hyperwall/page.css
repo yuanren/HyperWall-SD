@@ -26,7 +26,7 @@ html, body {
 #search_btn { position: absolute; top:32px; right: 32px; }
 #search_text { position: absolute; top: 32px; right: 96px; width: 132px;}
 #search_clear_btn {
-  width: 10px; height: 10px; overflow: hidden; position: absolute; opacity: 0.7; right: 108px; top: 32px; z-index: 10000; cursor: pointer;
+  width: 10px; height: 10px; overflow: hidden; position: absolute; opacity: 0.7; right: 102px; top: 39px; z-index: 10000; cursor: pointer;
 }
 #search_clear_btn img {
   position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;  
