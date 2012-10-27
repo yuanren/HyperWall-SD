@@ -267,7 +267,7 @@ function initialize() {
               console.log("Conversation updated: "+rcv_json.objects[i].resourceId);
               //do something for updated conversation
               CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
-              $(".list_msg conversation_guid[value="+conversation_guid+"]").remove();
+              $(".list_msg conversation_guid[value="+rcv_json.objects[i].resourceId+"]").remove();
               add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label);
               update_conversation(rcv_json.objects[i].resourceId);
             }
