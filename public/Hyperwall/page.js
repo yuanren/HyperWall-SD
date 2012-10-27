@@ -360,7 +360,9 @@ function initialize() {
         function(rcv_data){
           for(var i=0; i<rcv_data.objects.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.objects[i].conversationResourceId+"]").parent().addClass("results_frame");
-            $(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next('.dialog_text').addClass("results_frame");
+            console.log($(".msg_guid[value="+rcv_data.objects[i].resourceId+"]"));
+            console.log($(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next().next());
+            $(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next().next().addClass("results_frame");
           }
         }
       );
