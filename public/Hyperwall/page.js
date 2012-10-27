@@ -36,7 +36,7 @@ function insert_msg(conversation_guid, msg_guid){
   }*/
 
   var text_str =
-    '<hr><input type="hidden" class="msg_guid">'+
+    '<hr><input type="hidden" class="msg_guid" value="'+msg_guid+'">'+
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
   //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
@@ -342,10 +342,28 @@ function initialize() {
 
 
 
+  // Search Button
+  $('#search_btn').click(function() {
+    if( ('#search_text').val() != ""){
+      sd_get(
+        "guid", { type: "Conversation", valueRange: $("#search_text").val() },
+        function(rcv_data){
+          for(var i=0; i<rcv_data.GUIDs.length; ++i){
+            $("#right_list_container .conversation_guid[value="+rcv_data.GUIDs[i]+"]").parent().addClass("results_frame");
+          }
+        }
+      );
+    }
+  });
+
+
   // Conversation pool section close
   $('#conversations_pool').on("click", "#pool_close_btn", function(){
     $('#conversations_pool').fadeOut();
   }); 
+
+
+
 
 
 /*

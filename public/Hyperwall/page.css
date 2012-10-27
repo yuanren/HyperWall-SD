@@ -26,7 +26,7 @@ html, body {
 #search_btn { position: absolute; top:32px; right: 32px; }
 #search_text { position: absolute; top: 32px; right: 96px; width: 132px;}
 #right_list_container {
-  top: 72px; right: 32px; max-height: 480px; overflow: auto;
+  top: 64px; right: 32px; max-height: 480px; overflow: auto;
 }
 
 /*#general_list {
@@ -97,6 +97,7 @@ html, body {
 .response_text { float:right; }
 
 
+.results_frame { border: 1px solid DodgerBlue; }
 
 /*
 img[src*="iws3.png"] {
