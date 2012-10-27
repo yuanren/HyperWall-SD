@@ -97,7 +97,7 @@ html, body {
 .response_text { float:right; }
 
 
-.results_frame { border: 1px solid DodgerBlue; }
+.results_frame { border: 2px solid DodgerBlue; }
 
 /*
 img[src*="iws3.png"] {

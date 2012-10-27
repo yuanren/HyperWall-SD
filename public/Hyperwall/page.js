@@ -345,11 +345,22 @@ function initialize() {
   // Search Button
   $('#search_btn').click(function() {
     if( $('#search_text').val() != ""){
+      $('.list_msg').removeClass("results_frame");
+      $('.dialog_text').removeClass("results_frame");
       sd_get(
         "guid", { type: "Conversation", valueRange: $("#search_text").val() },
         function(rcv_data){
           for(var i=0; i<rcv_data.GUIDs.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.GUIDs[i]+"]").parent().addClass("results_frame");
+          }
+        }
+      );
+      sd_get(
+        "objects", { type: "Message", valueRange: $("#search_text").val() },
+        function(rcv_data){
+          for(var i=0; i<rcv_data.objects.length; ++i){
+            $("#right_list_container .conversation_guid[value="+rcv_data.objects[i].conversationResourceId+"]").parent().addClass("results_frame");
+            $(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next('.dialog_text').addClass("results_frame");
           }
         }
       );
