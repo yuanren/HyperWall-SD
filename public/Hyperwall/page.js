@@ -299,6 +299,7 @@ function initialize() {
 
   // General list item triggers
   $("#general_list, #critical_list").on("click", ".list_msg", function(event){
+    $(this).css("opacity", "0.4");
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
