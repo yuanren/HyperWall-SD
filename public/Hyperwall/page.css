@@ -95,7 +95,9 @@ html, body {
   overflow: auto;
 }
 .dialog_text {
-  font-size: 14px; font-weight: 700;  
+  font-size: 14px; font-weight: 700;
+  padding: 0px 2px;
+  border-radius: 2px;
 }
 .dialog_text_title { font-size: 12px; }
 
