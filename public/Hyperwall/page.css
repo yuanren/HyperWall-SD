@@ -23,8 +23,8 @@ html, body {
 }
 
 
-#search_btn { position: absolute; top:48px; right: 32px; }
-#search_text { position: absolute; top: 48px; right: 160px;}
+#search_btn { position: absolute; top:32px; right: 32px; }
+#search_text { position: absolute; top: 32px; right: 96px; width: 132px;}
 #right_list_container {
   top: 72px; right: 32px; max-height: 480px; overflow: auto;
 }
