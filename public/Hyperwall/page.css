@@ -23,8 +23,10 @@ html, body {
 }
 
 
+#search_btn { top:48px; right: 32px; }
+#search_text { top: 48px; right: 160px;}
 #right_list_container {
-  top: 48px; right: 32px; max-height: 480px; overflow: auto;
+  top: 72px; right: 32px; max-height: 480px; overflow: auto;
 }
 
 /*#general_list {
