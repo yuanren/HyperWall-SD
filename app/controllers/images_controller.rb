@@ -52,6 +52,9 @@ class ImagesController < ApplicationController
     @resource.type = "Image"
     @resource.label = params[:label]
     @resource.save
+    @informationArtifact = InformationArtifact.new
+    @informationArtifact.resourceId = @resource.resourceId
+    @informationArtifact.save
 
     respond_to do |format|
       if @image.save
