@@ -368,7 +368,14 @@ function initialize() {
       );
     }
   });
-
+  $('#search_text').keyup(function(e) {
+    if(e.which == 13){ $('#search_btn').trigger('click'); }
+  });
+  $('#search_clear_btn').click(function() {
+    $('#search_text').val("");
+    $('.list_msg').removeClass("results_frame");
+    $('.dialog_text').removeClass("results_frame");
+  });
 
   // Conversation pool section close
   $('#conversations_pool').on("click", "#pool_close_btn", function(){
