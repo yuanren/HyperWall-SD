@@ -344,7 +344,7 @@ function initialize() {
 
   // Search Button
   $('#search_btn').click(function() {
-    if( ('#search_text').val() != ""){
+    if( $('#search_text').val() != ""){
       sd_get(
         "guid", { type: "Conversation", valueRange: $("#search_text").val() },
         function(rcv_data){
