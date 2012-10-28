@@ -318,7 +318,7 @@ function initialize() {
 
   // More info button
   $('body').on("click", ".more_info_btn", function(){
-
+    var img_file = $(this).parent().find('.img_file')[0];
     $.when( 
       sd_create(
         "messages",
@@ -333,17 +333,18 @@ function initialize() {
     //console.log(msg_resp); msg_resp.GUID
       //var upload = $('#img_file')[0];
       var filereader = new FileReader();
+      console.log(img_file);
+      filereader.readAsDataURL(img_file.files[0]);
 
-      console.log($(this).parent());
-      console.log($(this).parent().find('.img_file'));
+      
+      //console.log($(this).parent().find('.img_file'));
       
       filereader.onload = function (event) {
         try{ console.log(event.target.result); }
         catch(e) { console.log(e); }
         //sd_create("images", { binary: event.target.result } );
       }
-      filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
-
+      
     });
 
   }); 
