@@ -331,14 +331,8 @@ function initialize() {
     ).done( function(msg_resp){
 
     //console.log(msg_resp); msg_resp.GUID
-      //var upload = $('#img_file')[0];
       var filereader = new FileReader();
-      console.log(img_file);
       filereader.readAsDataURL(img_file.files[0]);
-
-      
-      //console.log($(this).parent().find('.img_file'));
-      
       filereader.onload = function (event) {
         try{ console.log(event.target.result); }
         catch(e) { console.log(e); }
