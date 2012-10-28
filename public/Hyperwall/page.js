@@ -327,7 +327,7 @@ function initialize() {
           sender: HYPERWALL_USER_GUID, recipient: "",
           "conversation": $(this).parent().find(".conversation_guid").val()
         }
-      );    
+      )    
     ).done( function(msg_resp){
 
     console.log(msg_resp);
@@ -338,7 +338,7 @@ function initialize() {
         try{ console.log(event.target.result); }
         catch(e) { console.log(e); }
         //sd_create("images", { binary: event.target.result } );
-      };
+      }
       
 
     });
