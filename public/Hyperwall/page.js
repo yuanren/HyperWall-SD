@@ -333,6 +333,9 @@ function initialize() {
     //console.log(msg_resp); msg_resp.GUID
       //var upload = $('#img_file')[0];
       var filereader = new FileReader();
+
+      console.log($(this).parent());
+      console.log($(this).parent().find('.img_file'));
       
       filereader.onload = function (event) {
         try{ console.log(event.target.result); }
@@ -340,8 +343,6 @@ function initialize() {
         //sd_create("images", { binary: event.target.result } );
       }
       filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
-      console.log($(this).parent());
-      console.log($(this).parent().find('.img_file'));
 
     });
 
