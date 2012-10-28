@@ -1,3 +1,5 @@
+require "open-uri"
+
 class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
@@ -43,7 +45,16 @@ class ImagesController < ApplicationController
     @image = Image.new
     @image.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @image.label = params[:label]
-    @image.imageBinary = params[:binary]
+    if !params[:binary].nil?
+      @image.imageBinary = params[:binary]
+    elsif !params[:URL].nil?
+      @image_file = open(params[:URL])
+      # create the file path
+      path = File.join("public/Images", @image.resourceId)
+      # write the file
+      File.open(path, "wb") { |f| f.write(@image_file.read) }
+      @image.uniformResourceLocator = "209.129.244.23:3000/Images/" + @image.resourceId
+    end
     @image.dateTime = Time.now
 
     @resource = Resource.new
