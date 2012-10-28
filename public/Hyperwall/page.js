@@ -333,13 +333,16 @@ function initialize() {
     //console.log(msg_resp); msg_resp.GUID
       //var upload = $('#img_file')[0];
       var filereader = new FileReader();
-      filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
+      
       filereader.onload = function (event) {
         try{ console.log(event.target.result); }
         catch(e) { console.log(e); }
         //sd_create("images", { binary: event.target.result } );
       }
-      
+      filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
+      console.log($(this).parent());
+      console.log($(this).parent().find('.img_file'));
+
     });
 
   }); 
