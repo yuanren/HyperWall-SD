@@ -33,7 +33,9 @@ function add_to_list(type, guid, msg){
 function make_critical(guid){
   CRITICAL_CONVERSATIONS_HASH[guid] = true;
   $(".list_msg .conversation_guid[value="+guid+"]").parent().appendTo('#critical_list');
-
+  if(CONVERSATION_HASH[guid].hasOwnProperty("MAP_MARKER")){
+    CONVERSATION_HASH[guid]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/orange-dot.png");
+  }
 }
 
 function insert_msg(conversation_guid, msg_guid){
@@ -374,7 +376,8 @@ function initialize() {
           data: { objects: [conversation_guid, rcv_data.GUID]}, dataType: 'json',
           success: function(rcv_data_2){ 
             console.log(rcv_data_2);
-            CRITICAL_CONVERSATIONS_HASH[conversation_guid] = true;
+            make_critical(conversation_guid);
+            //CRITICAL_CONVERSATIONS_HASH[conversation_guid] = true;
           }
         });
       }
@@ -440,9 +443,13 @@ function initialize() {
     $('#search_text').val("");
     $('.list_msg').removeClass("results_frame");
     $('.dialog_text').removeClass("results_frame");
-    $.each(CONVERSATION_HASH, function() {
+    $.each(CONVERSATION_HASH, function(key, value) {
       if(this.hasOwnProperty("MAP_MARKER")){
-        this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/marker.png");
+        if(CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(key)){
+          this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/orange-dot.png");
+        } else {
+          this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/marker.png");
+        }
       }
     });
   });
