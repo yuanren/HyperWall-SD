@@ -329,14 +329,23 @@ function initialize() {
         }
       )    
     ).done( function(msg_resp){
-
-    //console.log(msg_resp); msg_resp.GUID
+      
       var filereader = new FileReader();
       filereader.readAsDataURL(img_file.files[0]);
       filereader.onload = function (event) {
-        try{ console.log(event.target.result); }
-        catch(e) { console.log(e); }
-        //sd_create("images", { binary: event.target.result } );
+        try{ 
+          //console.log(event.target.result);
+          sd_create(
+            "images",
+            { binary: event.target.result },
+            function(rcv_data){
+              $.ajax({
+                type: 'POST', url: "../associate_guids",
+                data: { objects: [msg_resp.GUID, rcv_data.GUID]}, dataType: 'json',
+              }); 
+            }
+          );
+        } catch(e) { console.log(e); }
       }
       
     });
