@@ -345,16 +345,14 @@ function initialize() {
 
   // Search Button
   $('#search_btn').click(function() {
-    if( $.trim($('#search_text').val()) != ""){
-      $('#search_clear_btn').trigger('click');
+    if( $('#search_text').val() != ""){
+      $('.list_msg').removeClass("results_frame");
+      $('.dialog_text').removeClass("results_frame");
       sd_get(
         "guid", { type: "Conversation", valueRange: $("#search_text").val() },
         function(rcv_data){
           for(var i=0; i<rcv_data.GUIDs.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.GUIDs[i]+"]").parent().addClass("results_frame");
-            //if(CONVERSATION_HASH[rcv_data.GUIDs[i]].hasOwnProperty("MAP_MARKER")){
-            //  CONVERSATION_HASH[rcv_data.GUIDs[i]]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            //}
           }
         }
       );
@@ -363,10 +361,9 @@ function initialize() {
         function(rcv_data){
           for(var i=0; i<rcv_data.objects.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.objects[i].conversationResourceId+"]").parent().addClass("results_frame");
+            console.log($(".msg_guid[value="+rcv_data.objects[i].resourceId+"]"));
+            console.log($(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next().next());
             $(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next().next().addClass("results_frame");
-            //if(CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId].hasOwnProperty("MAP_MARKER")){
-            //  CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            //}
           }
         }
       );
@@ -379,11 +376,6 @@ function initialize() {
     $('#search_text').val("");
     $('.list_msg').removeClass("results_frame");
     $('.dialog_text').removeClass("results_frame");
-    //$.each(CONVERSATION_HASH, function() {
-    //  if(this.hasOwnProperty("MAP_MARKER")){
-    //    this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/marker.png");
-    //  }
-    //});
   });
 
   // Conversation pool section close
