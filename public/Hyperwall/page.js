@@ -7,13 +7,14 @@ var CONVERSATIONS_POLLING_WORKER;
 var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 
 var HYPERWALL_USER_GUID = "";
-var SPECIAL_USERS = new Array();
+//var SPECIAL_USERS = new Array();
 
 var SELF_ESCALATION_LEVEL = 1;
+var CRITICAL_CONVERSATIONS_HASH = new Object();
+
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
-
 // Immutable Session Cache (maybe be replaced by HTML5 IndexDB later)
 var IMMUTABLE_HASH = new Object();
 IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { place, text, source, conversation, destination, img }
@@ -269,7 +270,8 @@ function initialize() {
               //do something for updated conversation
               CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
               $(".list_msg .conversation_guid[value="+rcv_json.objects[i].resourceId+"]").parent().remove();
-              add_to_list("general", rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label);
+              var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(rcv_json.objects[i].resourceId)? "critical":"general";
+              add_to_list(list_type, rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label);
               update_conversation(rcv_json.objects[i].resourceId);
             }
           }
@@ -363,7 +365,11 @@ function initialize() {
       function(rcv_data) {
         $.ajax({
           type: 'POST', url: "../associate_guids",
-          data: { objects: [conversation_guid, rcv_data.GUID]}, dataType: 'json'
+          data: { objects: [conversation_guid, rcv_data.GUID]}, dataType: 'json',
+          success: function(rcv_data_2){ 
+            console.log(rcv_data_2);
+            CRITICAL_CONVERSATIONS_HASH[conversation_guid] = true;
+          }
         });
       }
     );
