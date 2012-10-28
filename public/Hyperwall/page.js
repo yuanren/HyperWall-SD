@@ -30,6 +30,12 @@ function add_to_list(type, guid, msg){
   ).hide().fadeIn();
 }
 
+function make_critical(guid){
+  CRITICAL_CONVERSATIONS_HASH[guid] = true;
+  $(".list_msg .conversation_guid[value="+guid+"]").parent().appendTo('#critical_list');
+
+}
+
 function insert_msg(conversation_guid, msg_guid){
 
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();

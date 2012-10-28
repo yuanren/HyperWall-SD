@@ -36,7 +36,7 @@ html, body {
 #right_list_container {
   top: 64px; right: 16px; max-height: 480px; overflow: auto;
 }
-
+#critical_list .list_msg{ border: 2px solid #600; }
 /*#general_list {
   top: 424px; right: 32px; height: 360px; overflow: auto;  
 }*/
@@ -106,6 +106,7 @@ html, body {
 .more_info_btn { float:right; color: #9dbe65; }
 .response_text { float:right; }
 .file_div { text-align: right; font-size: 12px;}
+
 
 
 .results_frame { border: 2px solid DodgerBlue; }
