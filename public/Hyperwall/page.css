@@ -105,6 +105,8 @@ html, body {
 .escalate_btn { color: #600; }
 .more_info_btn { float:right; color: #9dbe65; }
 .response_text { float:right; }
+.add_img { float: right;}
+.img_file { float: right; }
 
 
 .results_frame { border: 2px solid DodgerBlue; }

@@ -185,7 +185,7 @@ function construct_conversation(conversation_guid){
         '<input type="hidden" class="conversation_guid" value="'+conversation_guid+'">'+
           '<div class="dialog_pics"></div><div class="dialog_texts"></div><br>'+
         '<button class="ignore_btn">Ignore</button><button class="escalate_btn">Escalate</button>'+
-        '<input type="file" id="img_file"><input type="checkbox" id="add_img">+image<input type="text" class="response_text">'+
+        '<input type="file" class="img_file"><input type="checkbox" class="add_img">image<input type="text" class="response_text">'+
         '<button class="more_info_btn">More Info</button></div>';
     
       // Check if Place information is available
