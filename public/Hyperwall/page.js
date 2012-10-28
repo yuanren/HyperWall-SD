@@ -9,6 +9,7 @@ var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
+var SELF_ESCALATION_LEVEL = 1;
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
@@ -341,7 +342,7 @@ function initialize() {
             function(rcv_data){
               $.ajax({
                 type: 'POST', url: "../associate_guids",
-                data: { objects: [msg_resp.GUID, rcv_data.GUID]}, dataType: 'json',
+                data: { objects: [msg_resp.GUID, rcv_data.GUID]}, dataType: 'json'
               }); 
             }
           );
@@ -351,6 +352,25 @@ function initialize() {
     });
 
   }); 
+
+
+  // Escalate button
+  $('body').on("click", ".escalate_btn", function(){
+    var conversation_guid = $(this).parent().find(".conversation_guid").val();
+    $.ajax({
+      type: 'POST', url: "../add_escalation",
+      data: { level: SELF_ESCALATION_LEVEL+1 }, dataType: 'json',
+      success: function(rcv_data) {
+        $.ajax({
+          type: 'POST', url: "../associate_guids",
+          data: { objects: [conversation_guid, rcv_data.GUID]}, dataType: 'json'
+        });
+
+      }
+    });
+    
+  }); 
+
 
   // Ignore button
   $('body').on("click", ".ignore_btn", function(){
