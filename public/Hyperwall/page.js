@@ -186,7 +186,7 @@ function construct_conversation(conversation_guid){
           '<div class="dialog_pics"></div><div class="dialog_texts"></div><br>'+
         '<button class="ignore_btn">Ignore</button><button class="escalate_btn">Escalate</button>'+
         '<input type="text" class="response_text"><button class="more_info_btn">More Info</button>'+
-        '<div class="file_div"><input type="checkbox" class="add_img">add image?<input type="file" class="img_file"></div></div>';
+        '<div class="file_div">Attach Image: <input type="file" class="img_file"></div></div>';
     
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
