@@ -352,9 +352,9 @@ function initialize() {
         function(rcv_data){
           for(var i=0; i<rcv_data.GUIDs.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.GUIDs[i]+"]").parent().addClass("results_frame");
-            if(CONVERSATION_HASH[rcv_data.GUIDs[i]].hasOwnProperty("MAP_MARKER")){
-              CONVERSATION_HASH[rcv_data.GUIDs[i]]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            }
+            //if(CONVERSATION_HASH[rcv_data.GUIDs[i]].hasOwnProperty("MAP_MARKER")){
+            //  CONVERSATION_HASH[rcv_data.GUIDs[i]]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
+            //}
           }
         }
       );
@@ -364,9 +364,9 @@ function initialize() {
           for(var i=0; i<rcv_data.objects.length; ++i){
             $("#right_list_container .conversation_guid[value="+rcv_data.objects[i].conversationResourceId+"]").parent().addClass("results_frame");
             $(".msg_guid[value="+rcv_data.objects[i].resourceId+"]").next().next().addClass("results_frame");
-            if(CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId].hasOwnProperty("MAP_MARKER")){
-              CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
-            }
+            //if(CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId].hasOwnProperty("MAP_MARKER")){
+            //  CONVERSATION_HASH[rcv_data.objects[i].conversationResourceId]["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/ms/icons/blue-dot.png");
+            //}
           }
         }
       );
