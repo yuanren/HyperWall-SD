@@ -379,11 +379,11 @@ function initialize() {
     $('#search_text').val("");
     $('.list_msg').removeClass("results_frame");
     $('.dialog_text').removeClass("results_frame");
-    $.each(CONVERSATION_HASH, function() {
-      if(this.hasOwnProperty("MAP_MARKER")){
-        this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/marker.png");
-      }
-    });
+    //$.each(CONVERSATION_HASH, function() {
+    //  if(this.hasOwnProperty("MAP_MARKER")){
+    //    this["MAP_MARKER"].setIcon("http://maps.google.com/mapfiles/marker.png");
+    //  }
+    //});
   });
 
   // Conversation pool section close
