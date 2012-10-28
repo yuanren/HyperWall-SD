@@ -81,7 +81,7 @@ function prepare_msg(msg_guid){
           } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
             img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
           }
-        } catch(err) { console.log(err);}
+        } catch(e) { console.log(e);}
       }
 
       IMMUTABLE_HASH["MSG"][msg_guid] = 
@@ -186,7 +186,7 @@ function construct_conversation(conversation_guid){
           '<div class="dialog_pics"></div><div class="dialog_texts"></div><br>'+
         '<button class="ignore_btn">Ignore</button><button class="escalate_btn">Escalate</button>'+
         '<input type="text" class="response_text"><button class="more_info_btn">More Info</button>'+
-        '<div class="file_div">Attach Image: <input type="file" class="img_file"></div></div>';
+        '<div class="file_div"><input type="file" class="img_file"></div></div>';
     
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
@@ -297,7 +297,7 @@ function initialize() {
     targetElements.parent().parent().parent().css('box-shadow', '1px 1px 10px 5px #c42c2b');
   });
 
-  // General list item triggers
+  // list item triggers
   $("#general_list, #critical_list").on("click", ".list_msg", function(event){
     $(this).fadeTo("slow", 0.45);
     var conversation_guid = $(this).find(".conversation_guid").val();
@@ -318,14 +318,31 @@ function initialize() {
 
   // More info button
   $('body').on("click", ".more_info_btn", function(){
-    sd_create(
-      "messages",
-      { 
-        text: $(this).parent().find(".response_text").val(),
-        sender: HYPERWALL_USER_GUID, recipient: "",
-        "conversation": $(this).parent().find(".conversation_guid").val()
-      }
-    );
+
+    $.when( 
+      sd_create(
+        "messages",
+        { 
+          text: $(this).parent().find(".response_text").val(),
+          sender: HYPERWALL_USER_GUID, recipient: "",
+          "conversation": $(this).parent().find(".conversation_guid").val()
+        }
+      );    
+    ).done( function(msg_resp){
+
+    console.log(msg_resp);
+      //var upload = $('#img_file')[0];
+      var filereader = new FileReader();
+      filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
+      filereader.onload = function (event) {
+        try{ console.log(event.target.result); }
+        catch(e) { console.log(e); }
+        //sd_create("images", { binary: event.target.result } );
+      };
+      
+
+    });
+
   }); 
 
   // Ignore button
