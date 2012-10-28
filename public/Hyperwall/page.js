@@ -310,7 +310,7 @@ function initialize() {
 
   // list item triggers
   $("#general_list, #critical_list").on("click", ".list_msg", function(event){
-    $(this).fadeTo("slow", 0.45);
+    $(this).fadeTo("slow", 0.5);
     var conversation_guid = $(this).find(".conversation_guid").val();
     if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
       MAP.setZoom(17);
@@ -460,52 +460,6 @@ function initialize() {
   }); 
 
 
-
-
-
-/*
-  // Mockup & Response Test
-  test_guid = "d5a7d648-1a38-11e2-8473-7071bc51ad1f"
-  CONVERSATION_HASH["MAP_MARKERS"][test_guid] = gm_create_marker("test", [37.410425,-122.059754]);
-
-  var test_info_str = "";
-  sd_get(
-    "properties",
-    { GUID: test_guid, depth: 1 },
-    function(rcv_data){
-      console.log(rcv_data);
-      test_info_str =
-        '<div class="inmap_dialog"><h1 class="dialog_title">'+rcv_data.object.label+'</h1>'+
-        '<input type="hidden" class="Conversation_GUID" value="'+test_guid+'">'+
-
-        '<div class="dialog_pics">'+
-        '<div class="dialog_pic"><input type="hidden" class="msg_GUID"><div class="dialog_pic_title"><a href="#" class="dialog_pic_user">Anonymous</a> @ MM:SS</div>'+
-        '<img src="http://www.wolfforthfireems.com/images/gallery/20080324_live_fire_04.jpg"></div></div>'+
-
-        '<div class="dialog_texts">';
-        
-      $(rcv_data.associated_objects[0][1]).each( function(){ 
-        test_info_str += '<hr><input type="hidden" class="msg_GUID">'+
-        '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">Anonymous</a> @ '+
-        this.dateTime.slice(11,-1)+'</div><div class="dialog_text">'+this.payload+'</div>';
-      });
-
-      test_info_str += '<input type="text" class="response_text" style="width: 100%">'+
-      '<button class="more_info_btn">More Info</button> </div></div>';
-      
-  
-      
-
-      CONVERSATION_HASH["INFO_WINDOWS"][test_guid] = new google.maps.InfoWindow({ content: test_info_str });
-      google.maps.event.addListener(CONVERSATION_HASH["MAP_MARKERS"][test_guid], 'click', function() {
-        MAP.setZoom(17);
-        CONVERSATION_HASH["INFO_WINDOWS"][test_guid].open(MAP, CONVERSATION_HASH["MAP_MARKERS"][test_guid]);
-      });
-
-
-    }
-  );
-*/
   
 
 
