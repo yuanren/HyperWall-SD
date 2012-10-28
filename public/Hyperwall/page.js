@@ -330,7 +330,7 @@ function initialize() {
       )    
     ).done( function(msg_resp){
 
-    console.log(msg_resp);
+    //console.log(msg_resp); msg_resp.GUID
       //var upload = $('#img_file')[0];
       var filereader = new FileReader();
       filereader.readAsDataURL($(this).parent().find('.img_file')[0].files[0]);
@@ -340,7 +340,6 @@ function initialize() {
         //sd_create("images", { binary: event.target.result } );
       }
       
-
     });
 
   }); 
