@@ -9,7 +9,7 @@ var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
 var HYPERWALL_USER_GUID = "";
 var SPECIAL_USERS = new Array();
 
-var SELF_ESCALATION_LEVEL = 1;
+var SELF_ESCALATION_LEVEL = 2;
 
 // Conversation Properties Hashes
 var CONVERSATION_HASH = new Object();
