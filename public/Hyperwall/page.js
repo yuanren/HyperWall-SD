@@ -47,10 +47,10 @@ function insert_msg(conversation_guid, msg_guid){
 
   var text_str =
     '<hr><input type="hidden" class="msg_guid" value="'+msg_guid+'">'+
-    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user">';
+    '<div class="dialog_text_title">By <a href="#" class="dialog_text_user user_link">';
   //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
-    text_str +=
+    text_str += '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
       '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
       '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
@@ -326,6 +326,13 @@ function initialize() {
       $("#conversations_pool").fadeIn();
     }
   });
+
+  // User Trigger (Breadrumbs and mark all his/her msgs)
+  $('body').on("click", ".user_link", function(){
+    var user_guid = $(this).parent().find(".user_guid").val();
+
+  })
+
 
   // More info button
   $('body').on("click", ".more_info_btn", function(){
