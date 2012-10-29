@@ -45,16 +45,20 @@ class ImagesController < ApplicationController
     @image = Image.new
     @image.resourceId = 'I-' + UUIDTools::UUID.timestamp_create.to_s
     @image.label = params[:label]
+    # create image file path
+    path = File.join("public/Images", @image.resourceId)
     if !params[:binary].nil?
-      @image.imageBinary = params[:binary]
+      #@image.imageBinary = params[:binary]
+      # strip "data:image/...;base64," prefix
+      base64DecodedImage = Base64.decode64(params[:binary].sub(/^data:image\/\w*;base64,/, ''))
+      File.open(path, "wb") { |f| f.write(base64DecodedImage) }
     elsif !params[:URL].nil?
       @image_file = open(params[:URL])
-      # create the file path
-      path = File.join("public/Images", @image.resourceId)
       # write the file
       File.open(path, "wb") { |f| f.write(@image_file.read) }
-      @image.uniformResourceLocator = "209.129.244.23:3000/Images/" + @image.resourceId
+      @image_file.close
     end
+    @image.uniformResourceLocator = "209.129.244.23:3000/Images/" + @image.resourceId
     @image.dateTime = Time.now
 
     @resource = Resource.new
