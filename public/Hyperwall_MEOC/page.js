@@ -230,7 +230,7 @@ function initialize() {
   if(typeof(Storage)!=="undefined"){
     console.log("HTML5 Local Storage Supported");
     // Temporary give a dedicated GUID
-    localStorage['HYPERWALL_USER_GUID'] = "7d8689c0-1829-11e2-abd6-7071bc51ad1f"; 
+    localStorage['HYPERWALL_USER_GUID'] = "I-32e88366-2187-11e2-bb58-0800271d4f59"; 
     if(localStorage['HYPERWALL_USER_GUID'] == undefined){
       console.log("Register New Hyperwall GUID");
       sd_create(
@@ -242,7 +242,7 @@ function initialize() {
       ); 
     } else { console.log("Found Local Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
-  } else { HYPERWALL_USER_GUID = "7d8689c0-1829-11e2-abd6-7071bc51ad1f"; } // Temporary give a dedicated GUID
+  } else { HYPERWALL_USER_GUID = "I-32e88366-2187-11e2-bb58-0800271d4f59"; } // Temporary give a dedicated GUID
 
 
   // Construct Google Map
