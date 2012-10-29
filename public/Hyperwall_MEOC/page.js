@@ -260,7 +260,32 @@ function initialize() {
       // Receive Conversation GUIDs from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      for(var i=0; i<rcv_json.objects.length; ++i){
+      
+      for(var i=0; i<rcv_json.length; ++i){
+        rcv_json[i].objects[0][1]
+        if( CONVERSATION_HASH.hasOwnProperty(rcv_json[i].objects[0][1].resourceId) ) {
+          if( CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] != "IGNORED" ){
+            if( CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] != rcv_json[i].objects[0][1].lastUpdated ){
+              console.log("Conversation updated: "+rcv_json[i].objects[0][1].resourceId);
+              //do something for updated conversation
+              CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json[i].objects[0][1].lastUpdated;
+              $(".list_msg .conversation_guid[value="+rcv_json[i].objects[0][1].resourceId+"]").parent().remove();
+              add_to_list("general", rcv_json[i].objects[0][1].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json[i].objects[0][1].label);
+              update_conversation(rcv_json[i].objects[0][1].resourceId);
+            }
+          }
+        } else {
+          // Initialize a New Conversation
+          console.log("Received new conversation: "+rcv_json[i].objects[0][1].resourceId);
+          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId] = new Object();
+          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json[i].objects[0][1].lastUpdated;
+          add_to_list("general", rcv_json[i].objects[0][1].resourceId, "<b>New Conversation</b>:<br> "+rcv_json[i].objects[0][1].label);
+          construct_conversation(rcv_json[i].objects[0][1].resourceId);
+        }
+      }
+
+
+      /*for(var i=0; i<rcv_json.objects.length; ++i){
         // Ckeck if it is ignored or updated
         if( CONVERSATION_HASH.hasOwnProperty(rcv_json.objects[i].resourceId) ) {
           if( CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] != "IGNORED" ){
@@ -281,7 +306,7 @@ function initialize() {
           add_to_list("general", rcv_json.objects[i].resourceId, "<b>New Conversation</b>:<br> "+rcv_json.objects[i].label);
           construct_conversation(rcv_json.objects[i].resourceId);
         }
-      }
+      }*/
     },
     false
   );
