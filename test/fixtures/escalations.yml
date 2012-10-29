@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: MyString
+  level: 
+  dateTime: 
+  label: MyString
+
+two:
+  id: MyString
+  level: 
+  dateTime: 
+  label: MyString
