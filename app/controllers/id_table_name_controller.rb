@@ -327,7 +327,7 @@ class IdTableNameController < ApplicationController
   end
 
   def get_escalated_objects
-    @level = params[:level]
+    @level = Integer(params[:level])
     if @level.nil?
       @level = 0
     end
