@@ -49,7 +49,7 @@ function insert_msg(conversation_guid, msg_guid){
     '<div class="dialog_pic"><input type="hidden" class="msg_GUID" value="'+msg_guid+'">'+
     '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user">'+
     IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
-    '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+
+    '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
     '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+'</div>'+
     '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>';
 
