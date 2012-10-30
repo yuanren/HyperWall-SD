@@ -2,11 +2,12 @@
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATIONS_POLL_INTERVAL = 15000, CRUMB_POLL_INTERVAL = 2000;
+var CONVERSATIONS_POLL_INTERVAL = 15000, BREADCRUMB_POLL_INTERVAL = 2000;
 var CONVERSATIONS_POLLING_WORKER;
 
 var BREADCRUMB_POLLING_WORKERS = new Object();
-var BREADCRUMB_MAP_MARKERS = new Object();
+var BREADCRUMB_MAP_MARKERS = new Object(); //key = timestamp
+
 
 var HYPERWALL_USER_GUID = "";
 //var SPECIAL_USERS = new Array();
@@ -342,6 +343,26 @@ function initialize() {
   $('body').on("click", ".user_link", function(){
     var user_guid = $(this).parent().find(".user_guid").val();
     $(this).closest('.inmap_dialog').first().find('.user_guid[value='+user_guid+']').parent().parent().addClass("same_user_frame");
+
+    BREADCRUMB_POLLING_WORKERS[0] = new Worker('polling_workers/breadcrumb_worker.js');
+    BREADCRUMB_POLLING_WORKERS[0].addEventListener(
+    'message',
+    function(e){
+      var rcv_json = $.parseJSON(e.data);
+      console.log(rcv_json);
+      for(var i=0; i<rcv_json.result.length; ++i){
+        if(!BREADCRUMB_MAP_MARKERS.hasOwnProperty(rcv_json.result[i][3])){
+          BREADCRUMB_MAP_MARKERS[rcv_json.result[i][3]] = gm_create_marker(
+            "breadrumb", 
+            [rcv_json.result[i][1], rcv_json.result[i][2]]
+          );
+        }
+      }
+    },
+    false
+  );
+  BREADCRUMB_POLLING_WORKERS.postMessage( {object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
+
   })
 
 
