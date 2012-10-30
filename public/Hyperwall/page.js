@@ -99,6 +99,14 @@ function prepare_msg(msg_guid){
                 "Conversation", 
                 [rcv_data.associated_objects[1].objects[i][1].latitude, rcv_data.associated_objects[1].objects[i][1].longitude]
               );
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER_TIME"] = rcv_data.object.dateTime;
+            } else if (CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER_TIME"] > rcv_data.object.dateTime){
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER"].setMap(null);
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER"] = gm_create_marker(
+                "Conversation", 
+                [rcv_data.associated_objects[1].objects[i][1].latitude, rcv_data.associated_objects[1].objects[i][1].longitude]
+              );
+              CONVERSATION_HASH[rcv_data.object.conversationResourceId]["MAP_MARKER_TIME"] = rcv_data.object.dateTime;  
             }
           } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
             img_guid = rcv_data.associated_objects[1].objects[i][1].resourceId;
