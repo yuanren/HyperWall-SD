@@ -341,7 +341,8 @@ function initialize() {
   // User Trigger (Breadrumbs and mark all his/her msgs)
   $('body').on("click", ".user_link", function(){
     var user_guid = $(this).parent().find(".user_guid").val();
-    console.log($(this).parents('.inmap_dialog'));
+    //console.log($(this).parents('.inmap_dialog'));
+    $(this).parents('.inmap_dialog')[0].find('.user_guid[value='+user_guid+']').addClass("same_user_frame");
   })
 
 
