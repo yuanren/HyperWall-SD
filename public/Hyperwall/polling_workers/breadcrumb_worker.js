@@ -11,7 +11,7 @@ function poll_breadcrumb(){
         setTimeout( function(){ poll_breadcrumb() }, Poll_Timeout);
       }
     };
-    xhr.open("GET", "../../get_breadcrumbs?%5B%5D="+Object_GUID, true);
+    xhr.open("GET", "../../get_breadcrumbs?GUIDs%5B%5D="+Object_GUID, true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
