@@ -4,7 +4,9 @@ var MAP;
 // Global Hyperwall variables
 var CONVERSATIONS_POLL_INTERVAL = 15000, CRUMB_POLL_INTERVAL = 2000;
 var CONVERSATIONS_POLLING_WORKER;
-var BREADCRUMB_POLLING_WORKERS_HASH = new Object();
+
+var BREADCRUMB_POLLING_WORKERS = new Object();
+var BREADCRUMB_MAP_MARKERS = new Object();
 
 var HYPERWALL_USER_GUID = "";
 //var SPECIAL_USERS = new Array();
@@ -41,9 +43,18 @@ function make_critical(guid){
 function insert_msg(conversation_guid, msg_guid){
 
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
-  /*if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
-    console.log("we have some pictures!")
-  }*/
+  if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
+    console.log("we have some pictures!");
+    var pic_str =
+    '<div class="dialog_pic"><input type="hidden" class="msg_GUID" value="'+msg_guid+'">'+
+    '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user">'+
+    IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
+    '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+
+    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+'</div>'+
+    '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div></div>'+
+
+    target_container.find('.dialog_pics').prepend(pic_str).hide().fadeIn();
+  }
 
   var text_str =
     '<hr><input type="hidden" class="msg_guid" value="'+msg_guid+'">'+
@@ -330,7 +341,7 @@ function initialize() {
   // User Trigger (Breadrumbs and mark all his/her msgs)
   $('body').on("click", ".user_link", function(){
     var user_guid = $(this).parent().find(".user_guid").val();
-
+    console.log($(this).parents('.inmap_dialog'));
   })
 
 
