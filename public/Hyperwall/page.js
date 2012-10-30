@@ -273,7 +273,7 @@ function initialize() {
 
 
   // Start conversation polling worker thread
-  CONVERSATIONS_POLLING_WORKER = new Worker('polling_workers/polling_worker.js');
+  CONVERSATIONS_POLLING_WORKER = new Worker('polling_workers/conversations_worker.js');
   CONVERSATIONS_POLLING_WORKER.addEventListener(
     'message',
     function(e){
@@ -306,7 +306,7 @@ function initialize() {
     },
     false
   );
-  CONVERSATIONS_POLLING_WORKER.postMessage( {type: "Conversations", interval: CONVERSATIONS_POLL_INTERVAL}); 
+  CONVERSATIONS_POLLING_WORKER.postMessage( {interval: CONVERSATIONS_POLL_INTERVAL}); 
 
 
 
