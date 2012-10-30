@@ -361,7 +361,7 @@ function initialize() {
     },
     false
   );
-  BREADCRUMB_POLLING_WORKERS.postMessage( {object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
+  BREADCRUMB_POLLING_WORKERS[0].postMessage( {object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
 
   })
 
