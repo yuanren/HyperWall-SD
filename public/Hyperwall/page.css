@@ -75,12 +75,13 @@ html, body {
   overflow: auto;
 }
 
+.dialog_pic { position: relative;}
 .dialog_pic img {
-  width: 256px;
+  width: 240px;
   border-radius: 2px;
 }
 .dialog_pic_title {
-  width: 251px; padding-left: 5px;
+  width: 235px; padding-left: 5px;
   color: #fff;
   position: absolute;
   background-color: #6a7062;
