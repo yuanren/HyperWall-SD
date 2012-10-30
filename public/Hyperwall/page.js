@@ -353,7 +353,7 @@ function initialize() {
       for(var i=0; i<rcv_json.result.length; ++i){
         if(!BREADCRUMB_MAP_MARKERS.hasOwnProperty(rcv_json.result[i][3])){
           BREADCRUMB_MAP_MARKERS[rcv_json.result[i][3]] = gm_create_marker(
-            "breadrumb", 
+            "breadcrumb", 
             [rcv_json.result[i][1], rcv_json.result[i][2]]
           );
         }
