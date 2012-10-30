@@ -100,7 +100,7 @@ function prepare_msg(msg_guid){
               );
             }
           } else if(rcv_data.associated_objects[1].objects[i][0] == "Image"){
-            img_guid = rcv_data.associated_objects[1].objects[i][1].imageId;
+            img_guid = rcv_data.associated_objects[1].objects[i][1].resourceId;
           }
         } catch(e) { console.log(e);}
       }
