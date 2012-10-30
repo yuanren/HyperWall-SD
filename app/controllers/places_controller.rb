@@ -55,20 +55,20 @@ class PlacesController < ApplicationController
       @place.longitude = params[:longitude]
       @place.version = 1
 
-      @point = Point.new
-      @point.placeId = @place.placeId
-      @point.save
-
-      @spatialThing = SpatialThing.new
-      @spatialThing.placeId = @point.placeId
-      @spatialThing.latitude = params[:latitude]
-      @spatialThing.longitude = params[:longitude]
-      @spatialThing.altitude = 0.0
-      @spatialThing.type = "Place"
-      @spatialThing.save
-
       respond_to do |format|
         if @place.save
+          @point = Point.new
+          @point.placeId = @place.placeId
+          @point.save
+
+          @spatialThing = SpatialThing.new
+          @spatialThing.placeId = @point.placeId
+          @spatialThing.latitude = params[:latitude]
+          @spatialThing.longitude = params[:longitude]
+          @spatialThing.altitude = 0.0
+          @spatialThing.type = "Place"
+          @spatialThing.save
+
           @idTableName = IdTableName.new
           @idTableName.id = @place.placeId
           @idTableName.tableName = "Place"

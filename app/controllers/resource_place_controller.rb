@@ -10,6 +10,7 @@ class ResourcePlaceController < ApplicationController
       @place.latitude = params[:latitude]
       @place.longitude = params[:longitude]
       @place.version = 1
+      @place.save
 
       @point = Point.new
       @point.placeId = @place.placeId
@@ -22,8 +23,6 @@ class ResourcePlaceController < ApplicationController
       @spatialThing.altitude = 0.0
       @spatialThing.type = "Place"
       @spatialThing.save
-
-      @place.save
 
       @idTableName = IdTableName.new
       @idTableName.id = @place.placeId
