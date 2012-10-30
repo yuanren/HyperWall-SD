@@ -26,6 +26,14 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 
 // HTML MANIPULATION Functions
+function clear_breadcrumb(){
+  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { 
+    value.setMap(null);
+  });
+  BREADCRUMB_POLLING_WORKERS[0].postMessage({type: "STOP"}); 
+}
+
+
 function add_to_list(type, guid, msg){
   $("#"+type+"_list header").after(
     '<div class="list_msg">'+
@@ -221,7 +229,7 @@ function construct_conversation(conversation_guid){
       // Check if Place information is available
       if(CONVERSATION_HASH[conversation_guid].hasOwnProperty("MAP_MARKER")){
         $("#conversations_pool").append(info_str);
-        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow({ content: "" });
+        CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"] = new google.maps.InfoWindow();
         google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["MAP_MARKER"], 'click', function() {
           MAP.setZoom(17);
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].setContent(
@@ -315,7 +323,7 @@ function initialize() {
     },
     false
   );
-  CONVERSATIONS_POLLING_WORKER.postMessage( {interval: CONVERSATIONS_POLL_INTERVAL}); 
+  CONVERSATIONS_POLLING_WORKER.postMessage( {type: "START", interval: CONVERSATIONS_POLL_INTERVAL}); 
 
 
 
@@ -369,7 +377,7 @@ function initialize() {
     },
     false
   );
-  BREADCRUMB_POLLING_WORKERS[0].postMessage( {object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
+  BREADCRUMB_POLLING_WORKERS[0].postMessage( {type: "START", object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
 
   })
 

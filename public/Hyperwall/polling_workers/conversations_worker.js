@@ -19,17 +19,13 @@ function poll_conversations(){
 
 self.addEventListener('message', function(e) {
   //self.postMessage("worker started");
-  Poll_Timeout = e.data.interval;
-  poll_conversations();
-  /*switch(e.data.type){
-    case "Conversations":
+  switch(e.data.type){
+    case "START":
+      Poll_Timeout = e.data.interval;
       poll_conversations();
       break;
-    case "Conversation_GUIDs":
-      poll_conversation_guids();
+    case "STOP":
+      self.close();
       break;
-    case "Conversation":
-      poll_conversation(e.data.GUID);
-      break;
-  }*/
+  }
 }, false);

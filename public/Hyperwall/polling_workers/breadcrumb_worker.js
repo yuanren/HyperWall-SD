@@ -18,7 +18,14 @@ function poll_breadcrumb(){
 
 
 self.addEventListener('message', function(e) {
-  Poll_Timeout = e.data.interval;
-  Object_GUID = e.data.object_guid;
-  poll_breadcrumb();
+  switch(e.data.type){
+    case "START":
+      Poll_Timeout = e.data.interval;
+      Object_GUID = e.data.object_guid;
+      poll_breadcrumb();
+      break;
+    case "STOP":
+      self.close();
+      break;
+  }
 }, false);
