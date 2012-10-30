@@ -51,7 +51,7 @@ function insert_msg(conversation_guid, msg_guid){
     IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
     '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+
     '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+'</div>'+
-    '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>'+
+    '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>';
 
     target_container.find('.dialog_pics').prepend(pic_str).hide().fadeIn();
   }
