@@ -26,7 +26,10 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 // HTML MANIPULATION Functions
 function clear_breadcrumb(){
-  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { value.setMap(null); });
+  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { 
+    value.setMap(null);
+    BREADCRUMB_MAP_MARKERS = new Object();
+  });
   BREADCRUMB_POLLING_WORKERS[0].postMessage({type: "STOP"}); 
 }
 
@@ -354,7 +357,9 @@ function initialize() {
 
   // User Trigger (Breadrumbs and mark all his/her msgs)
   $('body').on("click", ".user_link", function(){
-    if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){clear_breadcrumb();};
+    if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){
+      clear_breadcrumb();
+    };
 
     var user_guid = $(this).parent().find(".user_guid").val();
     $(this).closest('.inmap_dialog').first().find('.user_guid[value='+user_guid+']').parent().parent().addClass("same_user_frame");
