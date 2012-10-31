@@ -2,7 +2,7 @@
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATIONS_POLL_INTERVAL = 15000, BREADCRUMB_POLL_INTERVAL = 2000;
+var CONVERSATIONS_POLL_INTERVAL = 3300, BREADCRUMB_POLL_INTERVAL = 2000;
 var CONVERSATIONS_POLLING_WORKER;
 
 var BREADCRUMB_POLLING_WORKERS = new Object();
@@ -27,9 +27,7 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 // HTML MANIPULATION Functions
 function clear_breadcrumb(){
-  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { 
-    value.setMap(null);
-  });
+  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { value.setMap(null); });
   BREADCRUMB_POLLING_WORKERS[0].postMessage({type: "STOP"}); 
 }
 
@@ -50,7 +48,7 @@ function make_critical(guid){
 }
 
 function insert_msg(conversation_guid, msg_guid){
-
+// TODO: CHANGE TIME FROM UTC TO LOCAL
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
   if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
     console.log("we have some pictures!");
@@ -357,27 +355,29 @@ function initialize() {
 
   // User Trigger (Breadrumbs and mark all his/her msgs)
   $('body').on("click", ".user_link", function(){
+    clear_breadcrumb();
+
     var user_guid = $(this).parent().find(".user_guid").val();
     $(this).closest('.inmap_dialog').first().find('.user_guid[value='+user_guid+']').parent().parent().addClass("same_user_frame");
 
     BREADCRUMB_POLLING_WORKERS[0] = new Worker('polling_workers/breadcrumb_worker.js');
     BREADCRUMB_POLLING_WORKERS[0].addEventListener(
-    'message',
-    function(e){
-      var rcv_json = $.parseJSON(e.data);
-      console.log(rcv_json);
-      for(var i=0; i<rcv_json.result.length; ++i){
-        if(!BREADCRUMB_MAP_MARKERS.hasOwnProperty(rcv_json.result[i][3])){
-          BREADCRUMB_MAP_MARKERS[rcv_json.result[i][3]] = gm_create_marker(
-            "breadcrumb", 
-            [rcv_json.result[i][1], rcv_json.result[i][2]]
-          );
+      'message',
+      function(e){
+        var rcv_json = $.parseJSON(e.data);
+        console.log(rcv_json);
+        for(var i=0; i<rcv_json.result.length; ++i){
+          if(!BREADCRUMB_MAP_MARKERS.hasOwnProperty(rcv_json.result[i][3])){
+            BREADCRUMB_MAP_MARKERS[rcv_json.result[i][3]] = gm_create_marker(
+              "breadcrumb", 
+              [rcv_json.result[i][1], rcv_json.result[i][2]]
+            );
+          }
         }
-      }
-    },
-    false
-  );
-  BREADCRUMB_POLLING_WORKERS[0].postMessage( {type: "START", object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
+      },
+      false
+    );
+    BREADCRUMB_POLLING_WORKERS[0].postMessage( {type: "START", object_guid: user_guid, interval: BREADCRUMB_POLL_INTERVAL}); 
 
   })
 
@@ -385,11 +385,12 @@ function initialize() {
   // More info button
   $('body').on("click", ".more_info_btn", function(){
     var img_file = $(this).parent().find('.img_file')[0];
+    var response_text = $(this).parent().find(".response_text").val();
     $.when( 
       sd_create(
         "messages",
         { 
-          text: $(this).parent().find(".response_text").val(),
+          text: response_text,
           sender: HYPERWALL_USER_GUID, recipient: "",
           "conversation": $(this).parent().find(".conversation_guid").val()
         }
@@ -403,7 +404,7 @@ function initialize() {
           //console.log(event.target.result);
           sd_create(
             "images",
-            { binary: event.target.result },
+            { binary: event.target.result, label: response_text },
             function(rcv_data){
               $.ajax({
                 type: 'POST', url: "../associate_guids",
@@ -415,6 +416,7 @@ function initialize() {
       }
       
     });
+    $(this).parent().find(".response_text").val("");
 
   }); 
 
@@ -432,7 +434,6 @@ function initialize() {
           success: function(rcv_data_2){ 
             console.log(rcv_data_2);
             make_critical(conversation_guid);
-            //CRITICAL_CONVERSATIONS_HASH[conversation_guid] = true;
           }
         });
       }
