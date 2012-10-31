@@ -10,7 +10,6 @@ var BREADCRUMB_MAP_MARKERS = new Object(); //key = timestamp
 
 
 var HYPERWALL_USER_GUID = "";
-//var SPECIAL_USERS = new Array();
 
 var SELF_ESCALATION_LEVEL = 1;
 var CRITICAL_CONVERSATIONS_HASH = new Object();
