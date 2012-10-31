@@ -26,10 +26,9 @@ IMMUTABLE_HASH["MSG"] = new Object(); // Special Hash for MSGs - [GUID] -> { pla
 
 // HTML MANIPULATION Functions
 function clear_breadcrumb(){
-  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { 
-    value.setMap(null);
-    BREADCRUMB_MAP_MARKERS = new Object();
-  });
+  $.each(BREADCRUMB_MAP_MARKERS, function(index, value) { value.setMap(null); });
+  $('.inmap_dialog .user_guid').parent().parent().removeClass("same_user_frame");
+  BREADCRUMB_MAP_MARKERS = new Object();
   BREADCRUMB_POLLING_WORKERS[0].postMessage({type: "STOP"}); 
 }
 
@@ -189,6 +188,9 @@ function update_conversation(conversation_guid){
             '</div>'
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
+          google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"],'closeclick',function(){
+            if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){ clear_breadcrumb(); };
+          });          
         });
       }
 
@@ -238,6 +240,9 @@ function construct_conversation(conversation_guid){
             '</div>'
           );
           CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"].open(MAP, CONVERSATION_HASH[conversation_guid]["MAP_MARKER"]);
+          google.maps.event.addListener(CONVERSATION_HASH[conversation_guid]["INFO_WINDOW"],'closeclick',function(){
+            if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){ clear_breadcrumb(); };
+          });
         });
       } else {
         $("#conversations_pool").append(info_str);
@@ -357,9 +362,7 @@ function initialize() {
 
   // User Trigger (Breadrumbs and mark all his/her msgs)
   $('body').on("click", ".user_link", function(){
-    if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){
-      clear_breadcrumb();
-    };
+    if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){ clear_breadcrumb(); };
 
     var user_guid = $(this).parent().find(".user_guid").val();
     $(this).closest('.inmap_dialog').first().find('.user_guid[value='+user_guid+']').parent().parent().addClass("same_user_frame");
@@ -517,6 +520,7 @@ function initialize() {
   // Conversation pool section close
   $('#conversations_pool').on("click", "#pool_close_btn", function(){
     $('#conversations_pool').fadeOut();
+    if(BREADCRUMB_POLLING_WORKERS.hasOwnProperty(0)){ clear_breadcrumb(); };
   }); 
 
 
