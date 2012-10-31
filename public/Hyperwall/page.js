@@ -1,3 +1,6 @@
+// Define root directory
+var APP_ROOT_DIRECTORY = "../";
+
 // Global Google Map variables
 var MAP;
   
@@ -414,7 +417,7 @@ function initialize() {
             { binary: event.target.result, label: response_text },
             function(rcv_data){
               $.ajax({
-                type: 'POST', url: "../associate_guids",
+                type: 'POST', url: APP_ROOT_DIRECTORY+"associate_guids",
                 data: { objects: [msg_resp.GUID, rcv_data.GUID]}, dataType: 'json'
               }); 
             }
@@ -436,7 +439,7 @@ function initialize() {
       { level: SELF_ESCALATION_LEVEL+1 },
       function(rcv_data) {
         $.ajax({
-          type: 'POST', url: "../associate_guids",
+          type: 'POST', url: APP_ROOT_DIRECTORY+"associate_guids",
           data: { objects: [conversation_guid, rcv_data.GUID]}, dataType: 'json',
           success: function(rcv_data_2){ 
             console.log(rcv_data_2);

@@ -1,5 +1,5 @@
+var API_ROOT_DIRECTORY = "../../"; // Define root directory
 var Poll_Timeout = 3000; //Default timeout at 3000ms
-
 
 function poll_conversations(){
   try {
@@ -11,7 +11,7 @@ function poll_conversations(){
         setTimeout( function(){ poll_conversations() }, Poll_Timeout);
       }
     };
-    xhr.open("GET","../../get_objects?type=Conversation",true);
+    xhr.open("GET",API_ROOT_DIRECTORY+"get_objects?type=Conversation",true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }

@@ -1,3 +1,4 @@
+var API_ROOT_DIRECTORY = "../../"; // Define root directory
 var Poll_Timeout = 3000; //Default timeout at 3000ms
 var Object_GUID = "";
 
@@ -11,7 +12,7 @@ function poll_breadcrumb(){
         setTimeout( function(){ poll_breadcrumb() }, Poll_Timeout);
       }
     };
-    xhr.open("GET", "../../get_breadcrumbs?GUIDs%5B%5D="+Object_GUID, true);
+    xhr.open("GET", API_ROOT_DIRECTORY+"get_breadcrumbs?GUIDs%5B%5D="+Object_GUID, true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }
