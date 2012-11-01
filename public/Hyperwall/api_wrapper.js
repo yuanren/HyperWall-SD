@@ -4,7 +4,7 @@ var API_ROOT_DIRECTORY = "../";
 // Shorthanded Situation DB API calls
 function sd_create (type, post_data, callback_function){
   return $.ajax({
-      type: 'POST', url: ROOT_DIRECTORY+type+".json",
+      type: 'POST', url: API_ROOT_DIRECTORY+type+".json",
       data: post_data, dataType: 'json',
       success: function(rcv_data){ console.log(rcv_data); if(callback_function != undefined){callback_function(rcv_data);} }
   });
@@ -12,7 +12,7 @@ function sd_create (type, post_data, callback_function){
 
 function sd_get (type, get_data, callback_function){
   return $.ajax({
-      type: 'GET', url: ROOT_DIRECTORY+"get_"+type,
+      type: 'GET', url: API_ROOT_DIRECTORY+"get_"+type,
       data: get_data, dataType: 'json',/* async: false,*/
       success: function(rcv_data){ console.log(rcv_data); if(callback_function != undefined){callback_function(rcv_data);} }
   });
