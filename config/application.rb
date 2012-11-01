@@ -64,9 +64,9 @@ module DMI
     config.middleware.use Rack::Cors do
       allow do
         origins '*'
-        resource %r{.json},
+        resource '*',
                  :headers => ['Origin', 'Accept', 'Content-Type'],
-                 :methods => [:put, :delete]
+                 :methods => [:get, :post, :put, :delete, :options]
       end
     end
   end
