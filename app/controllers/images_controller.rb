@@ -48,12 +48,13 @@ class ImagesController < ApplicationController
     # create image file path
     path = File.join("public/Images", @image.resourceId)
     if !params[:binary].nil?
-      #@image.imageBinary = params[:binary]
+      @image.imageBinary = params[:binary]
       # strip "data:image/...;base64," prefix
       base64DecodedImage = Base64.decode64(params[:binary].sub(/^data:image\/\w*;base64,/, ''))
       File.open(path, "wb") { |f| f.write(base64DecodedImage) }
     elsif !params[:URL].nil?
       @image_file = open(params[:URL])
+      @image.imageBinary = @image_file.read
       # write the file
       File.open(path, "wb") { |f| f.write(@image_file.read) }
       @image_file.close
