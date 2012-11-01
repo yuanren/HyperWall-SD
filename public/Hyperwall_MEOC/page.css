@@ -6,6 +6,8 @@ html, body {
 }
 @media print { html, body { height: auto; } }
 #map_canvas { height: 100%; width: 100%; }
+#img_holder { display: none; top: 16px; z-index: 10; }
+#img_holder img{ margin: 16px; width: 800px; }
 .hidden { display: none;}
 
 .list { 
@@ -36,7 +38,7 @@ html, body {
 #right_list_container {
   top: 64px; right: 16px; max-height: 480px; overflow: auto;
 }
-
+#critical_list .list_msg{ border: 2px solid #600; }
 /*#general_list {
   top: 424px; right: 32px; height: 360px; overflow: auto;  
 }*/
@@ -75,12 +77,13 @@ html, body {
   overflow: auto;
 }
 
+.dialog_pic { position: relative;}
 .dialog_pic img {
-  width: 256px;
+  width: 240px;
   border-radius: 2px;
 }
 .dialog_pic_title {
-  width: 251px; padding-left: 5px;
+  width: 235px; padding-left: 5px;
   color: #fff;
   position: absolute;
   background-color: #6a7062;
@@ -108,6 +111,7 @@ html, body {
 .file_div { text-align: right; font-size: 12px;}
 
 
+.same_user_frame { background-color: DodgerBlue; }
 .results_frame { border: 2px solid DodgerBlue; }
 
 /*
