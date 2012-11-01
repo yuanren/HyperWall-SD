@@ -29,7 +29,7 @@ html, body {
 #img_holder #img_close_btn img{
   position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;  
 }
-#img_holder #enlarged_img{ margin: 16px; width:800px; max-width: 1024px; max-height: 640px; }
+#img_holder #enlarged_img{ margin: 16px; max-width: 800px; max-height: 640px; }
 
 #conversations_pool {
   display: none;
@@ -124,7 +124,7 @@ html, body {
 .file_div { text-align: right; font-size: 12px;}
 
 
-.same_user_frame { background-color: DodgerBlue; }
+.same_user_frame { background-color: PowderBlue; }
 .results_frame { border: 2px solid DodgerBlue; }
 
 /*
