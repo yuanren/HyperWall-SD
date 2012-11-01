@@ -315,7 +315,7 @@ function initialize() {
               CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
               $(".list_msg .conversation_guid[value="+rcv_json.objects[i].resourceId+"]").parent().remove();
               var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(rcv_json.objects[i].resourceId)? "critical":"general";
-              add_to_list(list_type, rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label);
+              add_to_list(list_type, rcv_json.objects[i].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json.objects[i].label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1));
               update_conversation(rcv_json.objects[i].resourceId);
             }
           }
@@ -324,7 +324,7 @@ function initialize() {
           console.log("Received new conversation: "+rcv_json.objects[i].resourceId);
           CONVERSATION_HASH[rcv_json.objects[i].resourceId] = new Object();
           CONVERSATION_HASH[rcv_json.objects[i].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
-          add_to_list("general", rcv_json.objects[i].resourceId, "<b>New Conversation</b>:<br> "+rcv_json.objects[i].label);
+          add_to_list("general", rcv_json.objects[i].resourceId, "<b>New Conversation</b>:<br> "+rcv_json.objects[i].label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1));
           construct_conversation(rcv_json.objects[i].resourceId);
         }
       }
@@ -540,7 +540,7 @@ function initialize() {
 
 
   // Right Container Height
-  $('#right_list_container').css('height', $('body').height()-64 + 'px'); 
+  $('#right_list_container').css('max-height', $('body').height()-64 + 'px'); 
 
 
   $('body').on("click", "#tracked_user_list a", function(){  
