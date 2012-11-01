@@ -14,7 +14,6 @@ html, body {
   background-color: #fff; opacity: 0.92;
   box-shadow: 1px 1px 3px 1px #999; border-radius: 2px;
 }
-.list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
 
 
 #img_holder { 
@@ -29,7 +28,7 @@ html, body {
 #img_holder #img_close_btn img{
   position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;  
 }
-#img_holder #enlarged_img{ margin: 16px; max-width: 800px; max-height: 640px; }
+#img_holder #enlarged_img{ margin: 16px; min-width: 400px; max-width: 800px; min-height: 240px; max-height: 640px; }
 
 #conversations_pool {
   display: none;
@@ -52,7 +51,7 @@ html, body {
   top: 64px; right: 16px; max-height: 480px; overflow: auto;
 }
 #critical_list .list_msg{ border: 2px solid #600; }
-#critical_list header { background-color: #222; color: #eee; }
+#critical_list header { background-color: #6a7062; color: #eee; font-weight: 700;}
 /*#general_list {
   top: 424px; right: 32px; height: 360px; overflow: auto;  
 }*/

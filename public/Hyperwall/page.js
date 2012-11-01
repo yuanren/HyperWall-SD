@@ -426,7 +426,7 @@ function initialize() {
           //console.log(event.target.result);
           sd_create(
             "images",
-            { binary: event.target.result, label: response_text },
+            { binary: event.target.result, label: "Hyperwall Image" },
             function(rcv_data){
               $.ajax({
                 type: 'POST', url: APP_ROOT_DIRECTORY+"associate_guids",
@@ -539,7 +539,8 @@ function initialize() {
   }); 
 
 
-  
+  // Right Container Height
+  $('#right_list_container').css('height', $('body').height()-64 + 'px'); 
 
 
   $('body').on("click", "#tracked_user_list a", function(){  
