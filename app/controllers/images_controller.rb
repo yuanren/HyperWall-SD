@@ -58,7 +58,7 @@ class ImagesController < ApplicationController
       File.open(path, "wb") { |f| f.write(@image_file.read) }
       @image_file.close
     end
-    @image.uniformResourceLocator = "209.129.244.23:3000/Images/" + @image.resourceId
+    @image.uniformResourceLocator = "sd:3000/Images/" + @image.resourceId
     @image.dateTime = Time.now
 
     @resource = Resource.new
