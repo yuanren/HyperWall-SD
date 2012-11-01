@@ -17,8 +17,14 @@ html, body {
 .list header { margin-left: 6px; font-weight: 700; text-decoration: underline;}
 
 
-#img_holder { display: none; top: 16px; z-index: 10; margin: 0 auto; width: auto;}
-#img_holder img{ margin: 16px; width: 800px; }
+#img_holder { 
+  display: none; left: 16px; top: 16px; 
+  opacity: 1; z-index: 10; margin: 0 auto;
+}
+#img_holder #img_close_btn {
+  position: absolute; left: -18px; top: -44px; width: 68px; height: 67px; -webkit-user-select: none; border: 0px; padding: 0px; margin: 0px;  
+}
+#img_holder #enlarged_img{ margin: 16px; max-width: 1024px; max-height: 800px; }
 
 #conversations_pool {
   display: none;

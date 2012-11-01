@@ -391,12 +391,17 @@ function initialize() {
 
   })
 
-  // Conversation pool section close
+  // click on img function
   $('body').on("click", ".dialog_pic img", function(){
     console.log("click on img");
-    $('#img_holder img').attr('src', $(this).attr('src'));
+    $('#img_holder #enlarged_img').attr('src', $(this).attr('src'));
     $('#img_holder').fadeIn();
-  }); 
+  });
+
+  $('#img_holder').on("click", "#img_close_btn", function(){
+    $('#img_holder').fadeOut();
+  });
+
 
 
   // More info button
