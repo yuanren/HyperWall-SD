@@ -305,7 +305,7 @@ function initialize() {
       // Receive Conversation GUIDs from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      for(var i=0; i<rcv_json.objects.length; ++i){
+      for(var i=0; i<rcv_json.length; ++i){
         // Ckeck if it is ignored or updated
         if( CONVERSATION_HASH.hasOwnProperty(rcv_json[i].objects[0][1].resourceId) ) {
           if( CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] != "IGNORED" ){
