@@ -323,7 +323,7 @@ function initialize() {
           // Initialize a New Conversation
           console.log("Received new conversation: "+rcv_json[i].objects[0][1].resourceId);
           CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId] = new Object();
-          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json.objects[i].lastUpdated;
+          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json[i].objects[0][1].lastUpdated;
           add_to_list("general", rcv_json[i].objects[0][1].resourceId, "<b>New Conversation</b>:<br> "+rcv_json[i].objects[0][1].label);
           construct_conversation(rcv_json[i].objects[0][1].resourceId);
         }
