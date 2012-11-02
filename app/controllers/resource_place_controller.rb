@@ -42,6 +42,7 @@ class ResourcePlaceController < ApplicationController
       @result = "Fail"
     end
     respond_to do |format|
+      format.html { render :json => {:result => @result} }
       format.json { render :json => {:result => @result} }
     end
   end
@@ -103,6 +104,7 @@ class ResourcePlaceController < ApplicationController
     end
 
     respond_to do |format|
+      format.html { render :json => {:result => @results}}
       format.json { render :json => {:result => @results}}
     end
   end
