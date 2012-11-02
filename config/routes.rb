@@ -33,6 +33,8 @@ DMI::Application.routes.draw do
 
   match 'get_breadcrumbs' => 'ResourcePlace#get_breadcrumbs'
 
+  match '*all' => 'application#cor', :constraints => {:method => 'OPTIONS'}
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
