@@ -426,7 +426,7 @@ function initialize() {
           //console.log(event.target.result);
           sd_create(
             "images",
-            { binary: event.target.result, label: "Hyperwall Image" },
+            { binary: event.target.result, label: response_text },
             function(rcv_data){
               $.ajax({
                 type: 'POST', url: APP_ROOT_DIRECTORY+"associate_guids",
