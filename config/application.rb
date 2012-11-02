@@ -65,7 +65,7 @@ module DMI
       allow do
         origins '*'
         resource '*',
-                 :headers => ['Origin', 'Accept', 'Content-Type'],
+                 :headers => :any,
                  :methods => [:get, :post, :put, :delete, :options]
       end
     end
