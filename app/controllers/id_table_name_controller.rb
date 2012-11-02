@@ -42,6 +42,7 @@ class IdTableNameController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html { render json: {:result => @result} }
       format.json { render json: {:result => @result} }
     end
   end
@@ -61,6 +62,7 @@ class IdTableNameController < ApplicationController
     @idTableName = IdTableName.find_by_id(@id)
     if @idTableName.nil?
       respond_to do |format|
+        format.html { render :json => {:error => "GUID doesn't exist"}}
         format.json { render :json => {:error => "GUID doesn't exist"}}
       end
       return
@@ -108,6 +110,7 @@ class IdTableNameController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html { render :json => {:type => @tableName, :object => @object, :associated_objects => @associatedObjects}}
       format.json { render :json => {:type => @tableName, :object => @object, :associated_objects => @associatedObjects}}
     end
   end
@@ -213,6 +216,7 @@ class IdTableNameController < ApplicationController
       end
     end
     respond_to do |format|
+      format.html { render :json => {:GUIDs => @resultGuids}}
       format.json { render :json => {:GUIDs => @resultGuids}}
     end
   end
@@ -322,6 +326,7 @@ class IdTableNameController < ApplicationController
     end
 
     respond_to do |format|
+      format.html { render :json => {:objects => @resultObjects}}
       format.json { render :json => {:objects => @resultObjects}}
     end
   end
@@ -359,6 +364,7 @@ class IdTableNameController < ApplicationController
     end
     respond_to do |format|
       #format.json { render :json => {:escalated_objects => @escalatedObjects} }
+      format.html { render :json => @escalatedObjects }
       format.json { render :json => @escalatedObjects }
     end
   end
