@@ -3,10 +3,11 @@ class ApplicationController < ActionController::Base
   before_filter :cor
 
   def cor
-    headers["Access-Control-Allow-Origin"] = "js-app-origin.com"
-    headers["Access-Control-Allow-Methods"] = %w{GET POST PUT DELETE}.join(",")
-    headers["Access-Control-Allow-Headers"] = %w{Origin Accept Content-Type X-Requested-With X-CSRF-Token}.join(",")
+    headers["Access-Control-Allow-Origin"] = "*"
+    headers['Access-Control-Expose-Headers'] = 'ETag'
+    headers["Access-Control-Allow-Methods"] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
+    headers["Access-Control-Allow-Headers"] = '*, Origin, Accept, X-Requested-With, X-CSRF-Token, Content-Type, If-Modified-Since, If-None-Match'
+    headers['Access-Control-Max-Age'] = '86400'
     head(:ok) if request.request_method == "OPTIONS"
-  end
   end
 end
