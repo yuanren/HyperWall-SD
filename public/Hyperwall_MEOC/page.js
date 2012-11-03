@@ -305,27 +305,28 @@ function initialize() {
       // Receive Conversation GUIDs from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      for(var i=0; i<rcv_json.length; ++i){
+      for(var i=0; i<rcv_json.objects.length; ++i){
+        var current_obj = rcv_json[i].objects[0][1];
         // Ckeck if it is ignored or updated
-        if( CONVERSATION_HASH.hasOwnProperty(rcv_json[i].objects[0][1].resourceId) ) {
-          if( CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] != "IGNORED" ){
-            if( CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] != rcv_json[i].objects[0][1].lastUpdated ){
-              console.log("Conversation updated: "+rcv_json[i].objects[0][1].resourceId);
+        if( CONVERSATION_HASH.hasOwnProperty(current_obj.resourceId) ) {
+          if( CONVERSATION_HASH[current_obj.resourceId]["STATUS"] != "IGNORED" ){
+            if( CONVERSATION_HASH[current_obj.resourceId]["STATUS"] != current_obj.lastUpdated ){
+              console.log("Conversation updated: "+current_obj.resourceId);
               //do something for updated conversation
-              CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json[i].objects[0][1].lastUpdated;
-              $(".list_msg .conversation_guid[value="+rcv_json[i].objects[0][1].resourceId+"]").parent().remove();
-              var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(rcv_json[i].objects[0][1].resourceId)? "critical":"general";
-              add_to_list(list_type, rcv_json[i].objects[0][1].resourceId, "<b>Conversation Updated</b>:<br> "+rcv_json[i].objects[0][1].label);
-              update_conversation(rcv_json[i].objects[0][1].resourceId);
+              CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
+              $(".list_msg .conversation_guid[value="+current_obj.resourceId+"]").parent().remove();
+              var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(current_obj.resourceId)? "critical":"general";
+              add_to_list(list_type, current_obj.resourceId, "<b>Conversation Updated</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1));
+              update_conversation(current_obj.resourceId);
             }
           }
         } else {
           // Initialize a New Conversation
-          console.log("Received new conversation: "+rcv_json[i].objects[0][1].resourceId);
-          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId] = new Object();
-          CONVERSATION_HASH[rcv_json[i].objects[0][1].resourceId]["STATUS"] = rcv_json[i].objects[0][1].lastUpdated;
-          add_to_list("general", rcv_json[i].objects[0][1].resourceId, "<b>New Conversation</b>:<br> "+rcv_json[i].objects[0][1].label);
-          construct_conversation(rcv_json[i].objects[0][1].resourceId);
+          console.log("Received new conversation: "+current_obj.resourceId);
+          CONVERSATION_HASH[current_obj.resourceId] = new Object();
+          CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
+          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1));
+          construct_conversation(current_obj.resourceId);
         }
       }
     },

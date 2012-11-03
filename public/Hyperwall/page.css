@@ -124,7 +124,7 @@ html, body {
 .file_div { text-align: right; font-size: 12px;}
 
 
-.same_user_frame { background-color: PowderBlue; }
+.same_user_frame { background-color: #ddd; }
 .results_frame { border: 2px solid DodgerBlue; }
 
 /*
