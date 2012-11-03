@@ -11,6 +11,14 @@ class IdTableNameController < ApplicationController
         end
         return
       end
+      # update conversation's lastUpdate if its message has a new association
+      if @idTableName.tableName == "Message"
+        @message = Message.find_by_resourceId(objectId)
+        if @message and @message.conversation
+          @message.conversation.lastUpdated = Time.now
+          @message.conversation.save
+        end
+      end
       if @idTableName.tableName == "Place"
         @place = Place.find_by_placeId(objectId)
       end
