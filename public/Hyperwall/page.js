@@ -542,7 +542,7 @@ function initialize() {
 
   // Right Container Height
   $('#right_list_container').css('max-height', $('body').height()-64 + 'px'); 
-  $('#conversations_pool').draggable();
+  $('#conversations_pool, #img_holder').draggable();
 
   $('body').on("click", "#tracked_user_list a", function(){  
     //prepare_conversation(test_guid);
