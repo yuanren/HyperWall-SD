@@ -61,7 +61,7 @@ function insert_msg(conversation_guid, msg_guid){
     '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user user_link">'+
     IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
     '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
-    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+'</div>'+
+    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+' UTC</div>'+
     '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>';
 
     target_container.find('.dialog_pics').prepend(pic_str).hide().fadeIn();
@@ -73,7 +73,7 @@ function insert_msg(conversation_guid, msg_guid){
   //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str += '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
-      '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
+      '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+' UTC'+
       '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
     target_container.find('.dialog_texts').prepend(text_str).hide().fadeIn();
@@ -316,7 +316,7 @@ function initialize() {
               CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
               $(".list_msg .conversation_guid[value="+current_obj.resourceId+"]").parent().remove();
               var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(current_obj.resourceId)? "critical":"general";
-              add_to_list(list_type, current_obj.resourceId, "<b>Conversation Updated</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1));
+              add_to_list(list_type, current_obj.resourceId, "<b>Conversation Updated</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1)+' UTC');
               update_conversation(current_obj.resourceId);
             }
           }
@@ -325,7 +325,7 @@ function initialize() {
           console.log("Received new conversation: "+current_obj.resourceId);
           CONVERSATION_HASH[current_obj.resourceId] = new Object();
           CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
-          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1));
+          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1)+' UTC');
           construct_conversation(current_obj.resourceId);
         }
       }
@@ -542,7 +542,7 @@ function initialize() {
 
   // Right Container Height
   $('#right_list_container').css('max-height', $('body').height()-64 + 'px'); 
-
+  $('#conversations_pool').draggable();
 
   $('body').on("click", "#tracked_user_list a", function(){  
     //prepare_conversation(test_guid);
