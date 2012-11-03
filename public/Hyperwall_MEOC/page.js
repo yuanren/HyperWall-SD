@@ -14,7 +14,7 @@ var BREADCRUMB_MAP_MARKERS = new Object(); //key = timestamp
 
 var HYPERWALL_USER_GUID = "";
 
-var SELF_ESCALATION_LEVEL = 1;
+var SELF_ESCALATION_LEVEL = 2;
 var CRITICAL_CONVERSATIONS_HASH = new Object();
 
 
@@ -287,7 +287,7 @@ function initialize() {
       ); 
     } else { console.log("Found Local Hyperwall GUID: "+localStorage['HYPERWALL_USER_GUID']) }
     HYPERWALL_USER_GUID = localStorage['HYPERWALL_USER_GUID'];
-  } else { HYPERWALL_USER_GUID = "7d8689c0-1829-11e2-abd6-7071bc51ad1f"; } // Temporary give a dedicated GUID
+  } else { HYPERWALL_USER_GUID = "I-32e88366-2187-11e2-bb58-0800271d4f59"; } // Temporary give a dedicated GUID
 
 
   // Construct Google Map
@@ -305,7 +305,7 @@ function initialize() {
       // Receive Conversation GUIDs from Server
       var rcv_json = $.parseJSON(e.data);
       console.log(rcv_json);
-      for(var i=0; i<rcv_json.objects.length; ++i){
+      for(var i=0; i<rcv_json.length; ++i){
         var current_obj = rcv_json[i].objects[0][1];
         // Ckeck if it is ignored or updated
         if( CONVERSATION_HASH.hasOwnProperty(current_obj.resourceId) ) {
@@ -325,7 +325,7 @@ function initialize() {
           console.log("Received new conversation: "+current_obj.resourceId);
           CONVERSATION_HASH[current_obj.resourceId] = new Object();
           CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
-          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1)+' UTC');
+          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1)+' UTC');
           construct_conversation(current_obj.resourceId);
         }
       }

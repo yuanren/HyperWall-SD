@@ -11,7 +11,7 @@ function poll_conversations(){
         setTimeout( function(){ poll_conversations() }, Poll_Timeout);
       }
     };
-    xhr.open("GET",API_ROOT_DIRECTORY+"get_objects?type=Conversation",true);
+    xhr.open("GET",API_ROOT_DIRECTORY+"get_escalated_objects?type=Conversation&depth=2",true);
     xhr.send();
   } catch(e){ postMessage("ERROR:"+e.message);}
 }

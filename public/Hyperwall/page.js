@@ -325,7 +325,7 @@ function initialize() {
           console.log("Received new conversation: "+current_obj.resourceId);
           CONVERSATION_HASH[current_obj.resourceId] = new Object();
           CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
-          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1)+' UTC');
+          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1)+' UTC');
           construct_conversation(current_obj.resourceId);
         }
       }
