@@ -115,6 +115,7 @@ html, body {
   padding: 0px 2px;
   border-radius: 2px;
 }
+.dialog_text img {display: none;}
 .dialog_text_title { font-size: 12px; }
 
 .ignore_btn { color: #666; }
