@@ -5,7 +5,7 @@ var APP_ROOT_DIRECTORY = "../";
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATIONS_POLL_INTERVAL = 3300, BREADCRUMB_POLL_INTERVAL = 2000;
+var CONVERSATIONS_POLL_INTERVAL = 2200, BREADCRUMB_POLL_INTERVAL = 5000;
 var CONVERSATIONS_POLLING_WORKER;
 
 var BREADCRUMB_POLLING_WORKERS = new Object();
@@ -14,7 +14,7 @@ var BREADCRUMB_MAP_MARKERS = new Object(); //key = timestamp
 
 var HYPERWALL_USER_GUID = "";
 
-var SELF_ESCALATION_LEVEL = 2;
+var SELF_ESCALATION_LEVEL = 1;
 var CRITICAL_CONVERSATIONS_HASH = new Object();
 
 
@@ -58,11 +58,11 @@ function insert_msg(conversation_guid, msg_guid){
     console.log("we have some pictures!");
     var pic_str =
     '<div class="dialog_pic"><input type="hidden" class="msg_GUID" value="'+msg_guid+'">'+
-    '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user">'+
+    '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user user_link">'+
     IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
     '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
-    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+'</div>'+
-    '<img src="../Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>';
+    '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+' UTC</div>'+
+    '<img src="'+APP_ROOT_DIRECTORY+'Images/'+IMMUTABLE_HASH["MSG"][msg_guid]["img"]+'"></div>';
 
     target_container.find('.dialog_pics').prepend(pic_str).hide().fadeIn();
   }
@@ -73,7 +73,7 @@ function insert_msg(conversation_guid, msg_guid){
   //$.when( get_immutable(IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]) ).then(function(res){
     text_str += IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"];
     text_str += '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
-      '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+
+      '</a> @ '+IMMUTABLE_HASH["MSG"][msg_guid]["dateTime"].slice(11,-1)+' UTC'+
       '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
     target_container.find('.dialog_texts').prepend(text_str).hide().fadeIn();
@@ -316,7 +316,7 @@ function initialize() {
               CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
               $(".list_msg .conversation_guid[value="+current_obj.resourceId+"]").parent().remove();
               var list_type = CRITICAL_CONVERSATIONS_HASH.hasOwnProperty(current_obj.resourceId)? "critical":"general";
-              add_to_list(list_type, current_obj.resourceId, "<b>Conversation Updated</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1));
+              add_to_list(list_type, current_obj.resourceId, "<b>Conversation Updated</b>:<br> "+current_obj.label+'<br>@'+current_obj.lastUpdated.slice(11,-1)+' UTC');
               update_conversation(current_obj.resourceId);
             }
           }
@@ -325,7 +325,7 @@ function initialize() {
           console.log("Received new conversation: "+current_obj.resourceId);
           CONVERSATION_HASH[current_obj.resourceId] = new Object();
           CONVERSATION_HASH[current_obj.resourceId]["STATUS"] = current_obj.lastUpdated;
-          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1));
+          add_to_list("general", current_obj.resourceId, "<b>New Conversation</b>:<br> "+current_obj.label+'<br>@'+rcv_json.objects[i].lastUpdated.slice(11,-1)+' UTC');
           construct_conversation(current_obj.resourceId);
         }
       }
@@ -392,12 +392,17 @@ function initialize() {
 
   })
 
-  // Conversation pool section close
+  // click on img function
   $('body').on("click", ".dialog_pic img", function(){
     console.log("click on img");
-    $('#img_holder img').attr('src', $(this).attr('src'));
+    $('#img_holder #enlarged_img').attr('src', $(this).attr('src'));
     $('#img_holder').fadeIn();
-  }); 
+  });
+
+  $('#img_holder').on("click", "#img_close_btn", function(){
+    $('#img_holder').fadeOut();
+  });
+
 
 
   // More info button
@@ -535,8 +540,9 @@ function initialize() {
   }); 
 
 
-  
-
+  // Right Container Height
+  $('#right_list_container').css('max-height', $('body').height()-64 + 'px'); 
+  $('#conversations_pool, #img_holder').draggable();
 
   $('body').on("click", "#tracked_user_list a", function(){  
     //prepare_conversation(test_guid);

@@ -9,9 +9,8 @@
     <!-- change to local depos. later -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
     <!--
-    <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css' rel='stylesheet' type='text/css'>    
+    <link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/ui-lightness/jquery-ui.css' rel='stylesheet' type='text/css'> -->   
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    -->
     <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script src="api_wrapper.js"></script>
     <script src="page.js"></script>
@@ -20,7 +19,10 @@
   <body onload="initialize()">
     <div id="map_canvas"></div>
 
-    <div id="img_holder" class="list"><img src=""></div>
+    <div id="img_holder" class="list">
+      <div id="img_close_btn"><img src="https://maps.gstatic.com/mapfiles/mv/imgs8.png" draggable="false"></div>
+      <img id="enlarged_img" src="">
+    </div>
 
     <div id="conversations_pool" class="list">
       <div id="pool_close_btn">
@@ -39,7 +41,7 @@
     <button id="search_btn">Search</button>
     <div id="right_list_container" class="list">
       <div id="critical_list" >
-        <header><!--Events List--></header>
+        <header>Ongoing Conversations</header>
       </div><hr>
       <div id="general_list" >
         <header></header>
