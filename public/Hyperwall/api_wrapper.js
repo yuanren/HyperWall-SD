@@ -23,7 +23,7 @@ function gm_create_marker(type, location) {
   var icon_type;
   switch(type){
     case "breadcrumb":
-      icon_type = "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle.png";
+      icon_type = "https://maps.gstatic.com/intl/en_us/mapfiles/markers2/measle_blue.png";
       break;
     default:
       icon_type = "http://maps.google.com/mapfiles/marker.png";

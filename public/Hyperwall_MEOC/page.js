@@ -5,7 +5,7 @@ var APP_ROOT_DIRECTORY = "../";
 var MAP;
   
 // Global Hyperwall variables
-var CONVERSATIONS_POLL_INTERVAL = 2200, BREADCRUMB_POLL_INTERVAL = 5000;
+var CONVERSATIONS_POLL_INTERVAL = 2100, BREADCRUMB_POLL_INTERVAL = 3999;
 var CONVERSATIONS_POLLING_WORKER;
 
 var BREADCRUMB_POLLING_WORKERS = new Object();
@@ -54,10 +54,12 @@ function make_critical(guid){
 function insert_msg(conversation_guid, msg_guid){
 // TODO: CHANGE TIME FROM UTC TO LOCAL
   var target_container = $(".inmap_dialog .conversation_guid[value="+conversation_guid+"]").parent();
-  if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null){
+  var img_count = $(".inmap_dialog .dialog_pic .msg_guid[value="+msg_guid+"]").length;
+
+  if(IMMUTABLE_HASH["MSG"][msg_guid]["img"] != null && img_count == 0){
     console.log("we have some pictures!");
     var pic_str =
-    '<div class="dialog_pic"><input type="hidden" class="msg_GUID" value="'+msg_guid+'">'+
+    '<div class="dialog_pic"><input type="hidden" class="msg_guid" value="'+msg_guid+'">'+
     '<div class="dialog_pic_title"><a href="#" class="dialog_pic_user user_link">'+
     IMMUTABLE_HASH[IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]]["label"]+
     '<input type="hidden" class="user_guid" value="'+IMMUTABLE_HASH["MSG"][msg_guid]["fromResourceId"]+'">'+
@@ -67,6 +69,9 @@ function insert_msg(conversation_guid, msg_guid){
     target_container.find('.dialog_pics').prepend(pic_str).hide().fadeIn();
   }
 
+  var text_count = $(".inmap_dialog .dialog_texts .msg_guid[value="+msg_guid+"]").length;
+
+  if(text_count == 0){
   var text_str =
     '<hr><input type="hidden" class="msg_guid" value="'+msg_guid+'">'+
     '<div class="dialog_text_title">By <a href="#" class="dialog_text_user user_link">';
@@ -77,7 +82,7 @@ function insert_msg(conversation_guid, msg_guid){
       '</div><div class="dialog_text">'+IMMUTABLE_HASH["MSG"][msg_guid]["payload"]+'</div>';
   
     target_container.find('.dialog_texts').prepend(text_str).hide().fadeIn();
-
+  }
   //});
 }
 
@@ -168,7 +173,7 @@ function update_conversation(conversation_guid){
             new_msg_guids.push(this.resourceId);
             CONVERSATION_HASH[conversation_guid]["MSGS"].push(this.resourceId);  
             CONVERSATION_HASH[conversation_guid]["MSGS_HASH"][this.resourceId] = true;
-          }
+          } else { new_msg_guids.push(this.resourceId); }
         });
       }
     )
